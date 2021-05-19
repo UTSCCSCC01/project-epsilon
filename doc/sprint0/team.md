@@ -8,4 +8,4 @@
 | Hritik Gandhi| gandhihr | 1003857089 | hritik.gandhi@mail.utoronto.ca | 4379921361 | crunchyapple#0872 |
 | | | | | | |
 ---
-**Discord Chat/Server Invite :** [project epsilon server](https://discord.gg/GQFjcYwX)
+**Discord Chat/Server Invite :** [project epsilon server](https://discord.gg/9FtuSgjBuJ)

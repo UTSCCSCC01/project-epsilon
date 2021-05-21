@@ -8,6 +8,7 @@
 | Hritik Gandhi| gandhihr | 1003857089 | hritik.gandhi@mail.utoronto.ca | 4379921361 | crunchyapple#0872 |
 | Sarah Hameed| hameed10 | 1004942477 | sarah.hameed@mail.utoronto.ca | 6472135521 | reeger#6265 |
 | Weiyu Li| liweiyu | 1003765981 | weiyu.li@mail.utoronto.ca | 4379827267 | Weiyu Li#8259 |
+| Kobe Louis| louiskob | 1003241388 | kobe.louis@mail.utoronto.ca | 6475391961 | Trippyman123#0654 |
 | | | | | | |
 ---
 **Discord Chat/Server Invite :** [project epsilon server](https://discord.gg/9FtuSgjBuJ)

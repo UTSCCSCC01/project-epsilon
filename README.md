@@ -5,12 +5,11 @@ With project epsilon we aim to enable young african entrpeneurs to build compani
 
 ## Project setup
 These are requirements to run the project:
-- Figma
 - Neo4j
 - Install Java
 
 ## Contributing to the project
-For project epsilon we are using github as our version control. Whenever a change is made that is more than 10 lines or is not a bug fix, a pull request should be made with a branch name including the author's name, the affected function(s), and a suffix to indicate if the change is a fix. 
+For project epsilon we are using github as our version control. Whenever a change is made that is more than 10 lines or is not a bug fix, a pull request should be made. Branch names will be the same as their associated ticket on Jira.
 
 All tickets will be created on Jira to assign work to any given member of the project.
 

@@ -1,7 +1,9 @@
 # Process
 ## Team Organization
 All the work for the project is divided equally between all the members of the team, if anybody feels otherwise they can voice their concern and based on how the majority of the members feel we could change how the work is distributed.
-* user roles TBD
+* Daniela Venturo is the scrum master for all our sprints.
+* All other roles will be rotated amongst team members - eg. The meeting minutes will be recorded by a different member each week, in alphabetical order by last name. Along with other roles as specified in the contract.
+
 ## Tools
 * __Discord__: All decisions are made through polls. The polls are hosted on a “polls” channel on discord, where all members must vote. Additionally discord is also used to meet using the voice channels.
 * __When2meet__: To organize a time for the whole team to meet. This helps us visualize when we have time available in the week when all members are free to meet.

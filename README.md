@@ -6,7 +6,7 @@ With project epsilon we aim to enable young african entrpeneurs to build compani
 ## Project setup
 These are requirements to run the project:
 - Neo4j
-- Install Java
+- TBD
 
 ## Contributing to the project
 For project epsilon we are using github as our version control. Whenever a change is made that is more than 10 lines or is not a bug fix, a pull request should be made. Branch names will be the same as their associated ticket on Jira.

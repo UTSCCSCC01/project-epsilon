@@ -22,6 +22,9 @@ django superuser:
 - username: epsilon 
 - password: BestProjectC01
 (for now it is safe to put these credentials here since the repo is private to students in CSCC01)
+  
+For general django inquiries and instructions follow [this](https://docs.djangoproject.com/en/3.2/intro/tutorial01/) documentation.
+For mysql connection follow [this](https://dev.mysql.com/doc/connector-python/en/) documentation.
 
 ## Contributing to the project
 For project epsilon we are using github as our version control. Whenever a change is made that is more than 10 lines or is not a bug fix, a pull request should be made. Branch names will be the same as their associated ticket on Jira.

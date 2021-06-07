@@ -8,7 +8,7 @@ Follow these instructions to run the project after cloning locally:
 1. Install [MySQL installer](https://dev.mysql.com/downloads/installer/) and install MySQL Server 8.0.25
     1. Set the MySQL root password as: 12345
     2. Create a DB Admin user with these credentials: u: epsilon p: 12345
-2. At root, create a virtual environment with these [instructions](https://tutorial.djangogirls.org/es/django_installation/) and activate it.
+2. At root, create a virtual environment with these [instructions](https://tutorial.djangogirls.org/en/django_installation/) and activate it.
 3. Run `pip install -r requirements.txt` to install all requirements to your virtual environment.
 4. Run `mysql -u epsilon -p` and type in the password when prompted.
     1. Run `CREATE DATABASE epsilon_db CHARACTER SET utf8;` to create the local database.

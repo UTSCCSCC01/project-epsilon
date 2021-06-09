@@ -35,8 +35,8 @@ def is_pos_int(s):
     except ValueError:
         return False
 
-@app.route('/manageteam', methods=['GET', 'POST'])
-def manageteam():
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
     # TODO: check if user is logged in and check permissions
     # cur = mysql.connection.cursor()
     if request.method == 'POST':
@@ -45,25 +45,25 @@ def manageteam():
         # check if all form boxes are completed
         if (len(request.form['teamid']) == 0 or len(request.form['userid']) == 0):
             error = 'Please fill in all boxes.'
-            return render_template('manageteam.html', error=error)
+            return render_template('registration.html', error=error)
         # check if all form boxes are integers
         if not (is_pos_int(request.form['teamid']) and  is_pos_int(request.form['userid'])):
             error = 'team id and user id are in digit format'
-            return render_template('manageteam.html', error=error)
+            return render_template('registration.html', error=error)
         # check if input int is out of range of mySql, just for demo purpose
         if int(request.form['teamid'])>2147483647 or int(request.form['userid'])>2147483647:
             error = 'Id number is too large'
-            return render_template('manageteam.html', error=error)
+            return render_template('registration.html', error=error)
         # if no errors
         try:
             message = add_data(
                 mysql, sql_q, (request.form['teamid'], request.form['userid']))
         except Exception as e:
-            return render_template('manageteam.html', error=e)
-        return render_template('manageteam.html', message=message)
+            return render_template('registration.html', error=e)
+        return render_template('registration.html', message=message)
     else:
         # load if not POST
-        return render_template("manageteam.html")
+        return render_template("registration.html")
 
 
 if __name__ == "__main__":

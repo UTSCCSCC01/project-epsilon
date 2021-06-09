@@ -38,7 +38,7 @@ def is_pos_int(s):
 @app.route('/manageteam', methods=['GET', 'POST'])
 def manageteam():
     # TODO: check if user is logged in and check permissions
-    cur = mysql.connection.cursor()
+    # cur = mysql.connection.cursor()
     if request.method == 'POST':
         # create both queries for checking and inserting data
         sql_q = '''INSERT INTO Teams VALUES (%s, %s, 1)'''

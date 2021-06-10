@@ -16,6 +16,7 @@
         <hr>
     </div>
     <div class="contents">
+        {% if data %}
         <table border="1">
             <tr>
                 <th>User</th>
@@ -26,14 +27,15 @@
             <tr>
                 <th> {{ row[0] }} </th>
                 <td> {{ row[1] }} </td>
-                <td><form action="" method="POST">
-                    <button type="submit" value="A_{{row[2]}}" name="action">Accept</button>
-                    <button type="submit" value="D_{{row[2]}}" name="action">Decline</button>
+                <td><form action="" method="POST" id="form_{{row[2]}}">
+                    <button type="submit" value="A_{{row[2]}}_{{tid}}" name="action">Accept</button>
+                    <button type="submit" value="D_{{row[2]}}_{{tid}}" name="action">Decline</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}

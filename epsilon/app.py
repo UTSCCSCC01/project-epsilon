@@ -83,13 +83,14 @@ def show_team_request(tid):
             message = team_request_accept(mysql, action[1])
         elif action[0] == "D":
             message = team_request_decline(mysql, action[1])
-        # if no errors
-        return render_template("jointeamrequest.html", message=message)
+        data = team_request_load(mysql, action[2])
+        return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
     else:
         # load if not POST
         data = team_request_load(mysql, tid)
-        print(data)
-        return render_template("jointeamrequest.html", data = data)
+        if len(data) == 0:
+            return render_template("jointeamrequest.html", message="No pending requests!")
+        return render_template("jointeamrequest.html", data = data, tid = tid)
 
 if __name__ == "__main__":
     app.run(debug=True)

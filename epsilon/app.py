@@ -25,8 +25,8 @@ def create():
     populate(mysql)
     return "Database Users, Teams are populated!"
 
-# EP-1: Team management
 
+# EP-1: Team management
 def is_pos_int(s):
     try:
         if int(s)>0:
@@ -35,6 +35,7 @@ def is_pos_int(s):
             return False
     except ValueError:
         return False
+
 
 @app.route('/manageteam', methods=['GET', 'POST'])
 def manageteam():
@@ -66,7 +67,19 @@ def manageteam():
         # load if not POST
         return render_template("manageteam.html")
 
-@app.route('/remove', methods='POST')
+
+# EP-2/4/5
+@app.route('/testbtn', methods=['GET', 'POST'])
+def testbtn():
+    if request.method == 'POST':
+        dot = request.form['remove'].index('.')
+        uid = request.form['remove'][1:dot]
+        tid = request.form['remove'][dot+1:]
+        removeFromTeam(uid,tid)
+    return render_template('home.html')
+
+
+@app.route('/remove', methods=['POST'])
 def remove():
     cur = mysql.connection.cursor()
     data = request.json

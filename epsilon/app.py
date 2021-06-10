@@ -1,12 +1,13 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data
+from populatedatabase import populate3
 
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '12345678'
+app.config['MYSQL_USER'] = 'epsilon'
+app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
 
 mysql = MySQL(app)
@@ -17,12 +18,29 @@ def hello():
     return "Hello World! Welcome to Epsilon!"
 
 # Only go to this page if your database is empty
-
+@app.route("/deleteAll")
+def delete_all():
+    cur1 = mysql.connection.cursor()
+    cur1.execute('''DROP TABLE IF EXISTS Users''')
+    cur1.execute('''DROP TABLE IF EXISTS Teams''')
+    cur1.execute('''DROP TABLE IF EXISTS Roles''')
+    mysql.connection.commit()
+    return "Database Users, Teams are deleted!"
 
 @app.route("/create")
 def create():
     populate(mysql)
-    return "Database Users, Teams are populated!"
+    populate3(mysql)
+    cur1 = mysql.connection.cursor()
+    cur1.execute('''SELECT * FROM Users''')
+    cur2 = mysql.connection.cursor()
+    cur2.execute('''SELECT * FROM Teams''')
+    cur3 = mysql.connection.cursor()
+    cur3.execute('''SELECT * FROM Roles''')
+    return "Database Users, Teams, Roles are populated!\n" \
+           "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
+           +str(cur1.fetchall())+"\n\n"+str(cur2.fetchall())\
+           +"\n\n"+str(cur3.fetchall())
 
 # EP-1: Team management
 
@@ -70,11 +88,12 @@ def registration():
 # result is returned correctly, just need todispaly
 
 
-@app.route("/displayteam")
-def displayteam():
+@app.route("/displayteam/<int:tid>/", methods=['GET'])
+def display_team(tid):
     cur = mysql.connection.cursor()
-    resultValue = cur.execute(
-        "With temp as (Select Users.uid, Users.name, Users.contact, Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.contact, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid=1")
+    # q = "With temp as (Select Users.uid, Users.name,Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.contact, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid="+str(tid)
+    q = "With temp as (Select Users.uid, Users.name,Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid="+str(tid)
+    resultValue = cur.execute(q)
     if resultValue > 0:  # there are values in the database
         userDetails = cur.fetchall()
         print(userDetails)
@@ -82,7 +101,6 @@ def displayteam():
     else:
         message = "Your team does not exist"
         return render_template('displayteam.html', message=message)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

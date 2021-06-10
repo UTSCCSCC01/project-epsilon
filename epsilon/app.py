@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data, populate2
+from business import *
 
 app = Flask(__name__)
 
@@ -72,6 +73,21 @@ def manageteam():
 def create2():
     populate2(mysql)
     return "Database Roles, Company, Request and Status are populated!"
+
+@app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
+def show_team_request(tid):
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        # call business layer on request.sth to change
+
+
+        # if no errors
+        return render_template("jointeamrequest.html")
+    else:
+        # load if not POST
+        data = team_request_load(mysql, tid)
+        print(data)
+        return render_template("jointeamrequest.html", data = data)
 
 if __name__ == "__main__":
     app.run(debug=True)

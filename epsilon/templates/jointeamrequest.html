@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/joinTeamRequest.js') }}"></script>
+    <title>Join Team Requests</title>
+</head>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        <h2>Manage Team</h2>
+        <hr>
+    </div>
+    <div class="contents">
+        <table border="1">
+            <tr>
+                <th>User</th>
+                <th>Creation Time</th>
+                <th>Action</th>
+            </tr>
+            {% for row in data %}
+            <tr>
+                <th> {{ row[0] }} </th>
+                <td> {{ row[1] }} </td>
+                <td> <input type="button" onclick="accept()" value="Accept" id="A_{{row[0]}}"/>
+                     <input type="button" onclick="decline()" value="Decline" id="D_{{row[0]}}" /></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

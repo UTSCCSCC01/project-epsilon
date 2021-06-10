@@ -77,8 +77,8 @@ def testbtn():
         uid = request.form['submit'][1:dot]
         tid = request.form['submit'][dot+1:]
         if request.form['submit'] == 'r':
-            removeFromTeam(mysql, uid,tid)
-        elif request.fomr['submit'] == 'p':
+            removeFromTeam(mysql, uid, tid)
+        elif request.form['submit'] == 'p':
             newRole = 1 #set this how you may
             updateRoleOfEmployee(mysql,uid,newRole)
     return render_template('home.html')

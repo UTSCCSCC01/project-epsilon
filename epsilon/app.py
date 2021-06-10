@@ -71,11 +71,16 @@ def manageteam():
 # EP-2/4/5
 @app.route('/testbtn', methods=['GET', 'POST'])
 def testbtn():
+    cur = mysql.connection.cursor()
     if request.method == 'POST':
-        dot = request.form['remove'].index('.')
-        uid = request.form['remove'][1:dot]
-        tid = request.form['remove'][dot+1:]
-        removeFromTeam(uid,tid)
+        dot = request.form['submit'].index('.')
+        uid = request.form['submit'][1:dot]
+        tid = request.form['submit'][dot+1:]
+        if request.form['submit'] == 'r':
+            removeFromTeam(mysql, uid,tid)
+        elif request.fomr['submit'] == 'p':
+            newRole = 1 #set this how you may
+            updateRoleOfEmployee(mysql,uid,newRole)
     return render_template('home.html')
 
 

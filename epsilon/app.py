@@ -23,7 +23,7 @@ def hello():
 @app.route("/create")
 def create():
     populate(mysql)
-    return "Database Users, Teams are populated!"
+    return "Database Users, Teams, Company are populated!"
 
 # EP-1: Team management
 def is_pos_int(s):

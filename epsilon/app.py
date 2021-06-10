@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data
+
 from populatedatabase import populate3
 from displayteam import displayteam
+from removeFromTeam import *
+
 
 app = Flask(__name__)
 
@@ -46,9 +49,8 @@ def create():
            + str(cur1.fetchall())+"\n\n"+str(cur2.fetchall())\
            + "\n\n"+str(cur3.fetchall())
 
+
 # EP-1: Team management
-
-
 def is_pos_int(s):
     try:
         if int(s) > 0:
@@ -95,6 +97,34 @@ def registration():
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def display_team(tid):
     return displayteam(tid, mysql)
+
+
+# EP-2/4/5
+@app.route('/testbtn', methods=['GET', 'POST'])
+def testbtn():
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        dot = request.form['submit'].index('.')
+        uid = request.form['submit'][1:dot]
+        tid = request.form['submit'][dot+1:]
+        if request.form['submit'] == 'r':
+            removeFromTeam(mysql, uid, tid)
+        elif request.form['submit'] == 'p':
+            newRole = 1 #set this how you may
+            updateRoleOfEmployee(mysql,uid,newRole)
+    return render_template('home.html')
+
+
+@app.route('/remove', methods=['POST'])
+def remove():
+    cur = mysql.connection.cursor()
+    data = request.json
+    if data:
+        uid = str(data['uid'][0])
+        tid = str(data['tid'][0])
+        removeFromTeam(uid, tid)
+        return "Success"
+    return "Invalid uid/tid"
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data
 from populatedatabase import populate3
+from displayteam import displayteam
 
 app = Flask(__name__)
 
@@ -18,6 +19,8 @@ def hello():
     return "Hello World! Welcome to Epsilon!"
 
 # Only go to this page if your database is empty
+
+
 @app.route("/deleteAll")
 def delete_all():
     cur1 = mysql.connection.cursor()
@@ -26,6 +29,7 @@ def delete_all():
     cur1.execute('''DROP TABLE IF EXISTS Roles''')
     mysql.connection.commit()
     return "Database Users, Teams are deleted!"
+
 
 @app.route("/create")
 def create():
@@ -39,8 +43,8 @@ def create():
     cur3.execute('''SELECT * FROM Roles''')
     return "Database Users, Teams, Roles are populated!\n" \
            "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
-           +str(cur1.fetchall())+"\n\n"+str(cur2.fetchall())\
-           +"\n\n"+str(cur3.fetchall())
+           + str(cur1.fetchall())+"\n\n"+str(cur2.fetchall())\
+           + "\n\n"+str(cur3.fetchall())
 
 # EP-1: Team management
 
@@ -90,17 +94,8 @@ def registration():
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def display_team(tid):
-    cur = mysql.connection.cursor()
-    # q = "With temp as (Select Users.uid, Users.name,Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.contact, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid="+str(tid)
-    q = "With temp as (Select Users.uid, Users.name,Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid="+str(tid)
-    resultValue = cur.execute(q)
-    if resultValue > 0:  # there are values in the database
-        userDetails = cur.fetchall()
-        print(userDetails)
-        return render_template('displayteam.html', userDetails=userDetails)
-    else:
-        message = "Your team does not exist"
-        return render_template('displayteam.html', message=message)
+    return displayteam(tid, mysql)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

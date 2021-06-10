@@ -73,7 +73,7 @@ def remove():
     if data:
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
-        removeFromTeam(uid,tid)
+        removeFromTeam(uid, tid)
         return "Success"
     return "Invalid uid/tid"
 

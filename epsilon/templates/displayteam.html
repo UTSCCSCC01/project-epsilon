@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Manage Team</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Insert Team Name Here</h1>
+        <hr>
+        <table border=1>
+            {% for user in userDetails %}
+            <tr>
+                <td>{{user[0]}}</td>
+                <td>{{user[1]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="contents">
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

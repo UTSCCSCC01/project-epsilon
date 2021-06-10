@@ -5,8 +5,8 @@ from populatedatabase import populate, add_data
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'epsilon'
-app.config['MYSQL_PASSWORD'] = '12345'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = '12345678'
 app.config['MYSQL_DB'] = 'epsilon_db'
 
 mysql = MySQL(app)
@@ -26,14 +26,16 @@ def create():
 
 # EP-1: Team management
 
+
 def is_pos_int(s):
     try:
-        if int(s)>0:
+        if int(s) > 0:
             return True
         else:
             return False
     except ValueError:
         return False
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
@@ -47,11 +49,11 @@ def registration():
             error = 'Please fill in all boxes.'
             return render_template('registration.html', error=error)
         # check if all form boxes are integers
-        if not (is_pos_int(request.form['teamid']) and  is_pos_int(request.form['userid'])):
+        if not (is_pos_int(request.form['teamid']) and is_pos_int(request.form['userid'])):
             error = 'team id and user id are in digit format'
             return render_template('registration.html', error=error)
         # check if input int is out of range of mySql, just for demo purpose
-        if int(request.form['teamid'])>2147483647 or int(request.form['userid'])>2147483647:
+        if int(request.form['teamid']) > 2147483647 or int(request.form['userid']) > 2147483647:
             error = 'Id number is too large'
             return render_template('registration.html', error=error)
         # if no errors
@@ -64,6 +66,22 @@ def registration():
     else:
         # load if not POST
         return render_template("registration.html")
+
+# result is returned correctly, just need todispaly
+
+
+@app.route("/displayteam")
+def displayteam():
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute(
+        "With temp as (Select Users.uid, Users.name, Users.contact, Roles.type from Users inner join Roles on Users.rid=Roles.rid) Select temp.name, temp.contact, temp.type from temp, Teams where Teams.uid=temp.uid and Teams.tid=1")
+    if resultValue > 0:  # there are values in the database
+        userDetails = cur.fetchall()
+        print(userDetails)
+        return render_template('displayteam.html', userDetails=userDetails)
+    else:
+        message = "Your team does not exist"
+        return render_template('displayteam.html', message=message)
 
 
 if __name__ == "__main__":

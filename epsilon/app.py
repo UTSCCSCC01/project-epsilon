@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data
+from removeFromTeam import *
 
 app = Flask(__name__)
 
@@ -64,6 +65,17 @@ def manageteam():
     else:
         # load if not POST
         return render_template("manageteam.html")
+
+@app.route('/remove', methods='POST')
+def remove():
+    cur = mysql.connection.cursor()
+    data = request.json
+    if data:
+        uid = str(data['uid'][0])
+        tid = str(data['tid'][0])
+        removeFromTeam(uid,tid)
+        return "Success"
+    return "Invalid uid/tid"
 
 
 if __name__ == "__main__":

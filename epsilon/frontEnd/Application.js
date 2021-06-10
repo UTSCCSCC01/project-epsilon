@@ -2,7 +2,7 @@
 Mock page to test the application.
 */
 import React from 'react';
-import {mockTeamPage} '.mockTeamPage'
+import {mockTeamPage} from './mockTeamPage'
 
 function App(){
     return (

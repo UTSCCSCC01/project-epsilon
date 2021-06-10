@@ -13,6 +13,7 @@ def removeFromTeam(mysql, uid, tid):
 
 def retrieveTeam(mysql,tid):
     cur = mysql.connection.cursor()
+    cur = mysql.connection.cursor()
     cur.execute('''SELECT FROM Teams WHERE tid = %s''', (tid))
     out = cur.fetchall()
     ret = []

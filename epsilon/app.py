@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 from populatedatabase import populate, add_data
 
 from populatedatabase import populate3
-from displayteam import displayteam
+from getTeam import getTeam
 from removeFromTeam import *
 
 
@@ -93,12 +93,6 @@ def registration():
 
 # result is returned correctly, just need todispaly
 
-
-@app.route("/displayteam/<int:tid>/", methods=['GET'])
-def display_team(tid):
-    return displayteam(tid, mysql)
-
-
 # EP-2/4/5
 @app.route('/testbtn', methods=['GET', 'POST'])
 def testbtn():
@@ -126,6 +120,10 @@ def remove():
         return "Success"
     return "Invalid uid/tid"
 
+
+@app.route("/displayteam/<int:tid>/", methods=['GET'])
+def displayteam(tid):
+    return getTeam(tid, mysql)
 
 if __name__ == "__main__":
     app.run(debug=True)

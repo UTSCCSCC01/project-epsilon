@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
-from populatedatabase import populate, add_data
+from populatedatabase import populate, add_data, populate2
 
 app = Flask(__name__)
 
@@ -65,6 +65,13 @@ def manageteam():
         # load if not POST
         return render_template("manageteam.html")
 
+# Only go to this page after you go to /create to add more tables and add key constraints 
+
+# EP-3: Accept and Decline pending requests
+@app.route("/create2")
+def create2():
+    populate2(mysql)
+    return "Database Roles, Company, Request and Status are populated!"
 
 if __name__ == "__main__":
     app.run(debug=True)

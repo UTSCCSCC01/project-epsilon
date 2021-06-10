@@ -78,11 +78,13 @@ def create2():
 def show_team_request(tid):
     cur = mysql.connection.cursor()
     if request.method == 'POST':
-        # call business layer on request.sth to change
-
-
+        action = request.form["action"].split("_")
+        if action[0] == "A":
+            message = team_request_accept(mysql, action[1])
+        elif action[0] == "D":
+            message = team_request_decline(mysql, action[1])
         # if no errors
-        return render_template("jointeamrequest.html")
+        return render_template("jointeamrequest.html", message=message)
     else:
         # load if not POST
         data = team_request_load(mysql, tid)

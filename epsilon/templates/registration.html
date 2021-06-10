@@ -20,14 +20,14 @@
     <div class="contents">
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" placeholder="Team ID" name="teamid" value="{{
+            <input class="auth" type="text" placeholder="Team Name" name="teamname" value="{{
                 request.form.course }}">
             <br>
-            <input class="auth" type="text" placeholder="User ID" name="userid" value="{{
+            <input class="auth" type="text" placeholder="Team Description" name="teamdesc" value="{{
                 request.form.q1 }}">
             <br>
             <br>
-            <input class="btn" type="submit" value="Submit">
+            <input class="btn" type="submit" value="Create Team">
         </form>
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>

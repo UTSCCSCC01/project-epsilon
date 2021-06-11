@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from populatedatabase import add_data, get_data
+from removeFromTeam import updateRoleOfEmployee
 
 def is_pos_int(s):
     # EP-1: Team management
@@ -37,6 +38,9 @@ def registration(mysql):
         try:
             message = add_data(
                 mysql, sql_q, (request.form['teamname'], request.form['teamdesc']))
+            add_data(mysql, '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
+            add_data(mysql, '''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', (3, 6, 1))
+            updateRoleOfEmployee(mysql, 6, 1)
         except Exception as e:
             return render_template('registration.html', error=e)
         return render_template('registration.html', message=message)

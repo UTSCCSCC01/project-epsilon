@@ -1,7 +1,7 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-from populatedatabase import populate, add_data, populate2, populate3
+from populatedatabase import *
 from business import *
 from getTeam import getTeam
 from removeFromTeam import *
@@ -23,15 +23,27 @@ def hello():
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     return "Hello World! Welcome to Epsilon!"
 
-# Only go to this page if your database is empty
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('hello'))
+    return render_template('login.html', error=error)
 
+# Only go to this page if your database is empty
 
 @app.route("/deleteAll")
 def delete_all():
     cur1 = mysql.connection.cursor()
-    cur1.execute('''DROP TABLE IF EXISTS Users''')
     cur1.execute('''DROP TABLE IF EXISTS Teams''')
+    cur1.execute('''DROP TABLE IF EXISTS Request''')
+    cur1.execute('''DROP TABLE IF EXISTS Users''')
     cur1.execute('''DROP TABLE IF EXISTS Roles''')
+    cur1.execute('''DROP TABLE IF EXISTS Company''')
+    cur1.execute('''DROP TABLE IF EXISTS RStatus''')
     mysql.connection.commit()
     return "Database Users, Teams are deleted!"
 
@@ -39,7 +51,6 @@ def delete_all():
 @app.route("/create")
 def create():
     populate(mysql)
-    populate3(mysql)
     cur1 = mysql.connection.cursor()
     cur1.execute('''SELECT * FROM Users''')
     cur2 = mysql.connection.cursor()
@@ -71,7 +82,7 @@ def testbtn():
             removeFromTeam(mysql, uid, tid)
         elif request.form['submit'] == 'p':
             # newRole should be id of admin
-            newRole = 1
+            newRole = 2
             print("updating user")
             updateRoleOfEmployee(mysql,uid,newRole)
     return render_template('displayteam.html')
@@ -101,10 +112,6 @@ def index():
 # Only go to this page after you go to /create to add more tables and add key constraints 
 
 # EP-3: Accept and Decline pending requests
-@app.route("/create2")
-def create2():
-    populate2(mysql)
-    return "Database Roles, Company, Request and Status are populated!"
 
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):

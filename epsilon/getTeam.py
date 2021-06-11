@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
-from populatedatabase import populate3
 
 # EP-2: Display Team
 
@@ -12,7 +11,7 @@ def getTeam(tid, mysql):
     if resultValue > 0:  # there are values in the database
         userDetails = cur.fetchall()
         print(type(userDetails))    # tuple
-        print(userDetails)          # (('Tim', 'admin'), ('Paula', 'admin'), ('Pritish', 'CEO'))
+        print(userDetails)          # (('Tim', 'Team Owner'), ('Paula', 'Team Owner'), ('Pritish', 'No Team'))
         return render_template('displayteam.html', userDetails=userDetails)
     else:
         message = "Your team does not exist"

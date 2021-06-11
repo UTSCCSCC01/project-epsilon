@@ -62,3 +62,7 @@ docs/_build/
 
 # PyBuilder
 target/
+doc/.DS_Store
+
+#visual studio
+.vs/*

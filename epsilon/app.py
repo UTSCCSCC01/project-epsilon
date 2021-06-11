@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
-from populatedatabase import populate, add_data
+from populatedatabase import populate, add_data, populate2
+from business import *
 
 from populatedatabase import populate3
 from getTeam import getTeam
@@ -129,10 +130,36 @@ def remove():
 def displayteam(tid):
     return getTeam(tid, mysql)
 
-
 @app.route('/test_get_base_url')
 def index():
     return request.base_url[:request.base_url.rfind('/')]
 
+
+# Only go to this page after you go to /create to add more tables and add key constraints 
+
+# EP-3: Accept and Decline pending requests
+@app.route("/create2")
+def create2():
+    populate2(mysql)
+    return "Database Roles, Company, Request and Status are populated!"
+
+@app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
+def show_team_request(tid):
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        action = request.form["action"].split("_")
+        if action[0] == "A":
+            message = team_request_accept(mysql, action[1])
+        elif action[0] == "D":
+            message = team_request_decline(mysql, action[1])
+        data = team_request_load(mysql, action[2])
+        return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
+    else:
+        # load if not POST
+        data = team_request_load(mysql, tid)
+        if len(data) == 0:
+            return render_template("jointeamrequest.html", message="No pending requests!")
+        return render_template("jointeamrequest.html", data = data, tid = tid)
+      
 if __name__ == "__main__":
     app.run(debug=True)

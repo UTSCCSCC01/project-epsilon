@@ -1,0 +1,35 @@
+# Product Backlog
+- As a team administrator, I want to create a team so that I can define who makes up the company.
+- As a team administrator, I want to be able to see a list of the members of the team, their roles, and their contact information to be able to keep track and connect with them.
+- As a team administrator, I would like to accept or decline requests of other users who want to join the team to make sure only real employees have the company in their profile.
+- As a team administrator, I would like to remove members to only include current employees
+- As a team administrator, I would like to promote members (employees) from normal members to team administrators to give them access to team administrator features.
+- As a team administrator, I want to create the company profile page to share a public profile with possible stakeholders and hires.
+- As a team administrator, I want to edit the information of the company profile page such as the company name and the summary of the company to keep the public profile updated for possible investors or hires.
+- As a team administrator, I want to see an applicant's profile information so I can see the skills/ qualifications of the applicant.
+- As a team administrator, I can browse a variety of loans/grants options.
+- As a team startup user, I can learn about sustainable product development, how to pitch, how to get investors, etc.
+- As a team administrator, I want to see a list of loans and grants the company has applied.
+- As a team administrator, I want to create a loan/grant record to keep track of the loans and grants I applied for.
+- As a team administrator, I want to update the status on existing loans/grants.
+- As a team administrator, I want to archive a past loan/grant record so I can focus on current loans/grants.
+- As a startup user, I can contact reliable companies for sales and CRM services.
+- As a user, I want to see the personal information such as name and contact information that is stored in my account.
+- As a user, I want to edit my personal information/profile so they are accurate and up to date.
+- As a user, I want to log in and off of my account.
+- As an unregistered user, I want the ability to create an account to access all features of the product.
+- As a user, I want to see what the product is and why it was created.
+- As a user, I want to see the team behind the product and a list of contacts in order to receive support and additional information. 
+- As a user, I want to be able to search for specific products 
+- As a user, I want to see the cumulative list of services that I can access if I am logged in.
+- As a user, I would like to see news dedicated to startups and other entrepreneurs and their sources.
+- As a job seeker, I would like to see my job applications so I can keep track of which job postings I applied for and the status of the application.
+- As an employee, I want to create a Join Team Request so that the team administrator can register me as an employee of the company I am working in.
+- As a user, I want to be able to filter my searches.
+- As a user, I would like to view a collection of all the features available in the form of a navigation menu.
+- As a partner, I want to be able to post the services and resources my company offers.
+- As a partner, I want to be able to see who requested my service.
+- As a partner, I want to be able to view pending and denied service requests.
+- As a site owner, I want to verify resources offered by partners before they get published.
+- As a developer I want to have the dev environment setup so that I can start creating the project.
+- Transistion from Django to Flask as advised by Scrum Leader

@@ -17,11 +17,13 @@ app.config['MYSQL_DB'] = 'epsilon_db'
 mysql = MySQL(app)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def hello():
     global baseUrl
     baseUrl = request.base_url[:request.base_url.rfind('/')]
-    return "Hello World! Welcome to Epsilon!"
+    if request.method == 'POST':
+            return redirect(url_for('login'))
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

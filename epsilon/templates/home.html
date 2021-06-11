@@ -1,26 +1,32 @@
-<!--
-Test button generation. No longer being user.
--->
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-        <title>Button Test</title>
-    </head>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 
-    <header></header>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Login Page.</title>
+</head>
 
-    <body>
-        <div id="root"></div>
-    </body>
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        <hr>
+    </div>
+    <div class="contents">
+        <form action="" method="post">
+            <br>
+            <input class="btn" type="submit" value="Log out">
+        </form>
+    </div>
+    <div>
+        <p>
+            Hello World! Welcome to Epsilon!
+        </p>
+    </div>
+</body>
+
 </html>
-
-<!--
-<button name='submit' type='submit' value={{ "r".concat(user[0]).concat('.').concat(user[1]) }}>
-    Remove
-</button>
-<button name='submit' type='submit' value={{ "p".concat(user[0]).concat('.').concat(user[1]) }}>
-    PromoteToAdmin
-</button>
--->

@@ -63,22 +63,13 @@ def reg():
 @app.route('/testbtn', methods=['POST'])
 def testbtn():
     if request.method == 'POST':
-        op, uid, tid = request.form['submit'].split(".")
-        # dot = request.form['submit'].index('.')
-        # uid = request.form['submit'][2:dot]
-        # tid = request.form['submit'][dot+1:]
-        print("******************")
-        print(request.form['submit'])
-        print(op, uid, tid)
+        # id2 is either tid or rid
+        op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            print("removing user")
-            removeFromTeam(mysql, uid, tid)
+            removeFromTeam(mysql, uid, id2)
         elif op == 'p':
             # newRole should be id of admin
-            newRole = 1
-            print("updating user")
-            updateRoleOfEmployee(mysql,uid,newRole)
-        displayteam(tid)
+            updateRoleOfEmployee(mysql,uid,10)
         return render_template('displayteam.html')
 
 

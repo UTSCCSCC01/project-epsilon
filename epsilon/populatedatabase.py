@@ -35,7 +35,7 @@ def populate3(mysql):
     # tid, uid
     teams_to_add = [(100, 1), (100, 2), (100, 3), (200, 4), (200, 5)]
     for user in users_to_add:
-        add_data(mysql, '''INSERT INTO Users (uid, rid, name) VALUES (%s, %s,%s)''', user[:3])
+        add_data(mysql, '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s,%s, %s)''', user)
     for role in roles_to_add:
         add_data(mysql, '''INSERT INTO Roles (rid, type) VALUES (%s, %s)''', role)
     for relation in teams_to_add:

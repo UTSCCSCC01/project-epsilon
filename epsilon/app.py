@@ -63,6 +63,7 @@ def reg():
 @app.route('/testbtn', methods=['GET', 'POST'])
 def testbtn():
     if request.method == 'POST':
+        print("entering test...")
         dot = request.form['submit'].index('.')
         uid = request.form['submit'][1:dot]
         tid = request.form['submit'][dot+1:]
@@ -74,7 +75,7 @@ def testbtn():
             newRole = 1
             print("updating user")
             updateRoleOfEmployee(mysql,uid,newRole)
-    return render_template('displayteam.html')
+        return render_template('displayteam.html')
 
 
 @app.route('/remove', methods=['POST'])

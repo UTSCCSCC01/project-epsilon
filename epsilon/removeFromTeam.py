@@ -14,6 +14,7 @@ def removeFromTeam(mysql, uid, tid):
 
 def retrieveTeam(mysql,tid):
     cur = mysql.connection.cursor()
+    cur = mysql.connection.cursor()
     cur.execute('''SELECT FROM Teams WHERE tid = %s''', (tid))
     out = cur.fetchall()
     ret = []
@@ -27,7 +28,7 @@ def retrieveTeam(mysql,tid):
     # replace 1s with references to real user data
 
 
-def updateRoleOfEmployee(mysql, uid, rid):
+def updateRoleOfEmployee(mysql, uid, newRole):
     # cur.execute(sql_q, data)
     add_data(mysql, '''UPDATE Teams SET role=%s WHERE uid=%s ''', (newRole,uid))
     add_data(mysql, '''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole,uid))

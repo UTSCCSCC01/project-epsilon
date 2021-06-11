@@ -63,4 +63,6 @@ docs/_build/
 # PyBuilder
 target/
 doc/.DS_Store
-.vscode/settings.json
+
+#visual studio
+.vs/*

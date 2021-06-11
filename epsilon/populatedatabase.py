@@ -1,3 +1,4 @@
+
 from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
@@ -6,10 +7,17 @@ def populate(mysql):
     # Create a table with 5 users. 2 admin and 3 normal users
     cur = mysql.connection.cursor()
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
+        '''CREATE TABLE IF NOT EXISTS Company (
+	tid int auto_increment,
+	name text not null,
+	description text not null,
+	create_date timestamp default current_timestamp null,
+	constraint Company_pk
+	primary key (tid));''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
         name VARCHAR (50), contact VARCHAR (50))''')
     cur.execute(
-        '''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER)''')
+        '''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, role INTEGER)''')
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS Roles (rid INTEGER, type VARCHAR (50))''')
     mysql.connection.commit()
@@ -41,7 +49,15 @@ def add_data(mysql, sql_q, data):
     cur = mysql.connection.cursor()
     cur.execute(sql_q, data)
     mysql.connection.commit()
-    return "Added data successfully."
+    return "Done!"
+
+def get_data(mysql, dbname):
+    # Gets data from table = dbname
+    cur = mysql.connection.cursor()
+    sql_q = '''SELECT * FROM ''' + dbname
+    cur.execute(sql_q)
+    data = cur.fetchall()
+    return data
 
 def populate2(mysql):
     # Add Primary Key Constraints and Foreign Key Constraints
@@ -112,3 +128,4 @@ def populate2(mysql):
 
     mysql.connection.commit()
     return
+

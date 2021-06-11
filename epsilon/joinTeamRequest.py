@@ -8,7 +8,7 @@ from removeFromTeam import updateRoleOfEmployee
 def team_request_load(mysql, tid):
     # Get data for pending join team requests
     cur = mysql.connection.cursor()
-    sql_q = '''SELECT uid, creation_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY creation_date'''
+    sql_q = '''SELECT uid, create_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY create_date'''
     cur.execute(sql_q,(tid,))
     data = cur.fetchall()
     return data
@@ -43,8 +43,8 @@ def team_request_update(mysql, req_id, status):
     cur.execute(sql_q,(req_id,))
     data = cur.fetchone()
     if data[0] == 3:
-        sql_q = '''UPDATE Request Set sid = %s, last_update = %s, seen = false WHERE req_id = %s'''
-        data = (status, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), req_id)
+        sql_q = '''UPDATE Request Set sid = %s, seen = false WHERE req_id = %s'''
+        data = (status, req_id)
         add_data(mysql, sql_q, data)
         return
     else:

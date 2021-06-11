@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
 from populatedatabase import *
-from business import *
+from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
@@ -40,30 +40,23 @@ def login():
 @app.route("/deleteAll")
 def delete_all():
     cur1 = mysql.connection.cursor()
+    cur1.execute('''SET FOREIGN_KEY_CHECKS = 0;''')
     cur1.execute('''DROP TABLE IF EXISTS Teams''')
     cur1.execute('''DROP TABLE IF EXISTS Request''')
     cur1.execute('''DROP TABLE IF EXISTS Users''')
     cur1.execute('''DROP TABLE IF EXISTS Roles''')
     cur1.execute('''DROP TABLE IF EXISTS Company''')
     cur1.execute('''DROP TABLE IF EXISTS RStatus''')
+    cur1.execute('''SET FOREIGN_KEY_CHECKS = 1;''')
     mysql.connection.commit()
-    return "Database Users, Teams are deleted!"
+    return "Database Users, Teams, Request, Roles, Company, RStatus are deleted!"
 
 
 @app.route("/create")
 def create():
 
-    populate(mysql)
-    cur1 = mysql.connection.cursor()
-    cur1.execute('''SELECT * FROM Users''')
-    cur2 = mysql.connection.cursor()
-    cur2.execute('''SELECT * FROM Teams''')
-    cur3 = mysql.connection.cursor()
-    cur3.execute('''SELECT * FROM Roles''')
-    return "Database Users, Teams, Roles are populated!\n" \
-           "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
-           + str(cur1.fetchall())+"\n\n"+str(cur2.fetchall())\
-           + "\n\n"+str(cur3.fetchall())
+    message = populate(mysql)
+    return message
 
 
 # EP-1: Team management

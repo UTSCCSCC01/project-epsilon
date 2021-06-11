@@ -9,9 +9,9 @@ Follow these instructions to run the project after cloning locally:
     1. Set the MySQL root password as: 12345
     2. Create a DB Admin user with these credentials: u: epsilon p: 12345
 2. At root, create a virtual environment with these commands on your terminal [instructions]:
-    1. python3 -m venv venv
-    2. source venv/bin/activate
-    3. pip3 install -r requirements.txt
+    1. Run `python3 -m venv venv`
+    2. If your os is OS X or Linux run `source venv/bin/activate`, if your os is Windows run `venv\Scripts\activate`
+    3. Run `pip3 install -r requirements.txt`
 4. Run `mysql -u epsilon -p` and type in the password when prompted.
     1. Run `CREATE DATABASE epsilon_db CHARACTER SET utf8;` to create the local database.
     2. Run `exit`.
@@ -31,3 +31,4 @@ All tickets will be created on Jira to assign work to any given member of the pr
 Finally, members will use Figma to create all mockups
 
 For team details, go to [doc/sprint0/team.md](doc/sprint0/team.md)
+For documentation of the project, go to [SwaggerHub for project Epsilon](https://app.swaggerhub.com/apis/epsilonc01/epsilon/1.0.0)

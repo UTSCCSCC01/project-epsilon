@@ -50,6 +50,7 @@ def delete_all():
 
 @app.route("/create")
 def create():
+
     populate(mysql)
     cur1 = mysql.connection.cursor()
     cur1.execute('''SELECT * FROM Users''')
@@ -71,21 +72,17 @@ def reg():
 # result is returned correctly, just need todispaly
 
 # EP-2/4/5
-@app.route('/testbtn', methods=['GET', 'POST'])
+@app.route('/testbtn', methods=['POST'])
 def testbtn():
     if request.method == 'POST':
-        dot = request.form['submit'].index('.')
-        uid = request.form['submit'][1:dot]
-        tid = request.form['submit'][dot+1:]
-        if request.form['submit'] == 'r':
-            print("removing user")
-            removeFromTeam(mysql, uid, tid)
-        elif request.form['submit'] == 'p':
+        # id2 is either tid or rid
+        op, uid, id2 = request.form['submit'].split(".")
+        if op == 'r':
+            removeFromTeam(mysql, uid, id2)
+        elif op == 'p':
             # newRole should be id of admin
-            newRole = 2
-            print("updating user")
-            updateRoleOfEmployee(mysql,uid,newRole)
-    return render_template('displayteam.html')
+            updateRoleOfEmployee(mysql,uid,2)
+        return render_template('displayteam.html')
 
 
 @app.route('/remove', methods=['POST'])

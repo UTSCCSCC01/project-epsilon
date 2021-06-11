@@ -8,6 +8,7 @@ from populatedatabase import add_data
 def removeFromTeam(mysql, uid, tid):
     cur = mysql.connection.cursor()
     # replace 1s with references to real user data
+    updateRoleOfEmployee(mysql, uid, 0)
     cur.execute('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''',(tid,uid))
     mysql.connection.commit()
 
@@ -30,3 +31,4 @@ def retrieveTeam(mysql,tid):
 def updateRoleOfEmployee(mysql, uid, newRole):
     # cur.execute(sql_q, data)
     add_data(mysql, '''UPDATE Teams SET role=%s WHERE uid=%s ''', (newRole,uid))
+    add_data(mysql, '''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole,uid))

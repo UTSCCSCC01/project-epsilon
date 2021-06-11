@@ -2,6 +2,7 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
 from populatedatabase import add_data
+from removeFromTeam import updateRoleOfEmployee
 
 
 def team_request_load(mysql, tid):
@@ -22,6 +23,8 @@ def team_request_accept(mysql, req_id):
         cur.execute(sql_q,(req_id,))
         data = cur.fetchone()
         sql_q = '''INSERT INTO Teams VALUES (%s, %s, 3)'''
+        update = (data[1])
+        updateRoleOfEmployee(mysql, update, 3)
         data = (data[0], data[1])
         add_data(mysql, sql_q, data)
         message = "Accept Successful!"

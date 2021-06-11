@@ -87,10 +87,13 @@ def populate(mysql):
 
 def add_data(mysql, sql_q, data):
     # Adds data to table.
-    cur = mysql.connection.cursor()
-    cur.execute(sql_q, data)
-    mysql.connection.commit()
-    return "Done!"
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(sql_q, data)
+        mysql.connection.commit()
+        return "Done!"
+    except:
+        pass
 
 def get_data(mysql, dbname):
     # Gets data from table = dbname

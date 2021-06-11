@@ -60,20 +60,20 @@ def reg():
 # result is returned correctly, just need todispaly
 
 # EP-2/4/5
-@app.route('/testbtn', methods=['GET', 'POST'])
+@app.route('/testbtn', methods=['POST'])
 def testbtn():
     if request.method == 'POST':
-        print("entering test...")
         dot = request.form['submit'].index('.')
-        uid = request.form['submit'][1:dot]
+        uid = request.form['submit'][2:dot]
         tid = request.form['submit'][dot+1:]
+        # print(dot, uid, tid)
         if request.form['submit'] == 'r':
-            print("removing user")
+            # print("removing user")
             removeFromTeam(mysql, uid, tid)
         elif request.form['submit'] == 'p':
             # newRole should be id of admin
             newRole = 1
-            print("updating user")
+            # print("updating user")
             updateRoleOfEmployee(mysql,uid,newRole)
         return render_template('displayteam.html')
 

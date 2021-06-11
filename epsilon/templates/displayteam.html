@@ -23,12 +23,15 @@
                 <td>{{user[2]}}</td>
                 <!--add remove and promote button-->
                 <td>
-<!--                    <button onclick="location.href = ''" name='submit' type='submit' value={"r"+"."+user[0]+'.'+user[1])}}>Remove</button>-->
-                    <button formaction="/testbtn" name='submit' type='submit' value={"r"+"."+user[0]+'.'+user[1])}}>Remove</button>
-<!--                    <button formaction={"/r/"+user[0]+"/"+user[1]} name='submit' type='submit' >Remove</button>-->
+
+                    <form action="/testbtn" method="post">
+                        <button name='submit' type="submit" value="r.{{user[0]}}.{{user[1]}}">Remove</button>
+                    </form>
                 </td>
                 <td>
-                    <button name='submit' type='submit' value={"p"+"."+user[0]+'.'+user[1])}}>Set admin</button>
+                    <form action="/testbtn" method="post">
+                        <button name='submit' type="submit" value="r.{{user[0]}}.{{user[1]}}">Set admin</button>
+                    </form>
                 </td>
 
             </tr>

@@ -19,6 +19,8 @@ mysql = MySQL(app)
 
 @app.route("/")
 def hello():
+    global baseUrl
+    baseUrl = request.base_url[:request.base_url.rfind('/')]
     return "Hello World! Welcome to Epsilon!"
 
 # Only go to this page if your database is empty
@@ -96,17 +98,19 @@ def registration():
 # EP-2/4/5
 @app.route('/testbtn', methods=['GET', 'POST'])
 def testbtn():
-    cur = mysql.connection.cursor()
     if request.method == 'POST':
         dot = request.form['submit'].index('.')
         uid = request.form['submit'][1:dot]
         tid = request.form['submit'][dot+1:]
         if request.form['submit'] == 'r':
+            print("removing user")
             removeFromTeam(mysql, uid, tid)
         elif request.form['submit'] == 'p':
-            newRole = 1 #set this how you may
+            # newRole should be id of admin
+            newRole = 1
+            print("updating user")
             updateRoleOfEmployee(mysql,uid,newRole)
-    return render_template('home.html')
+    return render_template('displayteam.html')
 
 
 @app.route('/remove', methods=['POST'])
@@ -124,6 +128,11 @@ def remove():
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
     return getTeam(tid, mysql)
+
+
+@app.route('/test_get_base_url')
+def index():
+    return request.base_url[:request.base_url.rfind('/')]
 
 if __name__ == "__main__":
     app.run(debug=True)

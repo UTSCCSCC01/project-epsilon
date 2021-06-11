@@ -11,7 +11,8 @@ def getTeam(tid, mysql):
     resultValue = cur.execute(q)
     if resultValue > 0:  # there are values in the database
         userDetails = cur.fetchall()
-        print(userDetails)
+        print(type(userDetails))    # tuple
+        print(userDetails)          # (('Tim', 'admin'), ('Paula', 'admin'), ('Pritish', 'CEO'))
         return render_template('displayteam.html', userDetails=userDetails)
     else:
         message = "Your team does not exist"

@@ -20,6 +20,16 @@
             <tr>
                 <td>{{user[0]}}</td>
                 <td>{{user[1]}}</td>
+                <!--add remove and promote button-->
+                <td>
+<!--                    <button onclick="location.href = ''" name='submit' type='submit' value={"r"+"."+user[0]+'.'+user[1])}}>Remove</button>-->
+                    <button formaction="/testbtn" name='submit' type='submit' value={"r"+"."+user[0]+'.'+user[1])}}>Remove</button>
+<!--                    <button formaction={"/r/"+user[0]+"/"+user[1]} name='submit' type='submit' >Remove</button>-->
+                </td>
+                <td>
+                    <button name='submit' type='submit' value={"p"+"."+user[0]+'.'+user[1])}}>Set admin</button>
+                </td>
+
             </tr>
             {% endfor %}
         </table>
@@ -41,4 +51,11 @@
     </div>
 </body>
 
+<!--
+<script>
+function myFunction() {
+  document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
+}
+</script>
+-->
 </html>

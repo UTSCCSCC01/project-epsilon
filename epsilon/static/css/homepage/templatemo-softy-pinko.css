@@ -90,6 +90,7 @@ html, body {
 
 a {
   text-decoration: none !important;
+  text-align: left;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -644,7 +645,7 @@ welcome
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(../../images/banner-bg.png);
+  background-image: url(../../images/startup.webp);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover; 
@@ -1585,4 +1586,9 @@ preloader
   100% {
     opacity: 0;
   }
+}
+
+.resize{
+  width:100%;
+
 }

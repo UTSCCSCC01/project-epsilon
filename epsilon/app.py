@@ -17,12 +17,8 @@ app.config['MYSQL_DB'] = 'epsilon_db'
 mysql = MySQL(app)
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET'])
 def hello():
-    global baseUrl
-    baseUrl = request.base_url[:request.base_url.rfind('/')]
-    if request.method == 'POST':
-            return redirect(url_for('login'))
     return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -34,6 +30,14 @@ def login():
         else:
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
+
+@app.route("/previousHome", methods=['GET', 'POST'])
+def previousHome():
+    global baseUrl
+    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
+    if request.method == 'POST':
+        return redirect(url_for('login'))
+    return render_template('previousHome.html')
 
 # Only go to this page if your database is empty
 
@@ -54,7 +58,6 @@ def delete_all():
 
 @app.route("/create")
 def create():
-
     message = populate(mysql)
     return message
 

@@ -204,7 +204,7 @@ Total Mark: 10/10
 	- 1 mark = documentation has been created, but portions of the codebase are un-documented or the documentation is vague/not helpful
   - 0 marks = documentation has not been created
 
-  Your Mark: 3 / 3
+  Your Mark: 2 / 3: documentation not clear
 
 
 ---
@@ -229,5 +229,5 @@ Total Mark: 10/10
 
 ## Total Mark
 
-84 / 89
+83 / 89
 

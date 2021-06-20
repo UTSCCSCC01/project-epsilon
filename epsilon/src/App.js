@@ -1,3 +1,5 @@
+// originally by Corey Fung
+// testing button creation
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -7,7 +9,7 @@ const Btn = ({color, text, onClick}) => {
 
 Btn.defaultProps = {
     color: 'white',
-    text: 'N/A'
+    text: 'testing button'
 }
 
 Btn.propTypes = {

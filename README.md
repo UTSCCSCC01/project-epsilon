@@ -15,8 +15,17 @@ Follow these instructions to run the project after cloning locally:
 4. Run `mysql -u epsilon -p` and type in the password when prompted.
     1. Run `CREATE DATABASE epsilon_db CHARACTER SET utf8;` to create the local database.
     2. Run `exit`.
-4. Run `python3 app.py` and go to the link provided in the terminal to view the webapp.
+4. Run `python3 app.py` and go to the link provided in the terminal to view the webapp. (the same can be achieved by step 7)
 
+## Additional react setup
+5. (if you have installed node please go to 6)
+    download and install node from [official page] (https://nodejs.org/en/), choose 14.17.1
+6. verify installation by running all of `npm --version`, `npx --version`, `yarn --version`, ` node --version`.
+7. to verify the node js setup on your machine, from root folder project-epsilon, run `npm run start-flask-api`,
+   expected to see our original landing page.
+8. to verify mock react page creation, cd into project-epsilon/epsilon, run `npm start`, expected to see a button saying "testing button". (based on Corey's RemoveButton.js)
+
+## Note
 To manage the database use a third party GUI tool with the credentials above to view/edit.
 (for now it is safe to put these credentials here since the repo is private to students in CSCC01)
   

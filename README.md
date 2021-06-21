@@ -22,7 +22,7 @@ Follow these instructions to run the project after cloning locally:
     download and install node from [official page](https://nodejs.org/en/), choose 14.17.1
 6. verify installation by running all of `npm --version`, `npx --version`, `yarn --version`, ` node --version`.
     (windows user: if any error occurs please verify nodejs installation path is in your system env variables, tho step 5 has done this already)
-7. to verify the node js setup on your machine, from root folder project-epsilon, run `npm run start-flask-api`,
+7. to verify the node js setup on your machine, cd into project-epsilon/epsilon, run `npm run start-flask-api`,
    expected to see our original landing page.
 8. to verify mock react page creation, cd into project-epsilon/epsilon, run `npm start`, expected to see a button saying "testing button". (based on Corey's RemoveButton.js)
 

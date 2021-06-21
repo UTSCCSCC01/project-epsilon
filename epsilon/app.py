@@ -6,8 +6,10 @@ from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
@@ -101,6 +103,9 @@ def index():
     return request.base_url[:request.base_url.rfind('/')]
 
 
+@app.route('/testReact', methods=['GET'])
+def testReact():
+    return {"title":"I am ready from app.py"}
 # Only go to this page after you go to /create to add more tables and add key constraints 
 
 # EP-3: Accept and Decline pending requests

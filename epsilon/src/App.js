@@ -1,20 +1,17 @@
-// originally by Corey Fung
-// testing button creation
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {useState, useEffect} from 'react';
 
-const Btn = ({color, text, onClick}) => {
-    return <button style={{backgroundColor: color}} onClick={onClick}>{text}</button>
-}
+function App() {
+   const [initialData, setInitialData]=useState([{}])
+   useEffect(() => {
+   // const response = await axios.get("http://localhost:6000/api/users", body, config);
+//    fetch('/testReact').then(response=>response.json()).then(data=>setInitialData(data))}, []);
+   fetch('http://localhost:5000/testReact',
+   {headers:{'Accept':'application/json','Content-Type':'application/json'}}).then(response=>response.json()).then(data=>setInitialData(data))}, []);
 
-Btn.defaultProps = {
-    color: 'white',
-    text: 'testing button'
-}
+ return (<div className="mock app">
+           <h1>{initialData.title}</h1>
+        </div>
+        );
+};
 
-Btn.propTypes = {
-    color: PropTypes.string,
-    text: PropTypes.string,
-    onClick: PropTypes.func,
-}
-export default Btn
+export default App;

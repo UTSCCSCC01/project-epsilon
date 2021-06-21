@@ -16,3 +16,4 @@ six==1.16.0
 twilio==6.59.1
 urllib3==1.26.5
 Werkzeug==2.0.1
+flask_cors==3.0.10

@@ -18,13 +18,15 @@ Follow these instructions to run the project after cloning locally:
 4. Run `python3 app.py` and go to the link provided in the terminal to view the webapp. (the same can be achieved by step 7)
 
 ## Additional react setup
-5. (if you have installed node please go to 6)
+5. in project-epsilon, run `pip install -r requirements.txt`
+6. (if you have installed node please go to 7)
     download and install node from [official page](https://nodejs.org/en/), choose 14.17.1
-6. verify installation by running all of `npm --version`, `npx --version`, `yarn --version`, ` node --version`.
+7. verify installation by running all of `npm --version`, `npx --version`, `yarn --version`, ` node --version`.
     (windows user: if any error occurs please verify nodejs installation path is in your system env variables, tho step 5 has done this already)
-7. to verify the node js setup on your machine, cd into project-epsilon/epsilon, run `npm run start-flask-api`,
+8. to verify nodejs can connect to the flask application, cd into project-epsilon/epsilon, run `npm run start-flask-api`,
    expected to see our original landing page.
-8. to verify that backend can communicate with front end, cd into project-epsilon/epsilon, run `npm start`, expected to see "I am ready from app.py".
+9. with 8 still running, to verify that backend communicates with front end, cd into project-epsilon/epsilon, run `npm start`, expected to see "I am ready from app.py".
+   (If it gives an error saying "XXX is not recognized as an internal or external command,operable program or batch file", try running `npm install`, and rerun `npm start`)
 
 ## Note
 To manage the database use a third party GUI tool with the credentials above to view/edit.

@@ -67,3 +67,6 @@ doc/.DS_Store
 #visual studio
 .vs/*
 .vscode/*
+
+# Mac files
+.DS_Store

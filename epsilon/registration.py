@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
-from populatedatabase import add_data, get_data
-from removeFromTeam import updateRoleOfEmployee
+from DAO import DAO
 
 def is_pos_int(s):
     # EP-1: Team management
@@ -12,15 +11,15 @@ def is_pos_int(s):
     except ValueError:
         return False
 
-def check_team_exists(mysql, name):
+def check_team_exists(dao, name):
     # Returns 1 if match is found else returns 0
-    companies = get_data(mysql, "Company")
+    companies = dao.get_Companies()
     for item in companies:
         if (item[1].lower() == name.lower()):
             return 1
     return 0
 
-def registration(mysql):
+def registration(dao):
     # TODO: check if user is logged in and check permissions
     # cur = mysql.connection.cursor()
     if request.method == 'POST':
@@ -31,16 +30,16 @@ def registration(mysql):
             error = 'Please fill in all boxes.'
             return render_template('registration.html', error=error)
         # If the company exists.
-        if (check_team_exists(mysql, request.form['teamname']) == 1):
+        if (check_team_exists(dao, request.form['teamname']) == 1):
             error = 'This company already exists. Please try with a new name or request to join ' + request.form['teamname'] + ' here.'
             return render_template('registration.html', error=error)
         # if no errors
         try:
-            message = add_data(
-                mysql, sql_q, (request.form['teamname'], request.form['teamdesc']))
-            add_data(mysql, '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
-            add_data(mysql, '''INSERT INTO Teams (tid, uid, rid) VALUES (%s, %s, %s)''', (3, 6, 1))
-            updateRoleOfEmployee(mysql, 6, 1)
+            message = dao.modify_data(
+                sql_q, (request.form['teamname'], request.form['teamdesc']))
+            dao.modify_data('''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
+            dao.modify_data('''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', (3, 6, 1))
+            dao.updateRoleOfEmployee(6, 1)
         except Exception as e:
             return render_template('registration.html', error=e)
         return render_template('registration.html', message=message)

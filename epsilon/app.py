@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-from populatedatabase import *
+from DAO import DAO
 from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
@@ -15,7 +15,7 @@ app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
 
 mysql = MySQL(app)
-
+dao = DAO(mysql)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
@@ -39,30 +39,27 @@ def login():
 
 @app.route("/deleteAll")
 def delete_all():
-    cur1 = mysql.connection.cursor()
-    cur1.execute('''SET FOREIGN_KEY_CHECKS = 0;''')
-    cur1.execute('''DROP TABLE IF EXISTS Teams''')
-    cur1.execute('''DROP TABLE IF EXISTS Request''')
-    cur1.execute('''DROP TABLE IF EXISTS Users''')
-    cur1.execute('''DROP TABLE IF EXISTS Roles''')
-    cur1.execute('''DROP TABLE IF EXISTS Company''')
-    cur1.execute('''DROP TABLE IF EXISTS RStatus''')
-    cur1.execute('''SET FOREIGN_KEY_CHECKS = 1;''')
-    mysql.connection.commit()
-    return "Database Users, Teams, Request, Roles, Company, RStatus are deleted!"
+    dao.delete_all()
+    return "Database Users, Teams are deleted!"
 
 
 @app.route("/create")
 def create():
 
-    message = populate(mysql)
-    return message
+    dao.populate()
+    users = dao.get_Users()
+    teams = dao.get_Teams()
+    roles = dao.get_Roles()
+    return "Database Users, Teams, Roles are populated!\n" \
+           "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
+           + str(users)+"\n\n"+str(teams)\
+           + "\n\n"+str(roles)
 
 
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
 def reg():
-    return registration(mysql)
+    return registration(dao)
 
 # result is returned correctly, just need todispaly
 
@@ -73,28 +70,27 @@ def testbtn():
         # id2 is either tid or rid
         op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            removeFromTeam(mysql, uid, id2)
+            dao.removeTeam(uid, id2)
         elif op == 'p':
             # newRole should be id of admin
-            updateRoleOfEmployee(mysql,uid,2)
+            dao.updateRoleOfEmployee(uid,2)
         return render_template('displayteam.html')
 
 
 @app.route('/remove', methods=['POST'])
 def remove():
-    cur = mysql.connection.cursor()
     data = request.json
     if data:
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
-        removeFromTeam(uid, tid)
+        removeFromTeam(dao, uid, tid)
         return "Success"
     return "Invalid uid/tid"
 
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
-    return getTeam(tid, mysql)
+    return getTeam(tid, dao)
 
 @app.route('/test_get_base_url')
 def index():
@@ -107,19 +103,18 @@ def index():
 
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):
-    cur = mysql.connection.cursor()
     if request.method == 'POST':
         action = request.form["action"].split("_")
         if action[0] == "A":
-            message = team_request_accept(mysql, action[1])
+            message = team_request_accept(dao, action[1])
         elif action[0] == "D":
-            message = team_request_decline(mysql, action[1])
-        data = team_request_load(mysql, action[2])
+            message = team_request_decline(dao, action[1])
+        data = team_request_load(dao, action[2])
         return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
     else:
         # load if not POST
-        data = team_request_load(mysql, tid)
-        if len(data) == 0:
+        data = team_request_load(dao, tid)
+        if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
         return render_template("jointeamrequest.html", data = data, tid = tid)
       

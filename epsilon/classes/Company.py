@@ -36,3 +36,7 @@ class Company:
     @create_date.setter
     def create_date(self, create_date):
         self._create_date = create_date
+
+    def __str__(self):
+        return 'Company(tid = ' + str(self.tid) + ', name = ' + self.name + ', description = ' \
+               + self.description + ', create_date = ' + self.create_date + ')'

@@ -27,3 +27,6 @@ class Team:
     @rid.setter
     def rid(self, rid):
         self._rid = rid
+
+    def __str__(self):
+        return 'Team(tid = ' + str(self.tid) + ', uid = ' + str(self.uid) + ', rid = ' + str(self.rid) + ')'

@@ -18,3 +18,6 @@ class Role:
     @role_type.setter
     def role_type(self, role_type):
         self._role_type = role_type
+
+    def __str__(self):
+        return 'Role(rid = ' + str(self.rid) + ', role_type = ' + self.role_type + ')'

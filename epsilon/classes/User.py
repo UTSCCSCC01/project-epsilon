@@ -36,3 +36,7 @@ class User:
     @contact.setter
     def contact(self, contact):
         self._contact = contact
+
+    def __str__(self):
+        return 'User(uid = ' + str(self.uid) + ', rid = ' + str(self.rid) + ', name = ' \
+               + self.name + ', contact = ' + self.contact + ')'

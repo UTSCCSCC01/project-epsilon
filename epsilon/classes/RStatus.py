@@ -18,3 +18,7 @@ class RStatus:
     @name.setter
     def name(self, name):
         self._name = name
+
+    def __str__(self):
+        return 'RStatus(sid = ' + str(self.sid) + ', name = ' + self.name + ')'
+

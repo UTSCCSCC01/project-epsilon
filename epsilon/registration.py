@@ -35,19 +35,11 @@ def registration(dao):
             return render_template('registration.html', error=error)
         # if no errors
         try:
-<<<<<<< Updated upstream
-            message = add_data(
-                mysql, sql_q, (request.form['teamname'], request.form['teamdesc']))
-            add_data(mysql, '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
-            add_data(mysql, '''INSERT INTO Teams (tid, uid, rid) VALUES (%s, %s, %s)''', (3, 6, 1))
-            updateRoleOfEmployee(mysql, 6, 1)
-=======
             message = dao.modify_data(
                 sql_q, (request.form['teamname'], request.form['teamdesc']))
             dao.modify_data('''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
             dao.modify_data('''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', (3, 6, 1))
             dao.updateRoleOfEmployee(6, 1)
->>>>>>> Stashed changes
         except Exception as e:
             return render_template('registration.html', error=e)
         return render_template('registration.html', message=message)

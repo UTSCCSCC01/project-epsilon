@@ -20,12 +20,3 @@ def retrieveTeam(dao,tid):
         ret.append(x.split(','))
     return ret
     # replace 1s with references to real user data
-<<<<<<< Updated upstream
-
-
-def updateRoleOfEmployee(mysql, uid, newRole):
-    # cur.execute(sql_q, data)
-    add_data(mysql, '''UPDATE Teams SET rid=%s WHERE uid=%s ''', (newRole,uid))
-    add_data(mysql, '''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole,uid))
-=======
->>>>>>> Stashed changes

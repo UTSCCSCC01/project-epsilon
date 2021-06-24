@@ -1,11 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-<<<<<<< Updated upstream
-from populatedatabase import *
-=======
 from DAO import DAO
->>>>>>> Stashed changes
 from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
@@ -43,31 +39,13 @@ def login():
 
 @app.route("/deleteAll")
 def delete_all():
-<<<<<<< Updated upstream
-    cur1 = mysql.connection.cursor()
-    cur1.execute('''SET FOREIGN_KEY_CHECKS = 0;''')
-    cur1.execute('''DROP TABLE IF EXISTS Teams''')
-    cur1.execute('''DROP TABLE IF EXISTS Request''')
-    cur1.execute('''DROP TABLE IF EXISTS Users''')
-    cur1.execute('''DROP TABLE IF EXISTS Roles''')
-    cur1.execute('''DROP TABLE IF EXISTS Company''')
-    cur1.execute('''DROP TABLE IF EXISTS RStatus''')
-    cur1.execute('''SET FOREIGN_KEY_CHECKS = 1;''')
-    mysql.connection.commit()
-    return "Database Users, Teams, Request, Roles, Company, RStatus are deleted!"
-=======
     dao.delete_all()
     return "Database Users, Teams are deleted!"
->>>>>>> Stashed changes
 
 
 @app.route("/create")
 def create():
 
-<<<<<<< Updated upstream
-    message = populate(mysql)
-    return message
-=======
     dao.populate()
     users = dao.get_Users()
     teams = dao.get_Teams()
@@ -76,7 +54,6 @@ def create():
            "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
            + str(users)+"\n\n"+str(teams)\
            + "\n\n"+str(roles)
->>>>>>> Stashed changes
 
 
 # EP-1: Team management

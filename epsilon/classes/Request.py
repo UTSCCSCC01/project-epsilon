@@ -66,5 +66,5 @@ class Request:
 
     def __str__(self):
         return 'Request(req_id = ' + str(self.req_id) + ', tid = ' + str(self.tid) + ', uid = ' + str(self.uid) \
-               + ', sid = ' + str(self.sid) + ', create_date = ' + self.create_date + ', last_update = ' \
-               + self._last_update + ', seen = ' + str(self.seen) + ')'
+               + ', sid = ' + str(self.sid) + ', create_date = ' + str(self.create_date) + ', last_update = ' \
+               + str(self._last_update) + ', seen = ' + str(self.seen) + ')'

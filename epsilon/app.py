@@ -19,13 +19,15 @@ app.config['MYSQL_DB'] = 'epsilon_db'
 mysql = MySQL(app)
 dao = DAO(mysql)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def hello():
     global baseUrl
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     if request.method == 'POST':
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
     return render_template('home.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,6 +39,7 @@ def login():
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
 
+
 # Only go to this page if your database is empty
 
 @app.route("/deleteAll")
@@ -47,21 +50,30 @@ def delete_all():
 
 @app.route("/create")
 def create():
-
     dao.populate()
     users = dao.get_users()
     teams = dao.get_teams()
     roles = dao.get_roles()
-    return "Database Users, Teams, Roles are populated!\n" \
-           "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
-           + str(users)+"\n\n"+str(teams)\
-           + "\n\n"+str(roles)
+    output = "Database Users, Teams, Roles are populated!\n"
+
+    output += "Also five dummy employees:\n"
+    for user in users:
+        output += str(user) + "\n"
+    output += "Also two dummy teams:\n"
+    for team in teams:
+        output += str(team) + "\n"
+    output += "Also four roles:\n"
+    for role in roles:
+        output += str(role) + "\n"
+
+    return output
 
 
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
 def reg():
     return registration(dao)
+
 
 # result is returned correctly, just need todispaly
 
@@ -94,6 +106,7 @@ def remove():
 def displayteam(tid):
     return getTeam(tid, dao)
 
+
 @app.route('/test_get_base_url')
 def index():
     return request.base_url[:request.base_url.rfind('/')]
@@ -101,8 +114,10 @@ def index():
 
 @app.route('/testReact', methods=['GET'])
 def testReact():
-    return {"title":"I am ready from app.py"}
-# Only go to this page after you go to /create to add more tables and add key constraints 
+    return {"title": "I am ready from app.py"}
+
+
+# Only go to this page after you go to /create to add more tables and add key constraints
 
 # EP-3: Accept and Decline pending requests
 
@@ -115,13 +130,14 @@ def show_team_request(tid):
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
         data = team_request_load(dao, action[2])
-        return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
+        return render_template("jointeamrequest.html", message=message, data=data, tid=action[2])
     else:
         # load if not POST
         data = team_request_load(dao, tid)
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
-        return render_template("jointeamrequest.html", data = data, tid = tid)
-      
+        return render_template("jointeamrequest.html", data=data, tid=tid)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

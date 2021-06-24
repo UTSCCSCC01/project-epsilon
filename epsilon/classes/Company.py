@@ -39,4 +39,4 @@ class Company:
 
     def __str__(self):
         return 'Company(tid = ' + str(self.tid) + ', name = ' + self.name + ', description = ' \
-               + self.description + ', create_date = ' + self.create_date + ')'
+               + self.description + ', create_date = ' + str(self.create_date) + ')'

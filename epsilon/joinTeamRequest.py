@@ -6,7 +6,7 @@ from DAO import DAO
 
 def team_request_load(dao, tid):
     # Get data for pending join team requests
-    sql_q = '''SELECT uid, creation_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY creation_date'''
+    sql_q = '''SELECT uid, create_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY create_date'''
     data = dao.get_data(sql_q, (tid,))
     return data
 

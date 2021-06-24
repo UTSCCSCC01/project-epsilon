@@ -26,7 +26,7 @@ class DAO:
                     primary key (tid));''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
             name VARCHAR (50), contact VARCHAR (50))''')
-        cur.execute('''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, role INTEGER)''')
+        cur.execute('''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, rid INTEGER)''')
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
                     "role_type VARCHAR(255),"
@@ -42,7 +42,7 @@ class DAO:
                     "tid INTEGER, "
                     "uid INTEGER, "
                     "sid INTEGER, "
-                    "creation_date DATETIME,"
+                    "create_date DATETIME,"
                     "last_update TIMESTAMP,"
                     "seen BOOLEAN,"
                     "PRIMARY KEY(req_id)"
@@ -54,7 +54,7 @@ class DAO:
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
-                    "ADD FOREIGN KEY(role) REFERENCES Roles(rid),"
+                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid),"
                     "ADD CONSTRAINT PK_Teams PRIMARY KEY(tid, uid)")
 
         cur.execute("ALTER TABLE Request "
@@ -162,11 +162,11 @@ class DAO:
         )
 
     def add_request(self, request: Request):
+        print(request)
         self.modify_data(
             '''INSERT INTO Request (req_id, tid, uid, sid, create_date, last_update, seen) VALUES (%s, %s, %s, %s, 
             %s, %s, %s)''',
-            (request.req_id, request.tid, request.uid, request.sid, request.create_date, request.last_update,
-             request.seen)
+            (request.req_id, request.tid, request.uid, request.sid, request.create_date, request.last_update, request.seen)
         )
 
     def add_role(self, role: Role):
@@ -195,7 +195,7 @@ class DAO:
 
     # Update methods
     def update_role_of_employee(self, uid, newRole):
-        self.modify_data('''UPDATE Teams SET role=%s WHERE uid=%s ''', (newRole, uid))
+        self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (newRole, uid))
         self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole, uid))
 
     # Remove methods

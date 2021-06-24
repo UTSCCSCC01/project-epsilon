@@ -49,9 +49,9 @@ def delete_all():
 def create():
 
     dao.populate()
-    users = dao.get_Users()
-    teams = dao.get_Teams()
-    roles = dao.get_Roles()
+    users = dao.get_users()
+    teams = dao.get_teams()
+    roles = dao.get_roles()
     return "Database Users, Teams, Roles are populated!\n" \
            "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
            + str(users)+"\n\n"+str(teams)\
@@ -72,10 +72,10 @@ def testbtn():
         # id2 is either tid or rid
         op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            dao.removeTeam(uid, id2)
+            dao.remove_team(uid, id2)
         elif op == 'p':
             # newRole should be id of admin
-            dao.updateRoleOfEmployee(uid,2)
+            dao.update_role_of_employee(uid, 2)
         return render_template('displayteam.html')
 
 
@@ -85,7 +85,7 @@ def remove():
     if data:
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
-        removeFromTeam(dao, uid, tid)
+        remove_from_team(dao, uid, tid)
         return "Success"
     return "Invalid uid/tid"
 

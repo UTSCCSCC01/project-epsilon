@@ -29,4 +29,5 @@ class Team:
         self._rid = rid
 
     def __str__(self):
+        """ Overloads str method. """
         return 'Team(tid = ' + str(self.tid) + ', uid = ' + str(self.uid) + ', rid = ' + str(self.rid) + ')'

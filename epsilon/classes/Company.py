@@ -38,5 +38,6 @@ class Company:
         self._create_date = create_date
 
     def __str__(self):
+        """ Overloads str method. """
         return 'Company(tid = ' + str(self.tid) + ', name = ' + self.name + ', description = ' \
                + self.description + ', create_date = ' + str(self.create_date) + ')'

@@ -20,4 +20,5 @@ class Role:
         self._role_type = role_type
 
     def __str__(self):
+        """ Overloads str method. """
         return 'Role(rid = ' + str(self.rid) + ', role_type = ' + self.role_type + ')'

@@ -20,5 +20,6 @@ class RStatus:
         self._name = name
 
     def __str__(self):
+        """ Overloads str method. """
         return 'RStatus(sid = ' + str(self.sid) + ', name = ' + self.name + ')'
 

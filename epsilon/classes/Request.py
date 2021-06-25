@@ -65,6 +65,7 @@ class Request:
         self._seen = seen
 
     def __str__(self):
+        """ Overloads str method. """
         return 'Request(req_id = ' + str(self.req_id) + ', tid = ' + str(self.tid) + ', uid = ' + str(self.uid) \
                + ', sid = ' + str(self.sid) + ', create_date = ' + str(self.create_date) + ', last_update = ' \
                + str(self._last_update) + ', seen = ' + str(self.seen) + ')'

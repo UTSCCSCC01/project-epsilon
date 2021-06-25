@@ -15,7 +15,7 @@ class DAO:
         self.db = db
 
     def populate(self):
-        # Create a table with 5 users. 2 admin and 3 normal users
+        """ Populates database with test data. """
         cur = self.db.connection.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,
@@ -121,19 +121,30 @@ class DAO:
 
         self.db.connection.commit()
 
-    def modify_data(self, sql_q, data):
+    def modify_data(self, sql_q, args):
+        """
+        Runs sql_q query to modify a value in the database.
+        :param sql_q: query (str) to be run.
+        :param args: tuple of parameters to use with query
+        """
         try:
             cur = self.db.connection.cursor()
-            cur.execute(sql_q, data)
+            cur.execute(sql_q, args)
             self.db.connection.commit()
             cur.close()
         except:
             pass
 
-    def get_data(self, sql_q, data):
+    def get_data(self, sql_q, args):
+        """
+        Runs sql_q query to get a value from the database.
+        :param sql_q: query (str) to be run.
+        :param args: optional tuple of parameters to use with query
+        :returns data: list of tuples matching every resulting row. If no rows match, it returns an empty list.
+        """
         try:
             cur = self.db.connection.cursor()
-            cur.execute(sql_q, data)
+            cur.execute(sql_q, args)
             data = cur.fetchall()
             cur.close()
             return data
@@ -141,6 +152,7 @@ class DAO:
             pass
 
     def delete_all(self):
+        """ Deletes all tables from the database. """
         try:
             cur = self.db.connection.cursor()
             cur.execute('''DROP TABLE IF EXISTS Teams''')
@@ -156,13 +168,20 @@ class DAO:
 
     # Add methods
     def add_company(self, company: Company):
+        """
+        Adds a new company into the database.
+        :param company: A Company object representing the company to be added.
+        """
         self.modify_data(
             '''INSERT INTO Company (tid, name, description, create_date) VALUES (%s, %s, %s, %s)''',
             (company.tid, company.name, company.description, company.create_date)
         )
 
     def add_request(self, request: Request):
-        print(request)
+        """
+        Adds a new request into the database.
+        :param request: A Request object representing the request to be added.
+        """
         self.modify_data(
             '''INSERT INTO Request (req_id, tid, uid, sid, create_date, last_update, seen) VALUES (%s, %s, %s, %s, 
             %s, %s, %s)''',
@@ -170,40 +189,71 @@ class DAO:
         )
 
     def add_role(self, role: Role):
+        """
+        Adds a new role into the database.
+        :param role: A Role object representing the role to be added.
+        """
         self.modify_data(
             '''INSERT INTO Roles (rid, role_type) VALUES (%s, %s)''',
             (role.rid, role.role_type)
         )
 
     def add_r_status(self, r_status: RStatus):
+        """
+        Adds a new r_status into the database.
+        :param r_status: A RStatus object representing the r_status to be added.
+        """
         self.modify_data(
             '''INSERT INTO RStatus (sid, name) VALUES (%s, %s)''',
             (r_status.sid, r_status.name)
         )
 
     def add_team(self, team: Team):
+        """
+        Adds a new team into the database.
+        :param team: A Team object representing the team to be added.
+        """
         self.modify_data(
             '''INSERT INTO Teams (tid, uid, rid) VALUES (%s, %s, %s)''',
             (team.tid, team.uid, team.rid)
         )
 
     def add_user(self, user: User):
+        """
+        Adds a new user into the database.
+        :param user: A User object representing the user to be added.
+        """
         self.modify_data(
             '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''',
             (user.uid, user.rid, user.name, user.contact)
         )
 
     # Update methods
-    def update_role_of_employee(self, uid, newRole):
-        self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (newRole, uid))
-        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole, uid))
+    def update_role_of_employee(self, uid, new_rid):
+        """
+        Updates the role id of an employee in the database to new_rid.
+        :param uid: User id of the employee.
+        :param new_rid: New role id of the employee.
+        """
+        self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
+        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (new_rid, uid))
 
     # Remove methods
     def remove_team(self, tid, uid):
+        """
+        Removes a team from the database.
+        :param tid: team id of the team to be removed.
+        :param uid: user id of the team to be removed.
+        """
         self.modify_data('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
 
     # Get methods
     def retrieve_team(self, tid):
+        """
+        Gets a team from the database.
+        :param tid: Team id of the team to be retrieved.
+        :return: Team object representing the matching team. None if not found.
+        """
         team = None
         data = self.get_data('''SELECT FROM Teams WHERE tid = %s''', tid)
         if data.len() == 1:
@@ -212,6 +262,10 @@ class DAO:
         return team
 
     def get_companies(self):
+        """
+        Gets all companies in the database.
+        :return: List of Company objects.
+        """
         companies = []
         data = self.get_data('''SELECT * FROM Company''', None)
         for company in data:
@@ -219,6 +273,10 @@ class DAO:
         return companies
 
     def get_users(self):
+        """
+        Gets all users in the database.
+        :return: List of User objects.
+        """
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
@@ -226,6 +284,10 @@ class DAO:
         return users
 
     def get_teams(self):
+        """
+        Gets all teams in the database.
+        :return: List of Team objects.
+        """
         teams = []
         data = self.get_data('''SELECT * FROM Teams''', None)
         for team in data:
@@ -233,6 +295,10 @@ class DAO:
         return teams
 
     def get_roles(self):
+        """
+        Gets all roles in the database.
+        :return: List of Role objects.
+        """
         roles = []
         data = self.get_data('''SELECT * FROM Roles''', None)
         for role in data:

@@ -38,5 +38,6 @@ class User:
         self._contact = contact
 
     def __str__(self):
+        """ Overloads str method. """
         return 'User(uid = ' + str(self.uid) + ', rid = ' + str(self.rid) + ', name = ' \
                + self.name + ', contact = ' + self.contact + ')'

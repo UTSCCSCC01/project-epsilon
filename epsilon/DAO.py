@@ -255,7 +255,7 @@ class DAO:
         :return: Team object representing the matching team. None if not found.
         """
         team = None
-        data = self.get_data('''SELECT FROM Teams WHERE tid = %s''', tid)
+        data = self.get_data('''SELECT * FROM Teams WHERE tid = %s''', tid)
         if data.len() == 1:
             team = data[0]
             team = Team(team[0], team[1], team[2])

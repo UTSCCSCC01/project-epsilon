@@ -6,7 +6,7 @@ from DAO import DAO
 
 def team_request_load(dao, tid):
     # Get data for pending join team requests
-    sql_q = '''SELECT uid, creation_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY creation_date'''
+    sql_q = '''SELECT uid, create_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY create_date'''
     data = dao.get_data(sql_q, (tid,))
     return data
 
@@ -19,7 +19,7 @@ def team_request_accept(dao, req_id):
         data = dao.get_data(sql_q, (req_id,))
         sql_q = '''INSERT INTO Teams VALUES (%s, %s, 3)'''
         update = (data[0][1])
-        dao.updateRoleOfEmployee(update, 3)
+        dao.update_role_of_employee(update, 3)
         data = (data[0][0], data[0][1])
         dao.modify_data(sql_q, data)
         message = "Accept Successful!"

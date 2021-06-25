@@ -13,9 +13,9 @@ def is_pos_int(s):
 
 def check_team_exists(dao, name):
     # Returns 1 if match is found else returns 0
-    companies = dao.get_Companies()
-    for item in companies:
-        if (item[1].lower() == name.lower()):
+    companies = dao.get_companies()
+    for company in companies:
+        if company.name.lower() == name.lower():
             return 1
     return 0
 
@@ -39,7 +39,7 @@ def registration(dao):
                 sql_q, (request.form['teamname'], request.form['teamdesc']))
             dao.modify_data('''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
             dao.modify_data('''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', (3, 6, 1))
-            dao.updateRoleOfEmployee(6, 1)
+            dao.update_role_of_employee(6, 1)
         except Exception as e:
             return render_template('registration.html', error=e)
         return render_template('registration.html', message=message)

@@ -20,13 +20,13 @@ mysql = MySQL(app)
 dao = DAO(mysql)
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET'])
 def hello():
     global baseUrl
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     if request.method == 'POST':
         return redirect(url_for('login'))
-    return render_template('home.html')
+    # return render_template('home.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -40,7 +40,16 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route("/previousHome", methods=['GET', 'POST'])
+def previousHome():
+    global baseUrl
+    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
+    if request.method == 'POST':
+        return redirect(url_for('login'))
+    return render_template('previousHome.html')
+
 # Only go to this page if your database is empty
+
 
 @app.route("/deleteAll")
 def delete_all():
@@ -67,6 +76,8 @@ def create():
         output += str(role) + "\n"
 
     return output
+    #message = populate(mysql)
+    # return message
 
 
 # EP-1: Team management

@@ -6,6 +6,7 @@ from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
+from search import search
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -122,6 +123,11 @@ def show_team_request(tid):
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
         return render_template("jointeamrequest.html", data = data, tid = tid)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def srch():
+    return search(dao)
       
 if __name__ == "__main__":
     app.run(debug=True)

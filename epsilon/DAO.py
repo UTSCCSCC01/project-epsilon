@@ -1,7 +1,7 @@
-
 from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
+
 
 class DAO:
     def __init__(self, db):
@@ -10,14 +10,28 @@ class DAO:
     def populate(self):
         # Create a table with 5 users. 2 admin and 3 normal users
         cur = self.db.connection.cursor()
-        cur.execute(
-        '''CREATE TABLE IF NOT EXISTS Company (
+
+        cur.execute('''create table IF NOT EXISTS Tags(
+	    tag_id int auto_increment,
+	    name text not null,
+	    constraint Tags_pk
+		primary key (tag_id));''')
+
+        cur.execute('''create table IF NOT EXISTS CompanyTags (
+        ctid int auto_increment,
+	    tid int null,
+	    tag_id int null,
+	    constraint CompanyTags_pk
+		primary key (ctid));''')
+
+        cur.execute('''CREATE TABLE IF NOT EXISTS Company (
 	    tid int auto_increment,
 	    name text not null,
 	    description text not null,
 	    create_date timestamp default current_timestamp null,
 	    constraint Company_pk
 	    primary key (tid));''')
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
             name VARCHAR (50), contact VARCHAR (50))''')
         cur.execute(
@@ -42,6 +56,10 @@ class DAO:
                     "seen BOOLEAN,"
                     "PRIMARY KEY(req_id)"
                     ")")
+        cur.execute("ALTER TABLE CompanyTags "
+                    "ADD FOREIGN KEY(tag_id) REFERENCES Tags(tag_id),"
+                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)"
+                    )
         cur.execute("ALTER TABLE Users "
                     "ADD PRIMARY KEY(uid),"
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
@@ -63,32 +81,40 @@ class DAO:
         users_to_add = [(1, 1, "Paula", "ok@gmail.com"), (2, 1, "Tim", "ko@gmail.com"), (3, 0, "Pritish", "lp@gmail.com"),
                         (4, 0, "Sam", "opll@gmail.com"), (5, 0, "Water", "no@gmail.com")]
         # rid, type
-        roles_to_add = [(0,"No Team"), (1,"Team Owner"), (2,"Team Admin"), (3,"Team Member")]
+        roles_to_add = [(0, "No Team"), (1, "Team Owner"),
+                        (2, "Team Admin"), (3, "Team Member")]
         # tid, uid, role
         teams_to_add = [(1, 1, 1), (2, 2, 1)]
 
-        self.modify_data('''INSERT INTO Company VALUES (%s, %s, %s, %s)''', (1,"Epsilon", "A startup named Epsilon.", datetime.now()))
-        self.modify_data('''INSERT INTO Company VALUES (%s, %s, %s, %s)''', (2,"Delta", "A startup named Delta.", datetime.now()))
+        self.modify_data('''INSERT INTO Company VALUES (%s, %s, %s, %s)''',
+                         (1, "Epsilon", "A startup named Epsilon.", datetime.now()))
+        self.modify_data('''INSERT INTO Company VALUES (%s, %s, %s, %s)''',
+                         (2, "Delta", "A startup named Delta.", datetime.now()))
 
-        self.modify_data('''INSERT INTO RStatus VALUES (%s, %s)''', (1,"Accepted"))
-        self.modify_data('''INSERT INTO RStatus VALUES (%s, %s)''', (2,"Rejected"))
-        self.modify_data('''INSERT INTO RStatus VALUES (%s, %s)''', (3,"Pending"))
+        self.modify_data(
+            '''INSERT INTO RStatus VALUES (%s, %s)''', (1, "Accepted"))
+        self.modify_data(
+            '''INSERT INTO RStatus VALUES (%s, %s)''', (2, "Rejected"))
+        self.modify_data(
+            '''INSERT INTO RStatus VALUES (%s, %s)''', (3, "Pending"))
 
         for role in roles_to_add:
-            self.modify_data('''INSERT INTO Roles (rid, type) VALUES (%s, %s)''', role)
+            self.modify_data(
+                '''INSERT INTO Roles (rid, type) VALUES (%s, %s)''', role)
         for user in users_to_add:
-            self.modify_data('''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', user)
+            self.modify_data(
+                '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', user)
         for relation in teams_to_add:
-            self.modify_data('''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', relation)
+            self.modify_data(
+                '''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', relation)
 
-        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (1,1,3,3,datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0))
-        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (2,1,4,3,datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1))
-        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (3,2,5,3,datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1))
+        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (
+            1, 1, 3, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0))
+        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (
+            2, 1, 4, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1))
+        self.modify_data('''INSERT INTO Request VALUES (%s, %s, %s, %s, %s, %s, %s)''', (
+            3, 2, 5, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1))
         self.db.connection.commit()
-
-
-
-
 
     def modify_data(self, sql_q, data):
         try:
@@ -124,11 +150,14 @@ class DAO:
             pass
 
     def updateRoleOfEmployee(self, uid, newRole):
-        self.modify_data('''UPDATE Teams SET role=%s WHERE uid=%s ''', (newRole,uid))
-        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole,uid))
-    
+        self.modify_data(
+            '''UPDATE Teams SET role=%s WHERE uid=%s ''', (newRole, uid))
+        self.modify_data(
+            '''UPDATE Users SET rid=%s WHERE uid=%s ''', (newRole, uid))
+
     def removeTeam(self, tid, uid):
-        self.modify_data('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''',(tid,uid))
+        self.modify_data(
+            '''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
 
     def retrieveTeam(self, tid):
         team = self.get_data('''SELECT FROM Teams WHERE tid = %s''', (tid))
@@ -150,4 +179,12 @@ class DAO:
         roles = self.get_data('''SELECT * FROM Roles''', None)
         return roles
 
-    
+    def get_searchdata(self, keywords):
+        keywords_string = "{0}".format(keywords)
+        keywords_string = (keywords_string.replace("[","("))
+        keywords_string = (keywords_string.replace("]",")"))
+        search_q = '''SELECT Company.name, Company.description 
+        FROM CompanyTags, Tags, Company 
+        WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
+        searchdata = self.get_data(search_q, None)
+        return searchdata

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Search.</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        <h2>Search.</h2>
+        <hr>
+    </div>
+    <div class="contents">
+        <form action="" method="post">
+            <br>
+            <input class="auth" type="text" placeholder="Search" name="search" value="{{
+                request.form.search }}">
+            <br>
+            <br>
+            <input class="btn" type="submit" value="Search">
+        </form>
+        {% for item in data %}
+            <div class="container">
+                <a id="containername">
+                    <h1>{{item[0]}}</h1>
+                </a>
+                <section id='largedata'>
+                    <ul class="no_bullets">
+                        <br>
+                        <li><strong>Description: </strong>{{item[1]}}</li>
+                    </ul>
+                </section>
+            </div>
+        {% endfor %}
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

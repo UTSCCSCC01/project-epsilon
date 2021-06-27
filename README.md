@@ -25,7 +25,7 @@ Follow these instructions to run the project after cloning locally:
     (windows user: if any error occurs please verify nodejs installation path is in your system env variables, tho step 5 has done this already)
 8. to verify nodejs can connect to the flask application, cd into project-epsilon/epsilon, run `npm run start-flask-api`,
    expected to see our original landing page.
-9. with 8 still running, to verify that backend communicates with front end, cd into project-epsilon/epsilon, run `npm start`, expected to see "I am ready from app.py".
+9. with 8 still running, to verify that backend communicates with front end, cd into project-epsilon/epsilon, run `npm start`, expected to see "I am ready from app.py".(it's an headline, not a json string) 
    (If it gives an error saying "XXX is not recognized as an internal or external command,operable program or batch file", try running `npm install`, and rerun `npm start`)
 
 ## Note

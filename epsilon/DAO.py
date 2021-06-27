@@ -2,12 +2,19 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
 
-from epsilon.classes.Company import Company
-from epsilon.classes.RStatus import RStatus
-from epsilon.classes.Request import Request
-from epsilon.classes.Role import Role
-from epsilon.classes.Team import Team
-from epsilon.classes.User import User
+# from epsilon.classes.Company import Company
+# from epsilon.classes.RStatus import RStatus
+# from epsilon.classes.Request import Request
+# from epsilon.classes.Role import Role
+# from epsilon.classes.Team import Team
+# from epsilon.classes.User import User
+
+from classes.Company import Company
+from classes.RStatus import RStatus
+from classes.Request import Request
+from classes.Role import Role
+from classes.Team import Team
+from classes.User import User
 
 class DAO:
     def __init__(self, db):

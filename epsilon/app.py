@@ -8,6 +8,7 @@ from removeFromTeam import *
 from registration import registration
 from search import search
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -139,11 +140,20 @@ def show_team_request(tid):
             return render_template("jointeamrequest.html", message="No pending requests!")
         return render_template("jointeamrequest.html", data = data, tid = tid)
 
-
+# this version of search
 @app.route('/search', methods=['GET', 'POST'])
 def srch():
     return search(dao)
       
+@app.route('/searchTest', methods=['GET', 'POST'])
+def srch_test():
+    # mock object returned by search(dao)
+    x = {
+        "name": "my company limited",
+        "description": 30
+    }
+    return json.dumps(x)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

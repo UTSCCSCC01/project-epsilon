@@ -9,4 +9,3 @@ class RStatus(Enum):
     def __str__(self):
         """ Overloads str method. """
         return 'RStatus(sid = ' + str(self.value) + ', name = ' + self.name + ')'
-

@@ -1,25 +1,12 @@
-class RStatus:
-    def __init__(self, sid=0, name=""):
-        self._sid = sid
-        self._name = name
+from enum import Enum
 
-    @property
-    def sid(self):
-        return self._sid
 
-    @sid.setter
-    def sid(self, sid):
-        self._sid = sid
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        self._name = name
+class RStatus(Enum):
+    ACCEPTED = 1
+    REJECTED = 2
+    PENDING = 3
 
     def __str__(self):
         """ Overloads str method. """
-        return 'RStatus(sid = ' + str(self.sid) + ', name = ' + self.name + ')'
+        return 'RStatus(sid = ' + str(self.value) + ', name = ' + self.name + ')'
 

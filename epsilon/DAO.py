@@ -73,11 +73,7 @@ class DAO:
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type
-        no_team = Role(0, "No Team")
-        team_owner = Role(1, "Team Owner")
-        team_admin = Role(2, "Team Admin")
-        team_member = Role(3, "Team Member")
-        roles_to_add = [no_team, team_owner, team_admin, team_member]
+        roles_to_add = [Role.NO_TEAM, Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
 
         # tid, uid, rid
         team_1 = Team(1, 1, 1)
@@ -90,10 +86,7 @@ class DAO:
         companies_to_add = [epsilon, delta]
 
         # sid, name
-        accepted = RStatus(1, "Accepted")
-        rejected = RStatus(2, "Rejected")
-        pending = RStatus(3, "Pending")
-        r_status_to_add = [accepted, rejected, pending]
+        r_status_to_add = [RStatus.ACCEPTED, RStatus.REJECTED, RStatus.PENDING]
 
         # req_id, tid, uid, sid, create_date, last_update, seen
         request_1 = Request(1, 1, 3, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
@@ -195,7 +188,7 @@ class DAO:
         """
         self.modify_data(
             '''INSERT INTO Roles (rid, role_type) VALUES (%s, %s)''',
-            (role.rid, role.role_type)
+            (role.value, role.name)
         )
 
     def add_r_status(self, r_status: RStatus):
@@ -205,7 +198,7 @@ class DAO:
         """
         self.modify_data(
             '''INSERT INTO RStatus (sid, name) VALUES (%s, %s)''',
-            (r_status.sid, r_status.name)
+            (r_status.value, r_status.name)
         )
 
     def add_team(self, team: Team):
@@ -302,5 +295,5 @@ class DAO:
         roles = []
         data = self.get_data('''SELECT * FROM Roles''', None)
         for role in data:
-            roles.append(Role(role[0], role[1]))
+            roles.append(Role(role[0]))
         return roles

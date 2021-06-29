@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class Role(Enum):
-    NO_TEAM = 0
     TEAM_OWNER = 1
     TEAM_ADMIN = 2
     TEAM_MEMBER = 3

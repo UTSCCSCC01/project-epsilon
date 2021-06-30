@@ -145,14 +145,14 @@ def show_team_request(tid):
 def srch():
     return search(dao)
       
-@app.route('/searchTest', methods=['GET', 'POST'])
-def srch_test():
-    # mock object returned by search(dao)
-    x = {
-        "name": "my company limited",
-        "description": 30
-    }
-    return json.dumps(x)
+# @app.route('/searchTest', methods=['GET', 'POST'])
+# def srch_test():
+#     # mock object returned by search(dao)
+#     x = {
+#         "name": "my company limited",
+#         "description": 30
+#     }
+#     return json.dumps(x)
 
 
 if __name__ == "__main__":

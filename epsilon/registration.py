@@ -8,7 +8,6 @@ from DAO import DAO
 def is_pos_int(s):
     # EP-1: Team management
     try:
-        if int(s)>0:
         if int(s) > 0:
             return True
         else:
@@ -59,5 +58,4 @@ def registration(dao):
         return render_template('registration.html', message=message)
     else:
         # load if not POST
-        return render_template("registration.html")        return render_template("registration.html")
         return render_template("registration.html")

@@ -8,13 +8,6 @@ from removeFromTeam import *
 from registration import registration
 from flask_cors import CORS
 
-from classes.Company import Company
-from classes.Request import Request
-from classes.Role import Role
-from classes.RStatus import RStatus
-from classes.Team import Team
-from classes.User import User
-
 
 app = Flask(__name__)
 CORS(app)
@@ -42,8 +35,6 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-        if (request.form['username'] != 'admin' or
-                request.form['password'] != 'admin'):
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('hello'))
@@ -107,7 +98,6 @@ def remove():
     if data:
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
-        removeFromTeam(dao, uid, tid)
         dao.remove_from_team(tid, uid)
         return "Success"
     return "Invalid uid/tid"
@@ -153,8 +143,6 @@ def show_team_request(tid):
             message = team_request_accept(dao, action[1])
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
-        data = team_request_load(dao, action[2])
-        return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
         requests = dao.get_pending_requests(action[2])
         data = []
         for req in requests:
@@ -174,11 +162,6 @@ def show_team_request(tid):
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
         return render_template("jointeamrequest.html", data = data, tid = tid)
-      
-            return render_template(
-                "jointeamrequest.html",
-                message="No pending requests!")
-        return render_template("jointeamrequest.html", data=data, tid=tid)
 
 
 if __name__ == "__main__":

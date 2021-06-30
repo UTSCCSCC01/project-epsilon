@@ -2,12 +2,12 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
 
-from epsilon.classes.Company import Company
-from epsilon.classes.RStatus import RStatus
-from epsilon.classes.Request import Request
-from epsilon.classes.Role import Role
-from epsilon.classes.Team import Team
-from epsilon.classes.User import User
+from classes.Company import Company
+from classes.RStatus import RStatus
+from classes.Request import Request
+from classes.Role import Role
+from classes.Team import Team
+from classes.User import User
 
 
 class DAO:
@@ -72,7 +72,6 @@ class DAO:
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid),"
                     "ADD CONSTRAINT PK_Teams PRIMARY KEY(tid, uid)")
-                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)")
 
         cur.execute("ALTER TABLE Request "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
@@ -148,7 +147,6 @@ class DAO:
             cur.execute(sql_q, args)
             self.db.connection.commit()
             cur.close()
-        except:
         except BaseException:
             pass
 
@@ -165,7 +163,6 @@ class DAO:
             data = cur.fetchall()
             cur.close()
             return data
-        except:
         except BaseException:
             pass
 
@@ -181,71 +178,8 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS RStatus''')
             self.db.connection.commit()
             cur.close()
-        except:
         except BaseException:
             pass
-
-    # Add methods
-    def add_company(self, company: Company):
-        """
-        Adds a new company into the database.
-        :param company: A Company object representing the company to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO Company (tid, name, description, create_date) VALUES (%s, %s, %s, %s)''',
-            (company.tid, company.name, company.description, company.create_date)
-        )
-
-    def add_request(self, request: Request):
-        """
-        Adds a new request into the database.
-        :param request: A Request object representing the request to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO Request (req_id, tid, uid, sid, create_date, last_update, seen) VALUES (%s, %s, %s, %s, 
-            %s, %s, %s)''',
-            (request.req_id, request.tid, request.uid, request.sid, request.create_date, request.last_update, request.seen)
-        )
-
-    def add_role(self, role: Role):
-        """
-        Adds a new role into the database.
-        :param role: A Role object representing the role to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO Roles (rid, role_type) VALUES (%s, %s)''',
-            (role.value, role.name)
-        )
-
-    def add_r_status(self, r_status: RStatus):
-        """
-        Adds a new r_status into the database.
-        :param r_status: A RStatus object representing the r_status to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO RStatus (sid, name) VALUES (%s, %s)''',
-            (r_status.value, r_status.name)
-        )
-
-    def add_team(self, team: Team):
-        """
-        Adds a new team into the database.
-        :param team: A Team object representing the team to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO Teams (tid, uid, rid) VALUES (%s, %s, %s)''',
-            (team.tid, team.uid, team.rid)
-        )
-
-    def add_user(self, user: User):
-        """
-        Adds a new user into the database.
-        :param user: A User object representing the user to be added.
-        """
-        self.modify_data(
-            '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''',
-            (user.uid, user.rid, user.name, user.contact)
-        )
 
     # Update methods
     def update_role_of_employee(self, uid, new_rid):
@@ -487,8 +421,7 @@ class DAO:
         :return: request object representing the matching request. None if not found.
         """
         request = None
-        data = self.get_data('''SELECT *
-                             FROM Request WHERE req_id = %s''', (req_id,))
+        data = self.get_data('''SELECT * FROM Request WHERE req_id = %s''', (req_id,))
         if data is not None:
             request = data[0]
             request = Request(request[0], request[1], request[2],

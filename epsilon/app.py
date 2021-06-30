@@ -7,6 +7,7 @@ from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
 from flask_cors import CORS
+
 from classes.Company import Company
 from classes.Request import Request
 from classes.Role import Role
@@ -16,6 +17,7 @@ from classes.User import User
 
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
@@ -25,13 +27,15 @@ app.config['MYSQL_DB'] = 'epsilon_db'
 mysql = MySQL(app)
 dao = DAO(mysql)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def hello():
     global baseUrl
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     if request.method == 'POST':
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
     return render_template('home.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,6 +49,7 @@ def login():
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
 
+
 # Only go to this page if your database is empty
 
 @app.route("/deleteAll")
@@ -55,21 +60,30 @@ def delete_all():
 
 @app.route("/create")
 def create():
-
     dao.populate()
-    users = dao.get_Users()
-    teams = dao.get_Teams()
-    roles = dao.get_Roles()
-    return "Database Users, Teams, Roles are populated!\n" \
-           "Also five dummy employees Paula, Tim, Pritish, Sam, Water."+"\n\n"\
-           + str(users)+"\n\n"+str(teams)\
-           + "\n\n"+str(roles)
+    users = dao.get_users()
+    teams = dao.get_teams()
+    roles = dao.get_roles()
+    output = "Database Users, Teams, Roles are populated!\n"
+
+    output += "Also five dummy employees:\n"
+    for user in users:
+        output += str(user) + "\n"
+    output += "Also two dummy teams:\n"
+    for team in teams:
+        output += str(team) + "\n"
+    output += "Also four roles:\n"
+    for role in roles:
+        output += str(role) + "\n"
+
+    return output
 
 
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
 def reg():
     return registration(dao)
+
 
 # result is returned correctly, just need todispaly
 
@@ -80,10 +94,10 @@ def testbtn():
         # id2 is either tid or rid
         op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            dao.removeTeam(uid, id2)
+            dao.remove_team(uid, id2)
         elif op == 'p':
             # newRole should be id of admin
-            dao.updateRoleOfEmployee(uid,2)
+            dao.update_role_of_employee(uid, 2)
         return render_template('displayteam.html')
 
 
@@ -113,6 +127,7 @@ def displayteam(tid):
     else:
         message = "Your team does not exist"
         return render_template('displayteam.html', message=message)
+
 
 @app.route('/test_get_base_url')
 def index():

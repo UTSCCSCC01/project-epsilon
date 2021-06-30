@@ -19,9 +19,9 @@ def is_pos_int(s):
 
 def check_team_exists(dao, name):
     # Returns 1 if match is found else returns 0
-    companies = dao.get_Companies()
-    for item in companies:
-        if (item[1].lower() == name.lower()):
+    companies = dao.get_companies()
+    for company in companies:
+        if company.name.lower() == name.lower():
             return 1
     return 0
 

@@ -8,7 +8,6 @@ from removeFromTeam import *
 from registration import registration
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -161,7 +160,7 @@ def show_team_request(tid):
             data.append([req.uid, req.create_date, req.req_id])
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
-        return render_template("jointeamrequest.html", data = data, tid = tid)
+        return render_template("jointeamrequest.html", data=data, tid=tid)
 
 
 if __name__ == "__main__":

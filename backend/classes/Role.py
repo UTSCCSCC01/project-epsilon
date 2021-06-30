@@ -1,11 +1,24 @@
-from enum import Enum
+class Role:
+    def __init__(self, rid=0, role_type=""):
+        self._rid = rid
+        self._role_type = role_type
 
+    @property
+    def rid(self):
+        return self._rid
 
-class Role(Enum):
-    TEAM_OWNER = 1
-    TEAM_ADMIN = 2
-    TEAM_MEMBER = 3
+    @rid.setter
+    def rid(self, rid):
+        self._rid = rid
+
+    @property
+    def role_type(self):
+        return self._role_type
+
+    @role_type.setter
+    def role_type(self, role_type):
+        self._role_type = role_type
 
     def __str__(self):
         """ Overloads str method. """
-        return 'Role(rid = ' + str(self.value) + ', role_type = ' + self.name + ')'
+        return 'Role(rid = ' + str(self.rid) + ', role_type = ' + self.role_type + ')'

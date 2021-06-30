@@ -60,3 +60,4 @@ def registration(dao):
     else:
         # load if not POST
         return render_template("registration.html")        return render_template("registration.html")
+        return render_template("registration.html")

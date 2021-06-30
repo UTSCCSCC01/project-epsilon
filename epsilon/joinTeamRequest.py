@@ -54,3 +54,4 @@ def team_request_update(dao, req_id, status):
         return
     else:
         return "Status is not pending!"        return "Status is not pending!"
+        return "Status is not pending!"

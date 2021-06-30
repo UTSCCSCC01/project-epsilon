@@ -6,6 +6,14 @@ from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
+from flask_cors import CORS
+from classes.Company import Company
+from classes.Request import Request
+from classes.Role import Role
+from classes.RStatus import RStatus
+from classes.Team import Team
+from classes.User import User
+
 
 app = Flask(__name__)
 
@@ -30,6 +38,8 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        if (request.form['username'] != 'admin' or
+                request.form['password'] != 'admin'):
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('hello'))
@@ -84,6 +94,7 @@ def remove():
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
         removeFromTeam(dao, uid, tid)
+        dao.remove_from_team(tid, uid)
         return "Success"
     return "Invalid uid/tid"
 
@@ -91,6 +102,17 @@ def remove():
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
     return getTeam(tid, dao)
+    users = dao.get_users_from_team(tid)
+    if users:  # there are values in the database
+        userDetails = []
+        for user in users:
+            role = dao.get_role(user.rid)
+            userDetails.append([user.name, role.role_type, user.contact,
+                                user.uid, tid, user.rid])
+        return render_template('displayteam.html', userDetails=userDetails)
+    else:
+        message = "Your team does not exist"
+        return render_template('displayteam.html', message=message)
 
 @app.route('/test_get_base_url')
 def index():
@@ -98,6 +120,13 @@ def index():
 
 
 # Only go to this page after you go to /create to add more tables and add key constraints 
+@app.route('/testReact', methods=['GET'])
+def testReact():
+    return {"title": "I am ready from app.py"}
+
+
+# Only go to this page after you go to /create to add more tables and add
+# key constraints
 
 # EP-3: Accept and Decline pending requests
 
@@ -111,12 +140,31 @@ def show_team_request(tid):
             message = team_request_decline(dao, action[1])
         data = team_request_load(dao, action[2])
         return render_template("jointeamrequest.html", message=message, data=data, tid = action[2])
+        requests = dao.get_pending_requests(action[2])
+        data = []
+        for req in requests:
+            data.append([req.uid, req.create_date, req.req_id])
+        return render_template(
+            "jointeamrequest.html",
+            message=message,
+            data=data,
+            tid=action[2])
     else:
         # load if not POST
         data = team_request_load(dao, tid)
+        requests = dao.get_pending_requests(tid)
+        data = []
+        for req in requests:
+            data.append([req.uid, req.create_date, req.req_id])
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
         return render_template("jointeamrequest.html", data = data, tid = tid)
       
+            return render_template(
+                "jointeamrequest.html",
+                message="No pending requests!")
+        return render_template("jointeamrequest.html", data=data, tid=tid)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

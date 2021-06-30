@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Register a new Company.</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        <h2>Register a new Company.</h2>
+        <hr>
+    </div>
+    <div class="contents">
+        <form action="" method="post">
+            <br>
+            <input class="auth" type="text" placeholder="Team Name" name="teamname" value="{{
+                request.form.course }}">
+            <br>
+            <input class="auth" type="text" placeholder="Team Description" name="teamdesc" value="{{
+                request.form.q1 }}">
+            <br>
+            <br>
+            <input class="btn" type="submit" value="Create Team">
+        </form>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

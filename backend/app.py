@@ -28,7 +28,8 @@ def hello():
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     if request.method == 'POST':
         return redirect(url_for('login'))
-    return render_template('home.html')
+    # token is only for testing connection
+    return render_template('home.html', token="Hello Flask+React!")
 
 
 @app.route('/login', methods=['GET', 'POST'])

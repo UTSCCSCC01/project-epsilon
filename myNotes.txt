@@ -1,0 +1,5 @@
+npm run eject
+to create the config and scripts folder.
+
+npm run build
+if saying any module is missing, run `yarn add <modulename>` (<modulename> includes the @)

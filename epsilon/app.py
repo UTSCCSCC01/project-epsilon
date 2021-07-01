@@ -14,7 +14,6 @@ from classes.Team import Team
 from classes.User import User
 
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -48,7 +47,16 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route("/previousHome", methods=['GET', 'POST'])
+def previousHome():
+    global baseUrl
+    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
+    if request.method == 'POST':
+        return redirect(url_for('login'))
+    return render_template('previousHome.html')
+
 # Only go to this page if your database is empty
+
 
 @app.route("/deleteAll")
 def delete_all():
@@ -130,7 +138,7 @@ def index():
     return request.base_url[:request.base_url.rfind('/')]
 
 
-# Only go to this page after you go to /create to add more tables and add key constraints 
+# Only go to this page after you go to /create to add more tables and add key constraints
 @app.route('/testReact', methods=['GET'])
 def testReact():
     return {"title": "I am ready from app.py"}
@@ -154,7 +162,6 @@ def show_team_request(tid):
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
     return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
-
 
 
 if __name__ == "__main__":

@@ -154,6 +154,12 @@ def show_team_request(tid):
         data.append([req.uid, req.create_date, req.req_id])
     return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
 
+# EP-20: Display user profile
+
+@app.route('/user/<int:uid>/', methods=['GET', 'POST'])
+def display_user(uid):
+    message = ""
+    return render_template("userprofile.html", message=message)
 
 
 if __name__ == "__main__":

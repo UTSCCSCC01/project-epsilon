@@ -6,6 +6,7 @@ from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
+from userRegistration import user_register
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -116,6 +117,9 @@ def index():
 def testReact():
     return {"title": "I am ready from app.py"}
 
+@app.route('/userRegistration', methods=['POST'])
+def user_reg():
+    return user_register(dao)
 
 # Only go to this page after you go to /create to add more tables and add key constraints
 

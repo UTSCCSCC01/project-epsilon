@@ -33,7 +33,7 @@ def search(dao):
         # if no errors
         try:
             keywords = make_keyword_list(request.form['search'])
-            search_results = refine_search_data(dao.get_searchdata(keywords))
+            search_results = refine_search_data(dao.get_search_data(keywords))
             message = ""
             if search_results is None:
                 message = "No results found!"

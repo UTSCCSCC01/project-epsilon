@@ -13,6 +13,7 @@ from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
 import mimetypes
+
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
 app = Flask(__name__)
@@ -144,22 +145,26 @@ def show_team_request(tid):
         data = team_request_load(dao, tid)
         if not data:
             return render_template("jointeamrequest.html", message="No pending requests!")
-        return render_template("jointeamrequest.html", data = data, tid = tid)
+        return render_template("jointeamrequest.html", data=data, tid=tid)
+
 
 # this version of search
 @app.route('/search', methods=['GET', 'POST'])
 def srch():
     return search(dao)
 
+
 # related to frontend testing, won't interfere with back end
 @app.route('/searchTestSucceed', methods=['GET', 'POST'])
 def srch_test_succeed():
     return search_frontend_test(dao, True)
 
+
 # currently doesn't work
-@app.route('/searchTestFail', methods=['GET','POST'])
+@app.route('/searchTestFail', methods=['GET', 'POST'])
 def srch_test_fail():
     return search_frontend_test(dao, False)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

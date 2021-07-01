@@ -4,6 +4,7 @@ from flask_mysqldb import MySQL
 from DAO import DAO
 from joinTeamRequest import *
 from registration import registration
+from search import *
 from flask_cors import CORS
 from classes.Company import Company
 from classes.Request import Request
@@ -11,10 +12,12 @@ from classes.Role import Role
 from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
-
-
+import mimetypes
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('application/javascript', '.mjs')
 app = Flask(__name__)
 CORS(app)
+mimetypes.add_type('application/javascript', '.mjs')
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
@@ -157,7 +160,6 @@ def srch_test_succeed():
 @app.route('/searchTestFail', methods=['GET','POST'])
 def srch_test_fail():
     return search_frontend_test(dao, False)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

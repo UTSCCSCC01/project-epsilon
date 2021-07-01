@@ -1,6 +1,6 @@
-// import React  from 'react';
-// import ReactDOM from 'react-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import React  from 'react';
+import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from "react-bootstrap/Card";
 
 
@@ -38,20 +38,19 @@ class CompanyTable extends React.Component {
         });
         return (
             <div>
-                <Card>
-                    <Card.Body>This is some text within a card body.</Card.Body>
-                </Card>
-
-            {/*<table>*/}
-            {/*    <thead>*/}
-            {/*    <tr>*/}
-            {/*        <th>name</th>*/}
-            {/*        <th>description</th>*/}
-            {/*        <th>industry</th>*/}
-            {/*    </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>{rows}</tbody>*/}
-            {/*</table>*/}
+                {/*<Card>*/}
+                {/*    <Card.Body>This is some text within a card body.</Card.Body>*/}
+                {/*</Card>*/}
+            <table>
+                <thead>
+                <tr>
+                    <th>name</th>
+                    <th>description</th>
+                    <th>industry</th>
+                </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
             </div>
 
         );

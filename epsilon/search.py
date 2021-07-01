@@ -49,7 +49,7 @@ def search(dao):
 # related to testing frontend, won't interfere with back end
 def generate_error_data():
     x = {
-        "error": "sample error message"
+        "message": "sample error message"
     }
     # return "sample error"
     # return x
@@ -87,32 +87,6 @@ def search_frontend_test(dao, succeed=True):
         if succeed:
             return render_template("search_test.html", data=generate_search_result())
         else:
-            error=generate_error_data()
-            return render_template("search_test.html",error=error)
+            return render_template("search_test.html",error=generate_error_data())
     else:
         return render_template("search_test.html")
-
-'''
-{
-"company list": 
-    [
-        {
-        "name": "epsilon", 
-        "description": "sample description of epsilon", 
-        "industry": ["computer software", "industrial automation"]
-        }, 
-        
-        {
-        "name": "delta", 
-        "description": "sample description of delta", 
-        "industry": ["robotics"]
-        }, 
-        
-        {
-        "name": "alpha", 
-        "description": "sample description of alpha", "
-        industry": ["transportation", "telecommunication", "internet"]
-        }
-    ]
-}
-'''

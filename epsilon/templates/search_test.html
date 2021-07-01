@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
     <title>Search.</title>
 </head>
 <header>
 </header>
 <body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+
     <div id="background" class="title-card">
         <h1>Epsilon</h1>
         <h2>Search.</h2>
@@ -16,41 +18,68 @@
     </div>
 
 
-    <form action="" method="post">
-        <br>
-        <input class="auth" type="text" placeholder="Search" name="search" value="{{
-                request.form.search }}">
-        <br>
-        <br>
-        <input class="btn" type="submit" value="Search">
-    </form>
+        <form  id="cover" method="post" action="">
+            <div class="tb">
+                <div class="td"><input type="text" placeholder="Search" required></div>
+                <div class="td" id="s-cover">
+                    <button type="submit">
+                        <div id="s-circle"></div>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </form>
 
     <div id="search_page"></div>
 
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
-    </div>
+<!--    <div class="footer">-->
+<!--        <footer>-->
+<!--            <p>-->
+<!--                Epsilon 2021-->
+<!--            </p>-->
+<!--        </footer>-->
+<!--    </div>-->
 
     {% block app_content %}
+
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+
+    <script
+            src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"
+            crossorigin></script>
+
+    <script
+            src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
+            crossorigin></script>
+
+
     {% endblock %}
-    <div>
+
+
+
+    <div id="result">
         {% if data %}
         <script>
-            var company_data = JSON.parse('{{ data  | safe}}');
+            var company_data = JSON.parse('{{ data | safe}}');
         </script>
         {% endif %}
-        <script  type="text/babel", src="{{ url_for('static', filename='js/search.js') }}"></script>
-
+        {% if error %}
+        <script>
+            var error = JSON.parse('{{ error | safe}}');
+        </script>
+        {% endif %}
+<!--        previously text/babel-->
+        <script  type="module" src="{{ url_for('static', filename='js/search.js') }}"></script>
     </div>
+
+
 </body>
 </html>
+
+
 
 
 <!--a working version-->

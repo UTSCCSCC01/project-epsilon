@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 
 from classes.Company import Company
+from classes.Industry import Industry
 from classes.RStatus import RStatus
 from classes.Request import Request
 from classes.Role import Role
@@ -41,6 +42,7 @@ class DAO:
                     tid int auto_increment,
                     name text not null,
                     description text not null,
+                    ind_id int,
                     create_date timestamp default current_timestamp null,
                     constraint Company_pk
                     primary key (tid));''')
@@ -426,3 +428,11 @@ class DAO:
         WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
         searchdata = self.get_data(search_q, None)
         return searchdata
+
+    
+    def get_industry(self):
+        industry = []
+        data = self.get_data('''SELECT * FROM Industry''', None)
+        for ind in data:
+            industry.append(Industry(ind[0], ind[1]))
+        return industry

@@ -2,12 +2,12 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
 
-from epsilon.classes.Company import Company
-from epsilon.classes.RStatus import RStatus
-from epsilon.classes.Request import Request
-from epsilon.classes.Role import Role
-from epsilon.classes.Team import Team
-from epsilon.classes.User import User
+from classes.Company import Company
+from classes.RStatus import RStatus
+from classes.Request import Request
+from classes.Role import Role
+from classes.Team import Team
+from classes.User import User
 
 
 class DAO:
@@ -26,7 +26,8 @@ class DAO:
                     primary key (tid));''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
             name VARCHAR (50), contact VARCHAR (50))''')
-        cur.execute('''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, rid INTEGER)''')
+        cur.execute(
+            '''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, rid INTEGER)''')
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
                     "role_type VARCHAR(255),"
@@ -81,7 +82,8 @@ class DAO:
         teams_to_add = [team_1, team_2]
 
         # tid, name, description, create_date
-        epsilon = Company(1, "Epsilon", "A startup named Epsilon.", datetime.now())
+        epsilon = Company(
+            1, "Epsilon", "A startup named Epsilon.", datetime.now())
         delta = Company(2, "Delta", "A startup named Delta.", datetime.now())
         companies_to_add = [epsilon, delta]
 
@@ -89,9 +91,12 @@ class DAO:
         r_status_to_add = [RStatus.ACCEPTED, RStatus.REJECTED, RStatus.PENDING]
 
         # req_id, tid, uid, sid, create_date, last_update, seen
-        request_1 = Request(1, 1, 3, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
-        request_2 = Request(2, 1, 4, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
-        request_3 = Request(3, 2, 5, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_1 = Request(1, 1, 3, 3, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
+        request_2 = Request(2, 1, 4, 3, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_3 = Request(3, 2, 5, 3, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
         requests_to_add = [request_1, request_2, request_3]
 
         for company in companies_to_add:
@@ -178,7 +183,8 @@ class DAO:
         self.modify_data(
             '''INSERT INTO Request (req_id, tid, uid, sid, create_date, last_update, seen) VALUES (%s, %s, %s, %s, 
             %s, %s, %s)''',
-            (request.req_id, request.tid, request.uid, request.sid, request.create_date, request.last_update, request.seen)
+            (request.req_id, request.tid, request.uid, request.sid,
+             request.create_date, request.last_update, request.seen)
         )
 
     def add_role(self, role: Role):
@@ -228,8 +234,10 @@ class DAO:
         :param uid: User id of the employee.
         :param new_rid: New role id of the employee.
         """
-        self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
-        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (new_rid, uid))
+        self.modify_data(
+            '''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
+        self.modify_data(
+            '''UPDATE Users SET rid=%s WHERE uid=%s ''', (new_rid, uid))
 
     # Remove methods
     def remove_team(self, tid, uid):
@@ -238,7 +246,8 @@ class DAO:
         :param tid: team id of the team to be removed.
         :param uid: user id of the team to be removed.
         """
-        self.modify_data('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
+        self.modify_data(
+            '''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
 
     # Get methods
     def retrieve_team(self, tid):
@@ -262,7 +271,8 @@ class DAO:
         companies = []
         data = self.get_data('''SELECT * FROM Company''', None)
         for company in data:
-            companies.append(Company(company[0], company[1], company[2], company[3]))
+            companies.append(
+                Company(company[0], company[1], company[2], company[3]))
         return companies
 
     def get_users(self):

@@ -26,7 +26,7 @@ def hello():
     baseUrl = request.base_url[:request.base_url.rfind('/')]
     if request.method == 'POST':
         return redirect(url_for('login'))
-    # return render_template('home.html')
+    return render_template('home.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

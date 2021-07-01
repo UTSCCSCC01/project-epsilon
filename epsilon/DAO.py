@@ -85,7 +85,10 @@ class DAO:
                     ")")
 
         cur.execute("ALTER TABLE CompanyTags "
-                    "ADD FOREIGN KEY(tag_id) REFERENCES Tags(tag_id),"
+                    "ADD FOREIGN KEY(tag_id) REFERENCES Industry(ind_id),")
+
+        cur.execute("ALTER TABLE Tags "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Tags(tag_id),"
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid)"
                     )
 

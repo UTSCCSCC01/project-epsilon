@@ -83,14 +83,14 @@ def generate_search_result():
 
 def search_frontend_test(dao, succeed=True):
     print("search_frontend_test")
-    if request.method == 'GET':
+    if request.method == 'POST':
         if succeed:
             return render_template("search_test.html", data=generate_search_result())
         else:
-            print("else")
             error=generate_error_data()
-            print("error is passsed", error)
             return render_template("search_test.html",error=error)
+    else:
+        return render_template("search_test.html")
 
 '''
 {

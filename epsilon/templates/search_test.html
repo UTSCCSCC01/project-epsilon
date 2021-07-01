@@ -14,6 +14,17 @@
         <h2>Search.</h2>
         <hr>
     </div>
+
+
+    <form action="" method="post">
+        <br>
+        <input class="auth" type="text" placeholder="Search" name="search" value="{{
+                request.form.search }}">
+        <br>
+        <br>
+        <input class="btn" type="submit" value="Search">
+    </form>
+
     <div id="search_page"></div>
 
     <div class="footer">
@@ -30,10 +41,13 @@
 <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     {% endblock %}
     <div>
+        {% if data %}
         <script>
             var company_data = JSON.parse('{{ data  | safe}}');
         </script>
+        {% endif %}
         <script  type="text/babel", src="{{ url_for('static', filename='js/search.js') }}"></script>
+
     </div>
 </body>
 </html>

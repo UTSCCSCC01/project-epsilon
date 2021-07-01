@@ -1,23 +1,24 @@
 class SearchBar extends React.Component {
     constructor() {
         super();
-        for (let i = 0; i < company_data.company_list.length; i++) {
-            console.log(i);
-            const inner = company_data.company_list[i];
-            console.log(inner["name"]);
-            console.log(inner["description"]);
-            console.log(inner["industry"]);
+        if (typeof company_data !== 'undefined'){
+            for (let i = 0; i < company_data.company_list.length; i++) {
+                console.log(i);
+                const inner = company_data.company_list[i];
+                console.log(inner["name"]);
+                console.log(inner["description"]);
+                console.log(inner["industry"]);
+            }
         }
     }
 
     render() {
         return (
-                <form>
-                    <input
-                        type="text"
-                        placeholder="Search..."/>
-                    <p>{company_data.company_list[0]["description"]}</p>
-                </form>
+            <div>
+                <p>
+                    render complete
+                </p>
+            </div>
         );
     }
 }

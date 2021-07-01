@@ -30,8 +30,6 @@ def registration(dao):
     # TODO: check if user is logged in and check permissions
     # cur = mysql.connection.cursor()
     if request.method == 'POST':
-        # create both queries for checking and inserting data
-        sql_q = '''INSERT INTO Company (name, description) VALUES (%s, %s)'''
         # check if all form boxes are completed
         if (len(request.form['teamname']) == 0 or len(request.form['teamdesc']) == 0):
             error = 'Please fill in all boxes.'
@@ -46,7 +44,7 @@ def registration(dao):
                               description=request.form['teamdesc'])
             message = dao.add_company(company)
             joe = User(rid=Role.TEAM_OWNER.value, name="Joe", contact="Jo@gmail.com")
-            team = Team(tid=3, uid=6, rid=1)
+            team = Team(tid=3, uid=6, rid=Role.TEAM_OWNER.value)
             dao.add_user(joe)
             dao.add_team(team)
         except Exception as e:

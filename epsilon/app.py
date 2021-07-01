@@ -3,11 +3,16 @@ from flask_mysqldb import MySQL
 
 from DAO import DAO
 from joinTeamRequest import *
-from getTeam import getTeam
-from removeFromTeam import *
 from registration import registration
 from flask_cors import CORS
+from classes.Company import Company
+from classes.Request import Request
 from classes.Role import Role
+from classes.RStatus import RStatus
+from classes.Team import Team
+from classes.User import User
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -34,7 +39,8 @@ def hello():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        if (request.form['username'] != 'admin' or
+                request.form['password'] != 'admin'):
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('hello'))
@@ -65,7 +71,7 @@ def create():
         output += str(team) + "</br>"
     output += "Also three roles:</br>"
     for role in roles:
-        output += str(role) + "</br>"
+        output += str(role.name) + "</br>"
 
     return output
 
@@ -110,7 +116,7 @@ def displayteam(tid):
         userDetails = []
         for user in users:
             role = dao.get_role(user.rid)
-            userDetails.append([user.name, role, user.contact,
+            userDetails.append([user.name, role.name, user.contact,
                                 user.uid, tid, user.rid])
         return render_template('displayteam.html', userDetails=userDetails)
     else:
@@ -128,9 +134,6 @@ def index():
 def testReact():
     return {"title": "I am ready from app.py"}
 
-
-# Only go to this page after you go to /create to add more tables and add
-# key constraints
 
 # EP-3: Accept and Decline pending requests
 
@@ -150,7 +153,7 @@ def show_team_request(tid):
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
     return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
-    
+
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
+from modules.UserModule import update_user
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-from DAO import DAO
+from databaseAccess.DAO import DAO
 from joinTeamRequest import *
 from registration import registration
 from flask_cors import CORS
@@ -157,16 +158,19 @@ def show_team_request(tid):
 
 @app.route('/user/<int:uid>/', methods=['GET', 'POST'])
 def display_user(uid):
+    message = ""
     if request.method == 'POST':
         data = request.get_json
         if data:
-            # TODO: add method to call
-    message = ""
+            message = update_user(dao, uid, request.form["name"],
+                                  request.form["description"],
+                                  request.form["contact"])
+
     user = dao.get_user(uid)
     if user:
         user_role = Role(user.rid)
         user_details = [user.name, user.description, user.contact, user_role.name]
-        return render_template('userprofile.html', user_details=user_details)
+        return render_template('userprofile.html', user_details=user_details, message= message)
     else:
         message = "The user does not exist"
         return render_template("userprofile.html", message=message)

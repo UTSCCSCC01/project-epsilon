@@ -12,8 +12,6 @@ from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
 
-
-
 app = Flask(__name__)
 CORS(app)
 
@@ -164,7 +162,14 @@ def display_user(uid):
         if data:
             # TODO: add method to call
     message = ""
-    return render_template("userprofile.html", message=message)
+    user = dao.get_user(uid)
+    if user:
+        user_role = Role(user.rid)
+        user_details = [user.name, user.description, user.contact, user_role.name]
+        return render_template('userprofile.html', user_details=user_details)
+    else:
+        message = "The user does not exist"
+        return render_template("userprofile.html", message=message)
 
 
 if __name__ == "__main__":

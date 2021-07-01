@@ -270,7 +270,7 @@ class DAO:
         """
         team = None
         data = self.get_data('''SELECT * FROM Teams WHERE tid = %s''', (tid,))
-        if data is not None:
+        if data:
             team = data[0]
             team = Team(team[0], team[1], team[2])
         return team
@@ -290,6 +290,19 @@ class DAO:
                     company[2],
                     company[3]))
         return companies
+
+    def get_user(self, uid):
+        """
+        Gets one user with uid matching the parameter.
+        :param: uid (int) is the user ID of the user you want to get.
+        :return: User object or None if not found.
+        """
+        user = None
+        data = self.get_data('''SELECT * FROM Users WHERE uid = %s''', (uid,))
+        if data:
+            user = data[0]
+            user = User(user[0], user[1], user[2], user[3], user[4])
+        return user
 
     def get_users(self):
         """

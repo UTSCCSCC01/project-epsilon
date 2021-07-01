@@ -15,32 +15,34 @@
     <div id="background" class="title-card">
         <h1>My Profile</h1>
         <hr>
+        {% if user_details %}
         <form action="" method="POST">
             <table>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td><button type="button">Edit</button></td>
                 </tr>
                 <tr>
                     <td><label for="name">Name</label></td>
-                    <td><input type="text" name="name"></td>
+                    <td><input type="text" name="name" value="{{user_details[0]}}"></td>
                 </tr>
                 <tr>
                     <td><label for="description">Description</label> </td>
-                    <td><textarea name="description"></textarea></td>
+                    <td><textarea name="description">{{user_details[1]}}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="contact">Contact Information</label></td>
-                    <td><input type="email" name="contact"></td>
+                    <td><input type="email" name="contact" value="{{user_details[2]}}"></td>
                 </tr>
-                <!-- Not sure if we want to display user type, it's up to you-->
                 <tr>
                     <td><label for="user_type">Startup User or Service Provider</label></td>
-                    <td><input type="text" name="user_type" readonly></td>
+                    <td><input type="text" name="user_type" value="{{user_details[3]}}" readonly></td>
                 </tr>
             </table>
             <button type="submit" value="update_user">Update Info</button>
         </form>
+        {% endif %}
     </div>
     <div class="contents">
         {% if error %}

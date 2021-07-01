@@ -1,7 +1,7 @@
 // import React  from 'react';
 // import ReactDOM from 'react-dom';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from "react-bootstrap/Card";
+// import Card from "react-bootstrap/Card";
 
 
 class CompanyRow extends React.Component {
@@ -21,10 +21,7 @@ class CompanyRow extends React.Component {
 
 class CompanyTable extends React.Component {
     render() {
-        // const filterText = this.props.filterText;
         const rows = [];
-        // let lastCategory = null;
-
         this.props.company_list.forEach((company) => {
                 rows.push(
                     <CompanyRow
@@ -38,20 +35,20 @@ class CompanyTable extends React.Component {
         });
         return (
             <div>
-                <Card>
-                    <Card.Body>This is some text within a card body.</Card.Body>
-                </Card>
+                {/*<Card>*/}
+                {/*    <Card.Body>This is some text within a card body.</Card.Body>*/}
+                {/*</Card>*/}
 
-            {/*<table>*/}
-            {/*    <thead>*/}
-            {/*    <tr>*/}
-            {/*        <th>name</th>*/}
-            {/*        <th>description</th>*/}
-            {/*        <th>industry</th>*/}
-            {/*    </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>{rows}</tbody>*/}
-            {/*</table>*/}
+            <table>
+                <thead>
+                <tr>
+                    <th>name</th>
+                    <th>description</th>
+                    <th>industry</th>
+                </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
             </div>
 
         );

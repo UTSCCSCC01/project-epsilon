@@ -31,9 +31,11 @@ def user_register(dao: DAO):
         email = request.form['username']
         pwd = request.form['password']
         name = request.form['name']
-        u_type = request.form['type']
+        u_type = None
+        if ('type' in request.form):
+            u_type = request.form['type']
         # check if any required fields isn't filled
-        if (len(email)==0 or len(pwd)==0 or len(name)==0 or len(u_type)==0):
+        if (len(email)==0 or len(pwd)==0 or len(name)==0 or u_type==None):
             e = "Please fill required fields"
             return render_template('userRegistration.html', error = e)
         # check if the user email is already in use (username)

@@ -24,7 +24,7 @@ class DAO:
         	        constraint Tags_pk
         		    primary key (tag_id));''')
 
-        cur.execute('''create table IF NOT EXISTS CompanyTags (
+        cur.execute('''create table IF NOT EXISTS CompanyTags(
                     ctid int auto_increment,
         	        tid int null,
         	        tag_id int null,
@@ -85,11 +85,11 @@ class DAO:
                     ")")
 
         cur.execute("ALTER TABLE CompanyTags "
-                    "ADD FOREIGN KEY(tag_id) REFERENCES Industry(ind_id),")
+                    "ADD FOREIGN KEY(tag_id) REFERENCES Tags(tag_id),"
+                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)")
 
         cur.execute("ALTER TABLE Tags "
-                    "ADD FOREIGN KEY(ind_id) REFERENCES Tags(tag_id),"
-                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)"
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
                     )
 
         cur.execute("ALTER TABLE Users "

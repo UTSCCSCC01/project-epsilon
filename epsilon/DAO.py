@@ -25,11 +25,17 @@ class DAO:
         		    primary key (tag_id));''')
 
         cur.execute('''create table IF NOT EXISTS CompanyTags (
-                ctid int auto_increment,
-        	    tid int null,
-        	    tag_id int null,
-        	    constraint CompanyTags_pk
-        		primary key (ctid));''')
+                    ctid int auto_increment,
+        	        tid int null,
+        	        tag_id int null,
+        	        constraint CompanyTags_pk
+        		    primary key (ctid));''')
+
+        cur.execute('''create table IF NOT EXISTS Industry (
+                    ind_id int auto_increment,
+	                name text not null,
+	                constraint Industry_pk
+		            primary key (ind_id));''')
 
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,

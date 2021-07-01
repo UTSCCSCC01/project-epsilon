@@ -30,6 +30,7 @@ class DAO:
                     rid INTEGER,
                     name text not null,
                     contact text not null,
+                    description text not null,
                     constraint Users_pk
                     primary key (uid))''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Teams (
@@ -76,11 +77,11 @@ class DAO:
 
         # uid, rid, name, contact
         # TODO: change role to type here
-        paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com")
-        tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com")
-        pritish = User(3, Role.TEAM_MEMBER.value, "Pritish", "lp@gmail.com")
-        sam = User(4, Role.TEAM_MEMBER.value, "Sam", "opll@gmail.com")
-        water = User(5, Role.TEAM_OWNER.value, "Water", "no@gmail.com")
+        paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com", "Hi, I am Paula, team owner of Company Epsilon.")
+        tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com", "This is Tim, owner of Company Delta.")
+        pritish = User(3, Role.TEAM_MEMBER.value, "Pritish", "lp@gmail.com", "I am waiting to join team Epsilon!.")
+        sam = User(4, Role.TEAM_MEMBER.value, "Sam", "opll@gmail.com", "Here comes Sam.")
+        water = User(5, Role.TEAM_OWNER.value, "Water", "no@gmail.com", "Water is good.")
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type
@@ -222,8 +223,8 @@ class DAO:
         :param user: A User object representing the user to be added.
         """
         self.modify_data(
-            '''INSERT INTO Users (rid, name, contact) VALUES (%s, %s, %s)''',
-            (user.rid, user.name, user.contact)
+            '''INSERT INTO Users (rid, name, contact, description) VALUES (%s, %s, %s, %s)''',
+            (user.rid, user.name, user.contact, user.description)
         )
 
     # Update methods
@@ -298,7 +299,7 @@ class DAO:
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
-            users.append(User(user[0], user[1], user[2], user[3]))
+            users.append(User(user[0], user[1], user[2], user[3], user[4]))
         return users
 
     def get_teams(self):

@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 
 from classes.Company import Company
+from classes.Industry import Industry
 from classes.RStatus import RStatus
 from classes.Request import Request
 from classes.Role import Role
@@ -18,25 +19,34 @@ class DAO:
         # Create a table with 5 users. 2 admin and 3 normal users
         cur = self.db.connection.cursor()
         cur.execute('''create table IF NOT EXISTS Tags(
-        	    tag_id int auto_increment,
-        	    name text not null,
-        	    constraint Tags_pk
-        		primary key (tag_id));''')
+        	        tag_id int auto_increment,
+        	        name text not null,
+                    ind_id int,
+        	        constraint Tags_pk
+        		    primary key (tag_id));''')
 
-        cur.execute('''create table IF NOT EXISTS CompanyTags (
-                ctid int auto_increment,
-        	    tid int null,
-        	    tag_id int null,
-        	    constraint CompanyTags_pk
-        		primary key (ctid));''')
+        cur.execute('''create table IF NOT EXISTS CompanyTags(
+                    ctid int auto_increment,
+        	        tid int null,
+        	        tag_id int null,
+        	        constraint CompanyTags_pk
+        		    primary key (ctid));''')
+
+        cur.execute('''create table IF NOT EXISTS Industry (
+                    ind_id int auto_increment,
+	                name text not null,
+	                constraint Industry_pk
+		            primary key (ind_id));''')
 
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,
                     name text not null,
                     description text not null,
+                    ind_id int,
                     create_date timestamp default current_timestamp null,
                     constraint Company_pk
                     primary key (tid));''')
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (
                     uid INTEGER auto_increment,
                     rid INTEGER,
@@ -44,22 +54,26 @@ class DAO:
                     contact text not null,
                     constraint Users_pk
                     primary key (uid))''')
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Teams (
                     tid INTEGER,
                     uid INTEGER,
                     rid INTEGER,
                     CONSTRAINT PK_Teams
                     PRIMARY KEY(tid, uid))''')
+
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
                     "role_type text not null,"
                     "PRIMARY KEY(rid)"
                     ")")
+                    
         cur.execute("CREATE TABLE IF NOT EXISTS RStatus ("
                     "sid INTEGER,"
                     "name text not null,"
                     "PRIMARY KEY(sid)"
                     ")")
+
         cur.execute("CREATE TABLE IF NOT EXISTS Request ("
                     "req_id INTEGER auto_increment,"
                     "tid INTEGER, "
@@ -71,13 +85,23 @@ class DAO:
                     "seen BOOLEAN,"
                     "PRIMARY KEY(req_id)"
                     ")")
+
         cur.execute("ALTER TABLE CompanyTags "
                     "ADD FOREIGN KEY(tag_id) REFERENCES Tags(tag_id),"
-                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)"
+                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)")
+
+        cur.execute("ALTER TABLE Tags "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
                     )
+
         cur.execute("ALTER TABLE Users "
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
                     )
+        
+        cur.execute("ALTER TABLE Company "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
+                    )
+
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
@@ -185,9 +209,10 @@ class DAO:
         :param company: A Company object representing the company to be added.
         """
         self.modify_data(
-            '''INSERT INTO Company (name, description) VALUES (%s, %s)''',
+            '''INSERT INTO Company (name, description, ind_id) VALUES (%s, %s, %s)''',
             (company.name,
-             company.description))
+             company.description,
+             company.ind_id))
 
     def add_request(self, request: Request):
         """
@@ -408,3 +433,11 @@ class DAO:
         WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
         searchdata = self.get_data(search_q, None)
         return searchdata
+
+    
+    def get_industry(self):
+        industry = []
+        data = self.get_data('''SELECT * FROM Industry''', None)
+        for ind in data:
+            industry.append(Industry(ind[0], ind[1]))
+        return industry

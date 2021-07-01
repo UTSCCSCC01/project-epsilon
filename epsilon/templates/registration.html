@@ -26,6 +26,13 @@
             <input class="auth" type="text" placeholder="Team Description" name="teamdesc" value="{{
                 request.form.q1 }}">
             <br>
+            <select name="industryselect">
+                <option value="" selected>Select Industry</option>
+                {% for item in industry %}
+                <option name="inst" value={{item.ind_id}}>{{item.name}}</option>
+                {% endfor %}
+            </select>
+            <br>
             <br>
             <input class="btn" type="submit" value="Create Team">
         </form>

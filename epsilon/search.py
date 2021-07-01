@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from DAO import DAO
+import json
 
 def make_keyword_list(keyword_string):
     keyword_list = []
@@ -43,3 +44,75 @@ def search(dao):
     else:
         # load if not POST
         return render_template("search.html")
+
+
+# related to testing frontend, won't interfere with back end
+def generate_error_data():
+    x = {
+        "error": "sample error message"
+    }
+    # return "sample error"
+    # return x
+    # return '{\"error\": \"sample error message\"}'
+    # return (str(json.loads(json.dumps(x))))
+    return json.dumps(x)
+
+def generate_search_result():
+    x = {
+        "company_list":[
+            {
+                "name": "epsilon",
+                "description": "sample description of epsilon",
+                "industry": ["computer software", "industrial automation"]
+            },
+
+            {
+                "name": "delta",
+                "description": "sample description of delta",
+                "industry": ["robotics"]
+            },
+            {
+                "name": "alpha",
+                "description": "sample description of alpha",
+                "industry": ["transportation", "telecommunication", "internet"]
+            }
+        ]
+    }
+    # return x
+    return json.dumps(x)
+
+def search_frontend_test(dao, succeed=True):
+    print("search_frontend_test")
+    if request.method == 'GET':
+        if succeed:
+            return render_template("search_test.html", data=generate_search_result())
+        else:
+            print("else")
+            error=generate_error_data()
+            print("error is passsed", error)
+            return render_template("search_test.html",error=error)
+
+'''
+{
+"company list": 
+    [
+        {
+        "name": "epsilon", 
+        "description": "sample description of epsilon", 
+        "industry": ["computer software", "industrial automation"]
+        }, 
+        
+        {
+        "name": "delta", 
+        "description": "sample description of delta", 
+        "industry": ["robotics"]
+        }, 
+        
+        {
+        "name": "alpha", 
+        "description": "sample description of alpha", "
+        industry": ["transportation", "telecommunication", "internet"]
+        }
+    ]
+}
+'''

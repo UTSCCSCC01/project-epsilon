@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Search.</title>
+</head>
+<header>
+</header>
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        <h2>Search.</h2>
+        <hr>
+    </div>
+    <div id="search_page"></div>
+
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+
+    {% block app_content %}
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    {% endblock %}
+    <div>
+        <script>
+            var company_data = JSON.parse('{{ data  | safe}}');
+        </script>
+        <script  type="text/babel", src="{{ url_for('static', filename='js/search.js') }}"></script>
+    </div>
+</body>
+</html>
+
+
+<!--a working version-->
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>-->
+<!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>-->
+<!--<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>-->
+<!--<body>-->
+<!--<div id="search_page"></div>-->
+<!--<div>-->
+<!--    <script>-->
+<!--        var user = JSON.parse('{{ data  | safe}}');-->
+<!--    </script>-->
+<!--    <script  type="text/babel", src="{{ url_for('static', filename='js/search.js') }}"></script>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

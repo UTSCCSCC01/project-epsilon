@@ -6,9 +6,9 @@ from joinTeamRequest import *
 from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
-from search import search
+from search import *
 from flask_cors import CORS
-import json
+
 
 app = Flask(__name__)
 CORS(app)
@@ -144,15 +144,17 @@ def show_team_request(tid):
 @app.route('/search', methods=['GET', 'POST'])
 def srch():
     return search(dao)
-      
-# @app.route('/searchTest', methods=['GET', 'POST'])
-# def srch_test():
-#     # mock object returned by search(dao)
-#     x = {
-#         "name": "my company limited",
-#         "description": 30
-#     }
-#     return json.dumps(x)
+
+# related to frontend testing, won't interfere with back end
+@app.route('/searchTestSucceed', methods=['GET'])
+def srch_test_succeed():
+    return search_frontend_test(dao, True)
+
+@app.route('/searchTestFail', methods=['GET'])
+def srch_test_fail():
+    return search_frontend_test(dao, False)
+
+
 
 
 if __name__ == "__main__":

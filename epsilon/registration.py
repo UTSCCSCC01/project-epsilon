@@ -1,3 +1,4 @@
+from classes.Role import Role
 from classes.Team import Team
 from classes.User import User
 from classes.Company import Company
@@ -41,15 +42,10 @@ def registration(dao):
             return render_template('registration.html', error=error)
         # if no errors
         try:
-            message = dao.modify_data(
-                sql_q, (request.form['teamname'], request.form['teamdesc']))
-            dao.modify_data('''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''', (6, 0, "Joe", "Jo@gmail.com"))
-            dao.modify_data('''INSERT INTO Teams (tid, uid, role) VALUES (%s, %s, %s)''', (3, 6, 1))
-            dao.updateRoleOfEmployee(6, 1)
             company = Company(name=request.form['teamname'],
                               description=request.form['teamdesc'])
             message = dao.add_company(company)
-            joe = User(rid=1, name="Joe", contact="Jo@gmail.com")
+            joe = User(rid=Role.TEAM_OWNER.value, name="Joe", contact="Jo@gmail.com")
             team = Team(tid=3, uid=6, rid=1)
             dao.add_user(joe)
             dao.add_team(team)

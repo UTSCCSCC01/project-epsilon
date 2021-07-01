@@ -7,6 +7,7 @@ from getTeam import getTeam
 from removeFromTeam import *
 from registration import registration
 from flask_cors import CORS
+from classes.Role import Role
 
 app = Flask(__name__)
 CORS(app)
@@ -54,17 +55,17 @@ def create():
     users = dao.get_users()
     teams = dao.get_teams()
     roles = dao.get_roles()
-    output = "Database Users, Teams, Roles are populated!\n"
+    output = "Database Users, Teams, Roles are populated!</br>"
 
-    output += "Also five dummy employees:\n"
+    output += "Also five dummy employees:</br>"
     for user in users:
-        output += str(user) + "\n"
-    output += "Also two dummy teams:\n"
+        output += str(user) + "</br>"
+    output += "Also two dummy teams:</br>"
     for team in teams:
-        output += str(team) + "\n"
-    output += "Also four roles:\n"
+        output += str(team) + "</br>"
+    output += "Also three roles:</br>"
     for role in roles:
-        output += str(role) + "\n"
+        output += str(role) + "</br>"
 
     return output
 
@@ -84,10 +85,10 @@ def testbtn():
         # id2 is either tid or rid
         op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            dao.remove_team(uid, id2)
+            dao.remove_from_team(id2, uid)
         elif op == 'p':
             # newRole should be id of admin
-            dao.update_role_of_employee(uid, 2)
+            dao.update_role_of_employee(uid, Role.TEAM_ADMIN.value)
         return render_template('displayteam.html')
 
 
@@ -104,13 +105,12 @@ def remove():
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
-    return getTeam(tid, dao)
     users = dao.get_users_from_team(tid)
     if users:  # there are values in the database
         userDetails = []
         for user in users:
             role = dao.get_role(user.rid)
-            userDetails.append([user.name, role.role_type, user.contact,
+            userDetails.append([user.name, role, user.contact,
                                 user.uid, tid, user.rid])
         return render_template('displayteam.html', userDetails=userDetails)
     else:
@@ -136,31 +136,21 @@ def testReact():
 
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):
+    message = ""
     if request.method == 'POST':
         action = request.form["action"].split("_")
         if action[0] == "A":
             message = team_request_accept(dao, action[1])
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
-        requests = dao.get_pending_requests(action[2])
-        data = []
-        for req in requests:
-            data.append([req.uid, req.create_date, req.req_id])
-        return render_template(
-            "jointeamrequest.html",
-            message=message,
-            data=data,
-            tid=action[2])
-    else:
-        # load if not POST
-        data = team_request_load(dao, tid)
-        requests = dao.get_pending_requests(tid)
-        data = []
-        for req in requests:
-            data.append([req.uid, req.create_date, req.req_id])
-        if not data:
-            return render_template("jointeamrequest.html", message="No pending requests!")
-        return render_template("jointeamrequest.html", data=data, tid=tid)
+    requests = dao.get_pending_requests(tid)
+    data = []
+    if not requests:
+        return render_template("jointeamrequest.html", message="No pending requests!")
+    for req in requests:
+        data.append([req.uid, req.create_date, req.req_id])
+    return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
+    
 
 
 if __name__ == "__main__":

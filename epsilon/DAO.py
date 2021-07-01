@@ -30,7 +30,7 @@ class DAO:
                     name text not null,
                     contact text not null,
                     constraint Users_pk
-                    primary key (uid))''')
+                    primary key (uid))''') #TODO: change rid to type_id
         cur.execute('''CREATE TABLE IF NOT EXISTS Teams (
                     tid INTEGER,
                     uid INTEGER,
@@ -40,23 +40,18 @@ class DAO:
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
                     "role_type text not null,"
-                    "role_type VARCHAR(255),"
                     "PRIMARY KEY(rid)"
                     ")")
         cur.execute("CREATE TABLE IF NOT EXISTS RStatus ("
                     "sid INTEGER,"
-                    "name VARCHAR(255),"
                     "name text not null,"
                     "PRIMARY KEY(sid)"
                     ")")
         cur.execute("CREATE TABLE IF NOT EXISTS Request ("
-                    "req_id INTEGER,"
                     "req_id INTEGER auto_increment,"
                     "tid INTEGER, "
                     "uid INTEGER, "
                     "sid INTEGER, "
-                    "create_date DATETIME,"
-                    "last_update TIMESTAMP,"
                     "create_date DATETIME default current_timestamp null,"
                     "last_update TIMESTAMP default current_timestamp "
                     "ON UPDATE CURRENT_TIMESTAMP,"
@@ -64,14 +59,12 @@ class DAO:
                     "PRIMARY KEY(req_id)"
                     ")")
         cur.execute("ALTER TABLE Users "
-                    "ADD PRIMARY KEY(uid),"
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
-                    )
+                    )#TODO: change rid to type_id in Type
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
-                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid),"
-                    "ADD CONSTRAINT PK_Teams PRIMARY KEY(tid, uid)")
+                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)")
 
         cur.execute("ALTER TABLE Request "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
@@ -81,15 +74,16 @@ class DAO:
         cur.close()
 
         # uid, rid, name, contact
-        paula = User(1, 1, "Paula", "ok@gmail.com")
-        tim = User(2, 1, "Tim", "ko@gmail.com")
-        pritish = User(3, 0, "Pritish", "lp@gmail.com")
-        sam = User(4, 0, "Sam", "opll@gmail.com")
-        water = User(5, 0, "Water", "no@gmail.com")
+        # TODO: change role to type here
+        paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com")
+        tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com")
+        pritish = User(3, Role.TEAM_MEMBER.value, "Pritish", "lp@gmail.com")
+        sam = User(4, Role.TEAM_MEMBER.value, "Sam", "opll@gmail.com")
+        water = User(5, Role.TEAM_OWNER.value, "Water", "no@gmail.com")
         users_to_add = [paula, tim, pritish, sam, water]
         
         # rid, role_type
-        roles_to_add = [Role.NO_TEAM, Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
+        roles_to_add = [(Role.TEAM_OWNER, "Team Owner"), (Role.TEAM_ADMIN, "Team Admin"), (Role.TEAM_MEMBER, "Team Member")]
 
         # tid, uid, rid
         team_1 = Team(1, 1, 1)
@@ -102,28 +96,22 @@ class DAO:
         companies_to_add = [epsilon, delta]
 
         # sid, name
-        r_status_to_add = [RStatus.ACCEPTED, RStatus.REJECTED, RStatus.PENDING]
+        r_status_to_add = [(RStatus.ACCEPTED, "Accepted"), (RStatus.REJECTED, "Rejected"), (RStatus.PENDING, "Pending")]
 
         # req_id, tid, uid, sid, create_date, last_update, seen
-        request_1 = Request(1, 1, 3, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
-        request_2 = Request(2, 1, 4, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
-        request_3 = Request(3, 2, 5, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_1 = Request(1, 1, 3, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
+        request_2 = Request(2, 1, 4, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_3 = Request(3, 2, 5, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
         requests_to_add = [request_1, request_2, request_3]
 
         for company in companies_to_add:
             self.add_company(company)
 
         for r_status in r_status_to_add:
-            self.add_r_status(r_status)
-
-        for company in companies_to_add:
-            self.add_company(company)
-
-        for r_status in r_status_to_add:
-            self.add_r_status(r_status)
+            self.add_r_status(r_status[0],r_status[1])
 
         for role in roles_to_add:
-            self.add_role(role)
+            self.add_role(role[0], role[1])
 
         for user in users_to_add:
             self.add_user(user)
@@ -191,15 +179,6 @@ class DAO:
         self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
         self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (new_rid, uid))
 
-    # Remove methods
-    def remove_team(self, tid, uid):
-        """
-        Removes a team from the database.
-        :param tid: team id of the team to be removed.
-        :param uid: user id of the team to be removed.
-        """
-        self.modify_data('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
-
     # Get methods
     def retrieve_team(self, tid):
         """
@@ -238,24 +217,26 @@ class DAO:
              request.sid,
              request.seen))
 
-    def add_role(self, role: Role):
+    def add_role(self, role: Role, role_type: str):
         """
         Adds a new role into the database.
         :param role: A Role object representing the role to be added.
+        :param role_type: The display name for role.
         """
         self.modify_data(
             '''INSERT INTO Roles (rid, role_type) VALUES (%s, %s)''',
-            (role.rid, role.role_type)
+            (role.value, role_type)
         )
 
-    def add_r_status(self, r_status: RStatus):
+    def add_r_status(self, r_status: RStatus, name: str):
         """
         Adds a new r_status into the database.
         :param r_status: A RStatus object representing the r_status to be added.
+        :param name: The display name for r_status.
         """
         self.modify_data(
             '''INSERT INTO RStatus (sid, name) VALUES (%s, %s)''',
-            (r_status.sid, r_status.name)
+            (r_status.value, name)
         )
 
     def add_team(self, team: Team):
@@ -309,8 +290,8 @@ class DAO:
         :param uid: user id of the employee to be removed.
         """
         self.modify_data(
-            '''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
-        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (0, uid))
+            '''DELETE FROM Teams WHERE tid = %s AND uid = %s''', (tid, uid))
+        # self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (0, uid))
 
     # Get methods
     def get_team(self, tid):
@@ -362,25 +343,24 @@ class DAO:
     def get_roles(self):
         """
         Gets all roles in the database.
-        :return: List of Role objects.
+        :return: List of role names.
         """
         roles = []
-        data = self.get_data('''SELECT * FROM Roles''', None)
+        data = self.get_data('''SELECT role_type FROM Roles''', None)
         for role in data:
-            roles.append(Role(role[0]))
+            roles.append(role[0])
         return roles
     
     def get_role(self, rid):
         """
         Gets a role from the database.
         :param rid: Role id of the role to be retrieved.
-        :return: Role object representing the rid. None if not found.
+        :return: string representing the name of the role. None if not found.
         """
         role = None
-        data = self.get_data('''SELECT * FROM Roles WHERE rid = %s''', (rid,))
+        data = self.get_data('''SELECT role_type FROM Roles WHERE rid = %s''', (rid,))
         if data is not None:
-            role = data[0]
-            role = Role(role[0], role[1])
+            role = data[0][0]
         return role
 
     def get_users_from_team(self, tid):
@@ -391,9 +371,9 @@ class DAO:
         """
         users = []
         data = self.get_data(
-            '''SELECT users.uid, users.rid, users.name, users.contact
-                        FROM epsilon_db.users JOIN epsilon_db.teams
-                        ON users.uid = teams.uid
+            '''SELECT users.uid, Teams.rid, users.name, users.contact
+                        FROM Users JOIN Teams
+                        ON Users.uid = Teams.uid
                         WHERE tid = %s''', (tid,))
 
         for user in data:

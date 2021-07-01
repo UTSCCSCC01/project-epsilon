@@ -247,7 +247,7 @@ class DAO:
         :param new_sid: New status id of the request.
         """
         self.modify_data(
-            '''UPDATE Request Set sid = %s, seen = true WHERE req_id = %s''',
+            '''UPDATE Request Set sid = %s, seen = false WHERE req_id = %s''',
             (new_sid, req_id))
 
     # Remove methods
@@ -383,3 +383,15 @@ class DAO:
                               request[3], request[4], request[5],
                               request[6])
         return request
+
+
+    def update_user(self, user: User):
+        """
+        Updates the data of a user in the database.
+        :param user: A User object representing the user to be modified.
+        """
+        self.modify_data(
+            '''UPDATE Users Set name = %s, contact = %s,
+            description = %s WHERE uid = %s''',
+            (user.name, user.contact, user.description, user.uid))
+

@@ -44,7 +44,9 @@ def user_register(dao: DAO):
             try:
                 # retrieve next available uid
                 query = "SELECT max(uid) FROM Users"
-                uid = dao.get_data(query,None) [0] + 1
+                temp = dao.get_data(query,None)
+                print(temp)
+                uid =  temp[0][0] + 1
                 # create new user
                 user = User(uid,u_type,name,email,pwd)
                 dao.add_user(user)

@@ -117,7 +117,7 @@ def index():
 def testReact():
     return {"title": "I am ready from app.py"}
 
-@app.route('/userRegistration', methods=['POST'])
+@app.route('/userRegistration', methods=['GET', 'POST'])
 def user_reg():
     return user_register(dao)
 

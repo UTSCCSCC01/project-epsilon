@@ -97,6 +97,10 @@ class DAO:
         cur.execute("ALTER TABLE Users "
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
                     )
+        
+        cur.execute("ALTER TABLE Company "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
+                    )
 
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
@@ -205,9 +209,10 @@ class DAO:
         :param company: A Company object representing the company to be added.
         """
         self.modify_data(
-            '''INSERT INTO Company (name, description) VALUES (%s, %s)''',
+            '''INSERT INTO Company (name, description, ind_id) VALUES (%s, %s, %s)''',
             (company.name,
-             company.description))
+             company.description,
+             company.ind_id))
 
     def add_request(self, request: Request):
         """

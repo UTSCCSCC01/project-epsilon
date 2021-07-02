@@ -15,8 +15,10 @@ from classes.User import User
 
 import mimetypes
 
+
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
+
 app = Flask(__name__)
 CORS(app)
 
@@ -50,7 +52,16 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route("/previousHome", methods=['GET', 'POST'])
+def previousHome():
+    global baseUrl
+    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
+    if request.method == 'POST':
+        return redirect(url_for('login'))
+    return render_template('previousHome.html')
+
 # Only go to this page if your database is empty
+
 
 @app.route("/deleteAll")
 def delete_all():
@@ -64,6 +75,7 @@ def create():
     users = dao.get_users()
     teams = dao.get_teams()
     roles = dao.get_roles()
+    companies = dao.get_companies()
     output = "Database Users, Teams, Roles are populated!</br>"
     output += "Also five dummy employees:</br>"
     for user in users:
@@ -74,6 +86,11 @@ def create():
     output += "Also three roles:</br>"
     for role in roles:
         output += str(role.name) + "</br>"
+
+    output += "Also two companies:</br>"
+    for company in companies:
+        output += str(company.name) +":"+str(company.description)+ "</br>"
+
     return output
 
 
@@ -164,9 +181,11 @@ def srch():
 def srch_test_succeed():
     return search_frontend_test(dao, True)
 
+
 @app.route('/searchTestFail', methods=['GET', 'POST'])
 def srch_test_fail():
     return search_frontend_test(dao, False)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

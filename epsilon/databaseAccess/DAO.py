@@ -362,7 +362,7 @@ class DAO:
                     company[3]))
         return companies
 
-    def get_company(self, tid):
+    def get_company_by_id(self, tid):
         """
         Gets a company from the database.
         :param tid: Team id of the company to be retrieved.
@@ -379,19 +379,6 @@ class DAO:
                     company[3])
         return company
 
-
-    def get_user(self, uid):
-        """
-        Gets one user with uid matching the parameter.
-        :param: uid (int) is the user ID of the user you want to get.
-        :return: User object or None if not found.
-        """
-        user = None
-        data = self.get_data('''SELECT * FROM Users WHERE uid = %s''', (uid,))
-        if data:
-            user = data[0]
-            user = User(user[0], user[1], user[2], user[3], user[4])
-        return user
 
     def get_users(self):
         """
@@ -487,7 +474,7 @@ class DAO:
         return request
 
 
-    def get_user(self, email):
+    def get_user_by_contact(self, email):
         """
         Gets a user from the database.
         :param email: Email of the user to be retrieved.
@@ -495,6 +482,19 @@ class DAO:
         """
         user = None
         data = self.get_data('''SELECT * FROM Users WHERE contact = %s''', (email,))
+        if data:
+            user = data[0]
+            user = User(user[0], user[1], user[2], user[3], user[4])
+        return user
+
+    def get_user(self, uid):
+        """
+        Gets one user with uid matching the parameter.
+        :param: uid (int) is the user ID of the user you want to get.
+        :return: User object or None if not found.
+        """
+        user = None
+        data = self.get_data('''SELECT * FROM Users WHERE uid = %s''', (uid,))
         if data:
             user = data[0]
             user = User(user[0], user[1], user[2], user[3], user[4])

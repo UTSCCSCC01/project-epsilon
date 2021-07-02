@@ -5,7 +5,6 @@ import re
 
 # EP-23 User Registration
 
-def user_exists(dao: DAO, user: str):
 def user_exists(dao: DAO, email: str):
     '''
     Checks if the user already exists in the database
@@ -14,13 +13,10 @@ def user_exists(dao: DAO, email: str):
     :return: whether the email is already in use
     '''
     # get existing users in db
-    users = dao.get_users()
     user = dao.get_user(email)
     # iterate through users
-    for u in users:
     if user:
         # check for email match
-        if u._contact.lower() == user.lower():
         if user.contact.lower() == email.lower():
             return True
     # no users remain that may exist already
@@ -44,7 +40,6 @@ def user_register(dao: DAO):
             e = "Please fill required fields"
             return render_template('userRegistration.html', error = e)
         # check if the user email is already in use (username)
-        elif (user_exists(dao,email)):
         elif (user_exists(dao, email)):
             e = "Email already in use, please use another one"
             return render_template('userRegistration.html', error = e)
@@ -54,10 +49,7 @@ def user_register(dao: DAO):
             return render_template('userRegistration.html', error = e)
         else:
             try:
-                # temp for auto incremented value
-                uid =  0
                 # create new user
-                user = User(uid,u_type,name,email,pwd)
                 user = User(rid=u_type, name=name, contact=email, password=pwd)
                 dao.add_user(user)
                 # send success prompt

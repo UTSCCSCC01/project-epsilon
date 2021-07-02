@@ -17,7 +17,6 @@ class DAO:
         self.db = db
 
     def populate(self):
-        """ Populates database with test data. """
         # Create a table with 5 users. 2 admin and 3 normal users
         cur = self.db.connection.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
@@ -27,9 +26,6 @@ class DAO:
                     create_date timestamp default current_timestamp null,
                     constraint Company_pk
                     primary key (tid));''')
-        cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
-            name VARCHAR (50), contact VARCHAR (50), password text)''')
-        cur.execute('''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, rid INTEGER)''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (
                     uid INTEGER auto_increment,
                     rid INTEGER,
@@ -46,24 +42,19 @@ class DAO:
                     PRIMARY KEY(tid, uid))''')
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
-                    "role_type VARCHAR(255),"
                     "role_type text not null,"
                     "PRIMARY KEY(rid)"
                     ")")
         cur.execute("CREATE TABLE IF NOT EXISTS RStatus ("
                     "sid INTEGER,"
-                    "name VARCHAR(255),"
                     "name text not null,"
                     "PRIMARY KEY(sid)"
                     ")")
         cur.execute("CREATE TABLE IF NOT EXISTS Request ("
-                    "req_id INTEGER,"
                     "req_id INTEGER auto_increment,"
                     "tid INTEGER, "
                     "uid INTEGER, "
                     "sid INTEGER, "
-                    "create_date DATETIME,"
-                    "last_update TIMESTAMP,"
                     "create_date DATETIME default current_timestamp null,"
                     "last_update TIMESTAMP default current_timestamp "
                     "ON UPDATE CURRENT_TIMESTAMP,"
@@ -71,14 +62,11 @@ class DAO:
                     "PRIMARY KEY(req_id)"
                     ")")
         cur.execute("ALTER TABLE Users "
-                    "ADD PRIMARY KEY(uid),"
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
                     )
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
-                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid),"
-                    "ADD CONSTRAINT PK_Teams PRIMARY KEY(tid, uid)")
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)")
 
         cur.execute("ALTER TABLE Request "
@@ -89,11 +77,6 @@ class DAO:
         cur.close()
 
         # uid, rid, name, contact
-        paula = User(1, 1, "Paula", "ok@gmail.com", "admin")
-        tim = User(2, 1, "Tim", "ko@gmail.com", "admin")
-        pritish = User(3, 3, "Pritish", "lp@gmail.com", "admin")
-        sam = User(4, 3, "Sam", "opll@gmail.com", "admin")
-        water = User(5, 3, "Water", "no@gmail.com", "admin")
         # TODO: change role to type here
         paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com", "admin")
         tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com", "admin")
@@ -103,17 +86,14 @@ class DAO:
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type
-        roles_to_add = [Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
         roles_to_add = [Role.NO_TEAM, Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
 
         # tid, uid, rid
         team_1 = Team(1, 1, 1)
-        team_2 = Team(2, 2, 2)
         team_2 = Team(2, 2, 1)
         teams_to_add = [team_1, team_2]
 
         # tid, name, description, create_date
-        epsilon = Company(1, "Epsilon", "A startup named Epsilon.", datetime.now())
         epsilon = Company(
             1,
             "Epsilon",
@@ -126,9 +106,6 @@ class DAO:
         r_status_to_add = [RStatus.ACCEPTED, RStatus.REJECTED, RStatus.PENDING]
 
         # req_id, tid, uid, sid, create_date, last_update, seen
-        request_1 = Request(1, 1, 3, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
-        request_2 = Request(2, 1, 4, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
-        request_3 = Request(3, 2, 5, 3, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
         request_1 = Request(1, 1, 3, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
         request_2 = Request(2, 1, 4, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
         request_3 = Request(3, 2, 5, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
@@ -154,44 +131,26 @@ class DAO:
 
         self.db.connection.commit()
 
-    def modify_data(self, sql_q, args):
-        """
-        Runs sql_q query to modify a value in the database.
-        :param sql_q: query (str) to be run.
-        :param args: tuple of parameters to use with query
-        """
     def modify_data(self, sql_q, data):
         try:
             cur = self.db.connection.cursor()
-            cur.execute(sql_q, args)
             cur.execute(sql_q, data)
             self.db.connection.commit()
             cur.close()
-        except:
         except BaseException:
             pass
 
-    def get_data(self, sql_q, args):
-        """
-        Runs sql_q query to get a value from the database.
-        :param sql_q: query (str) to be run.
-        :param args: optional tuple of parameters to use with query
-        :returns data: list of tuples matching every resulting row. If no rows match, it returns an empty list.
-        """
     def get_data(self, sql_q, data):
         try:
             cur = self.db.connection.cursor()
-            cur.execute(sql_q, args)
             cur.execute(sql_q, data)
             data = cur.fetchall()
             cur.close()
             return data
-        except:
         except BaseException:
             pass
 
     def delete_all(self):
-        """ Deletes all tables from the database. """
         try:
             cur = self.db.connection.cursor()
             cur.execute('''DROP TABLE IF EXISTS Teams''')
@@ -202,7 +161,6 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS RStatus''')
             self.db.connection.commit()
             cur.close()
-        except:
         except BaseException:
             pass
 
@@ -213,9 +171,6 @@ class DAO:
         :param company: A Company object representing the company to be added.
         """
         self.modify_data(
-            '''INSERT INTO Company (tid, name, description, create_date) VALUES (%s, %s, %s, %s)''',
-            (company.tid, company.name, company.description, company.create_date)
-        )
             '''INSERT INTO Company (name, description) VALUES (%s, %s)''',
             (company.name,
              company.description))
@@ -226,10 +181,6 @@ class DAO:
         :param request: A Request object representing the request to be added.
         """
         self.modify_data(
-            '''INSERT INTO Request (req_id, tid, uid, sid, create_date, last_update, seen) VALUES (%s, %s, %s, %s, 
-            %s, %s, %s)''',
-            (request.req_id, request.tid, request.uid, request.sid, request.create_date, request.last_update, request.seen)
-        )
             '''INSERT INTO Request (tid, uid, sid, seen) VALUES (%s, %s, %s,
             %s)''',
             (request.tid,
@@ -273,8 +224,6 @@ class DAO:
         :param user: A User object representing the user to be added.
         """
         self.modify_data(
-            '''INSERT INTO Users (uid, rid, name, contact, password) VALUES (%s, %s, %s, %s, %s)''',
-            (user.uid, user.rid, user.name, user.contact, user.password)
             '''INSERT INTO Users (rid, name, contact, password) VALUES (%s, %s, %s, %s)''',
             (user.rid, user.name, user.contact, user.password)
         )
@@ -286,8 +235,6 @@ class DAO:
         :param uid: User id of the employee.
         :param new_rid: New role id of the employee.
         """
-        self.modify_data('''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
-        self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (new_rid, uid))
         self.modify_data(
             '''UPDATE Teams SET rid=%s WHERE uid=%s ''', (new_rid, uid))
         self.modify_data(
@@ -305,23 +252,17 @@ class DAO:
             (new_sid, req_id))
 
     # Remove methods
-    def remove_team(self, tid, uid):
     def remove_from_team(self, tid, uid):
         """
-        Removes a team from the database.
-        :param tid: team id of the team to be removed.
-        :param uid: user id of the team to be removed.
         Removes an employee from a team in the database.
         :param tid: team id of the employee to be removed.
         :param uid: user id of the employee to be removed.
         """
-        self.modify_data('''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
         self.modify_data(
             '''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
         self.modify_data('''UPDATE Users SET rid=%s WHERE uid=%s ''', (0, uid))
 
     # Get methods
-    def retrieve_team(self, tid):
     def get_team(self, tid):
         """
         Gets a team from the database.
@@ -329,8 +270,6 @@ class DAO:
         :return: Team object representing the matching team. None if not found.
         """
         team = None
-        data = self.get_data('''SELECT * FROM Teams WHERE tid = %s''', tid)
-        if data.len() == 1:
         data = self.get_data('''SELECT * FROM Teams WHERE tid = %s''', (tid,))
         if data is not None:
             team = data[0]
@@ -345,7 +284,6 @@ class DAO:
         companies = []
         data = self.get_data('''SELECT * FROM Company''', None)
         for company in data:
-            companies.append(Company(company[0], company[1], company[2], company[3]))
             companies.append(
                 Company(
                     company[0],
@@ -362,11 +300,6 @@ class DAO:
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
-            # bandaid until rest of system enforces pwd per user *************
-            if len(user) < 5:
-                users.append (User(user[0], user[1], user[2], user[3], None))
-            else:
-                users.append(User(user[0], user[1], user[2], user[3], user[4]))
             users.append(User(user[0], user[1], user[2], user[3], user[4]))
         return users
 

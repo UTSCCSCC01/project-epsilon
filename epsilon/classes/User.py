@@ -1,11 +1,12 @@
 class User:
-    def __init__(self, uid=0, rid=0, name="", contact="",description="", password=""):
+    def __init__(self, uid=0, rid=0, name="", contact="", password="", description=""):
         self._uid = uid
         self._rid = rid
         self._name = name
         self._contact = contact
-        self.password = password
         self._description = description
+        self._password = password
+
 
     @property
     def uid(self):
@@ -62,4 +63,5 @@ class User:
             + ', rid = ' + str(self.rid) \
             + ', name = ' + self.name \
             + ', contact = ' + self.contact \
+            + ', pwd = ' + self.password\
             + ', description = ' + self.description + ')'

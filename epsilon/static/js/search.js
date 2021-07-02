@@ -1,3 +1,4 @@
+// currently no import works
 // import React  from 'react';
 // import ReactDOM from 'react-dom';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,12 +9,12 @@ class CompanyRow extends React.Component {
     render() {
         const name = this.props.name;
         const description = this.props.description;
-        const industry = this.props.industry;
+        // const industry = this.props.industry;
         return (
             <tr>
                 <td>{name}</td>
                 <td>{description}</td>
-                <td>{industry}</td>
+                {/*<td>{industry}</td>*/}
             </tr>
         );
     }
@@ -27,11 +28,9 @@ class CompanyTable extends React.Component {
                     <CompanyRow
                         name={company.name}
                         description={company.description}
-                        industry={company.industry.toString()} />
+                        // industry={company.industry.toString()}
+                    />
                 );
-                console.log("type of industry:");
-                console.log(company.industry.toString());
-                console.log(typeof company.industry.toString());
         });
         return (
             <div>
@@ -44,7 +43,7 @@ class CompanyTable extends React.Component {
                 <tr>
                     <th>name</th>
                     <th>description</th>
-                    <th>industry</th>
+                    {/*<th>industry</th>*/}
                 </tr>
                 </thead>
                 <tbody>{rows}</tbody>

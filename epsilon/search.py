@@ -17,7 +17,7 @@ def refine_search_data(search_data):
         if item not in search_results:
             search_results[item] = search_data.count(item)
     search_results = dict(sorted(search_results.items(), key=lambda item: item[1], reverse=True))
-    print(search_results)
+    print("search_result:", search_results)
     return search_results
 
 
@@ -29,7 +29,8 @@ def search(dao):
         # check if all form boxes are completed
         if (len(request.form['search']) == 0):
             error = 'Search box cannot be empty!'
-            return render_template('search.html', error=error)
+            error_json = json.dumps({"message": error})
+            return render_template('search_test.html', error=error_json)
         # if no errors
         try:
             keywords = make_keyword_list(request.form['search'])
@@ -39,11 +40,25 @@ def search(dao):
                 message = "No results found!"
                 search_results = ()
         except Exception as e:
-            return render_template('search.html', error=e)
-        return render_template('search.html', message=message, data=search_results)
+            return render_template('search_test.html', error=e)
+        return render_template('search_test.html', message=message, data=convert_search_result(search_results))
     else:
         # load if not POST
-        return render_template("search.html")
+        return render_template("search_test.html")
+
+
+def convert_search_result(res):
+    """
+    convert search result from dict (tuple->int) to json form.
+    :param res: dictionary form
+    :return:  json form
+    """
+    all_comp = []
+    for d in res.keys():
+        all_comp.append({"name": d[0], "description":d[1]})
+    final_res = {"company_list": all_comp}
+    return json.dumps(final_res)
+
 
 
 # related to testing frontend, won't interfere with back end
@@ -51,10 +66,6 @@ def generate_error_data():
     x = {
         "message": "sample error message"
     }
-    # return "sample error"
-    # return x
-    # return '{\"error\": \"sample error message\"}'
-    # return (str(json.loads(json.dumps(x))))
     return json.dumps(x)
 
 def generate_search_result():
@@ -62,19 +73,16 @@ def generate_search_result():
         "company_list":[
             {
                 "name": "epsilon",
-                "description": "sample description of epsilon",
-                "industry": ["computer software", "industrial automation"]
+                "description": "sample description of epsilon"
             },
 
             {
                 "name": "delta",
-                "description": "sample description of delta",
-                "industry": ["robotics"]
+                "description": "sample description of delta"
             },
             {
                 "name": "alpha",
-                "description": "sample description of alpha",
-                "industry": ["transportation", "telecommunication", "internet"]
+                "description": "sample description of alpha"
             }
         ]
     }

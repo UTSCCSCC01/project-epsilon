@@ -38,6 +38,7 @@ function isEditing() {
     const pencil_icon = '<i class="fa fa-pencil" aria-hidden="true""></i> ';
     let display_name = is_editing ? "Save" : "Edit";
     document.getElementById("editBtn").innerHTML = pencil_icon + display_name;
+    document.getElementById("discardBtn").style.display = is_editing ? "inline" : "none";
 
     document.getElementById('name').readOnly = !is_editing;
     document.getElementById('description').readOnly = !is_editing;

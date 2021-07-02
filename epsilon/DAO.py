@@ -204,6 +204,9 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS Roles''')
             cur.execute('''DROP TABLE IF EXISTS Company''')
             cur.execute('''DROP TABLE IF EXISTS RStatus''')
+            cur.execute('''DROP TABLE IF EXISTS Tags''')
+            cur.execute('''DROP TABLE IF EXISTS CompanyTags''')
+            cur.execute('''DROP TABLE IF EXISTS Industry''')
             self.db.connection.commit()
             cur.close()
         except BaseException:

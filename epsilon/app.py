@@ -55,7 +55,7 @@ def login():
 @app.route("/deleteAll")
 def delete_all():
     dao.delete_all()
-    return "Database Users, Teams are deleted!"
+    return "all tables are deleted!"
 
 
 @app.route("/create")

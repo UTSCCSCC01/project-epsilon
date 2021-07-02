@@ -16,11 +16,14 @@
         <h2>Search.</h2>
         <hr>
     </div>
-
-
         <form  id="cover" method="post" action="">
             <div class="tb">
-                <div class="td"><input type="text" placeholder="Search" required></div>
+                <div class="td">
+                    <input class="auth" type="text" placeholder="Search" name="search" value="{{
+                request.form.search }}">
+                </div>
+<!--                    working version during frontend testing-->
+<!--                    <input type="text" placeholder="Search" required></div>-->
                 <div class="td" id="s-cover">
                     <button type="submit">
                         <div id="s-circle"></div>
@@ -29,9 +32,7 @@
                 </div>
             </div>
         </form>
-
     <div id="search_page"></div>
-
 <!--    <div class="footer">-->
 <!--        <footer>-->
 <!--            <p>-->
@@ -39,7 +40,6 @@
 <!--            </p>-->
 <!--        </footer>-->
 <!--    </div>-->
-
     {% block app_content %}
 
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
@@ -55,11 +55,7 @@
             src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
             crossorigin></script>
 
-
     {% endblock %}
-
-
-
     <div id="result">
         {% if data %}
         <script>
@@ -74,13 +70,8 @@
 <!--        previously text/babel-->
         <script  type="text/babel" src="{{ url_for('static', filename='js/search.js') }}"></script>
     </div>
-
-
 </body>
 </html>
-
-
-
 
 <!--a working version-->
 <!--<!DOCTYPE html>-->

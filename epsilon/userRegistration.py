@@ -47,16 +47,18 @@ def user_register(dao: DAO):
                 # retrieve next available uid
                 query = "SELECT max(uid) FROM Users"
                 temp = dao.get_data(query,None)
-                print(temp)
                 uid =  temp[0][0] + 1
                 # create new user
                 user = User(uid,u_type,name,email,pwd)
+                print(user)
                 dao.add_user(user)
+                
                 # send success prompt
                 e = "Account successfully created!"
                 return render_template('userRegistration.html', msg = e)
             except Exception as e:
                 # display issue w db
                 return render_template('userRegistration.html', error = e)
-    return render_template('userRegistration.html')
+    else:
+        return render_template('userRegistration.html')
         

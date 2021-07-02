@@ -216,10 +216,12 @@ class DAO:
         Adds a new user into the database.
         :param user: A User object representing the user to be added.
         """
+        print(user)
         self.modify_data(
             '''INSERT INTO Users (uid, rid, name, contact, password) VALUES (%s, %s, %s, %s, %s)''',
             (user.uid, user.rid, user.name, user.contact, user.password)
         )
+        print("ran")
 
     # Update methods
     def update_role_of_employee(self, uid, new_rid):
@@ -273,7 +275,11 @@ class DAO:
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
-            users.append(User(user[0], user[1], user[2], user[3], user[4]))
+            # bandaid until rest of system enforces pwd per user *************
+            if len(user) < 5:
+                users.append (User(user[0], user[1], user[2], user[3], None))
+            else:
+                users.append(User(user[0], user[1], user[2], user[3], user[4]))
         return users
 
     def get_teams(self):

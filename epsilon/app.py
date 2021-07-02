@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
-
 from DAO import DAO
 from joinTeamRequest import *
 from registration import registration
 from search import *
+
 from flask_cors import CORS
 from classes.Company import Company
 from classes.Request import Request
@@ -12,12 +12,12 @@ from classes.Role import Role
 from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
+
 import mimetypes
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
 app = Flask(__name__)
 CORS(app)
-mimetypes.add_type('application/javascript', '.mjs')
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
@@ -41,7 +41,8 @@ def hello():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        if (request.form['username'] != 'admin' or
+                request.form['password'] != 'admin'):
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('hello'))
@@ -62,18 +63,16 @@ def create():
     users = dao.get_users()
     teams = dao.get_teams()
     roles = dao.get_roles()
-    output = "Database Users, Teams, Roles are populated!\n"
-
-    output += "Also five dummy employees:\n"
+    output = "Database Users, Teams, Roles are populated!</br>"
+    output += "Also five dummy employees:</br>"
     for user in users:
-        output += str(user) + "\n"
-    output += "Also two dummy teams:\n"
+        output += str(user) + "</br>"
+    output += "Also two dummy teams:</br>"
     for team in teams:
-        output += str(team) + "\n"
-    output += "Also four roles:\n"
+        output += str(team) + "</br>"
+    output += "Also three roles:</br>"
     for role in roles:
-        output += str(role) + "\n"
-
+        output += str(role.name) + "</br>"
     return output
 
 
@@ -92,10 +91,10 @@ def testbtn():
         # id2 is either tid or rid
         op, uid, id2 = request.form['submit'].split(".")
         if op == 'r':
-            dao.remove_team(uid, id2)
+            dao.remove_from_team(id2, uid)
         elif op == 'p':
             # newRole should be id of admin
-            dao.update_role_of_employee(uid, 2)
+            dao.update_role_of_employee(uid, Role.TEAM_ADMIN.value)
         return render_template('displayteam.html')
 
 
@@ -105,14 +104,24 @@ def remove():
     if data:
         uid = str(data['uid'][0])
         tid = str(data['tid'][0])
-        remove_from_team(dao, uid, tid)
+        dao.remove_from_team(tid, uid)
         return "Success"
     return "Invalid uid/tid"
 
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
-    return getTeam(tid, dao)
+    users = dao.get_users_from_team(tid)
+    if users:  # there are values in the database
+        userDetails = []
+        for user in users:
+            role = dao.get_role(user.rid)
+            userDetails.append([user.name, role.name, user.contact,
+                                user.uid, tid, user.rid])
+        return render_template('displayteam.html', userDetails=userDetails)
+    else:
+        message = "Your team does not exist"
+        return render_template('displayteam.html', message=message)
 
 
 @app.route('/test_get_base_url')
@@ -120,31 +129,29 @@ def index():
     return request.base_url[:request.base_url.rfind('/')]
 
 
+# Only go to this page after you go to /create to add more tables and add key constraints
 @app.route('/testReact', methods=['GET'])
 def testReact():
     return {"title": "I am ready from app.py"}
 
 
-# Only go to this page after you go to /create to add more tables and add key constraints
-
-# EP-3: Accept and Decline pending requests
 
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):
+    message = ""
     if request.method == 'POST':
         action = request.form["action"].split("_")
         if action[0] == "A":
             message = team_request_accept(dao, action[1])
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
-        data = team_request_load(dao, action[2])
-        return render_template("jointeamrequest.html", message=message, data=data, tid=action[2])
-    else:
-        # load if not POST
-        data = team_request_load(dao, tid)
-        if not data:
-            return render_template("jointeamrequest.html", message="No pending requests!")
-        return render_template("jointeamrequest.html", data = data, tid = tid)
+    requests = dao.get_pending_requests(tid)
+    data = []
+    if not requests:
+        return render_template("jointeamrequest.html", message="No pending requests!")
+    for req in requests:
+        data.append([req.uid, req.create_date, req.req_id])
+    return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
 
 # this version of search
 @app.route('/search', methods=['GET', 'POST'])
@@ -156,7 +163,7 @@ def srch():
 def srch_test_succeed():
     return search_frontend_test(dao, True)
 
-# currently doesn't work
+
 @app.route('/searchTestFail', methods=['GET','POST'])
 def srch_test_fail():
     return search_frontend_test(dao, False)

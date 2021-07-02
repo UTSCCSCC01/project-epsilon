@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
-
 from classes.Company import Company
 from classes.Industry import Industry
 from classes.RStatus import RStatus
@@ -38,6 +37,7 @@ class DAO:
 	                constraint Industry_pk
 		            primary key (ind_id));''')
 
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,
                     name text not null,
@@ -67,7 +67,7 @@ class DAO:
                     "role_type text not null,"
                     "PRIMARY KEY(rid)"
                     ")")
-                    
+
         cur.execute("CREATE TABLE IF NOT EXISTS RStatus ("
                     "sid INTEGER,"
                     "name text not null,"
@@ -100,6 +100,10 @@ class DAO:
         
         cur.execute("ALTER TABLE Company "
                     "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
+                    )
+
+        cur.execute("ALTER TABLE Users "
+                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
                     )
 
         cur.execute("ALTER TABLE Teams "
@@ -433,7 +437,6 @@ class DAO:
         WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
         searchdata = self.get_data(search_q, None)
         return searchdata
-
     
     def get_industry(self):
         industry = []

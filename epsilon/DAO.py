@@ -161,6 +161,7 @@ class DAO:
 
         for company in companies_to_add:
             self.add_company(company)
+            update_tags_from_team_desc(self, company.description, company.name)
 
         for r_status in r_status_to_add:
             self.add_r_status(r_status)

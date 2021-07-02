@@ -117,11 +117,12 @@ class DAO:
 
         # uid, rid, name, contact
         # TODO: change role to type here
-        paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com", "Hi, I am Paula, team owner of Company Epsilon.")
-        tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com", "This is Tim, owner of Company Delta.")
-        pritish = User(3, Role.TEAM_MEMBER.value, "Pritish", "lp@gmail.com", "I am waiting to join team Epsilon!.")
-        sam = User(4, Role.TEAM_MEMBER.value, "Sam", "opll@gmail.com", "Here comes Sam.")
-        water = User(5, Role.TEAM_OWNER.value, "Water", "no@gmail.com", "Water is good.")
+        # TODO: change role to type here
+        paula = User(uid=1, rid=Role.TEAM_OWNER.value, name="Paula", contact="ok@gmail.com", description="Hi, I am Paula, team owner of Company Epsilon.")
+        tim = User(uid=2, rid=Role.TEAM_OWNER.value, name="Tim", contact="ko@gmail.com", description="This is Tim, owner of Company Delta.")
+        pritish = User(uid=3, rid=Role.TEAM_MEMBER.value, name="Pritish", contact="lp@gmail.com", description="I am waiting to join team Epsilon!.")
+        sam = User(uid=4, rid=Role.TEAM_MEMBER.value, name="Sam", contact="opll@gmail.com", description="Here comes Sam.")
+        water = User(uid=5, rid=Role.TEAM_OWNER.value, name="Water", contact="no@gmail.com", description="Water is good.")
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type

@@ -14,6 +14,7 @@ from classes.Team import Team
 from classes.User import User
 
 import mimetypes
+
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
 app = Flask(__name__)
@@ -163,8 +164,7 @@ def srch():
 def srch_test_succeed():
     return search_frontend_test(dao, True)
 
-
-@app.route('/searchTestFail', methods=['GET','POST'])
+@app.route('/searchTestFail', methods=['GET', 'POST'])
 def srch_test_fail():
     return search_frontend_test(dao, False)
 

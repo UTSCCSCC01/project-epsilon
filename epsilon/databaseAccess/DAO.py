@@ -126,7 +126,6 @@ class DAO:
         pritish = User(uid=3, rid=Role.TEAM_MEMBER.value, name="Pritish", contact="lp@gmail.com", description="I am waiting to join team Epsilon!.")
         sam = User(uid=4, rid=Role.TEAM_MEMBER.value, name="Sam", contact="opll@gmail.com", description="Here comes Sam.")
         water = User(uid=5, rid=Role.TEAM_OWNER.value, name="Water", contact="no@gmail.com", description="Water is good.")
-
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type

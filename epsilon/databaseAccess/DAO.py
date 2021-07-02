@@ -303,6 +303,24 @@ class DAO:
                     company[3]))
         return companies
 
+    def get_company(self, tid):
+        """
+        Gets a company from the database.
+        :param tid: Team id of the company to be retrieved.
+        :return: compnay object representing the matching company. None if not found.
+        """
+        company = None
+        data = self.get_data('''SELECT * FROM Company WHERE tid = %s''', (tid,))
+        if data:
+            company = data[0]
+            company = Company(
+                    company[0],
+                    company[1],
+                    company[2],
+                    company[3])
+        return company
+
+
     def get_user(self, uid):
         """
         Gets one user with uid matching the parameter.

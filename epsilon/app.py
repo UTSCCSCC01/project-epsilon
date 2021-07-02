@@ -146,12 +146,20 @@ def show_team_request(tid):
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
     requests = dao.get_pending_requests(tid)
+    company = dao.get_company(tid)
     data = []
+    if not company:
+        return render_template("jointeamrequest.html",
+                               message="Your team does not exist.")
+    company_name = company.name
     if not requests:
-        return render_template("jointeamrequest.html", message="No pending requests!")
+        return render_template("jointeamrequest.html",
+                               message="No pending requests!",
+                               company_name=company_name)
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
-    return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
+    return render_template("jointeamrequest.html", data=data, tid=tid,
+                           message=message, company_name=company_name)
 
 
 # EP-20: Display user profile

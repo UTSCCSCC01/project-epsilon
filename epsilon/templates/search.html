@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Register a new Company.</title>
+    <title>Search.</title>
 </head>
 
 <header>
@@ -14,28 +14,31 @@
 <body>
     <div id="background" class="title-card">
         <h1>Epsilon</h1>
-        <h2>Register a new Company.</h2>
+        <h2>Search.</h2>
         <hr>
     </div>
     <div class="contents">
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" placeholder="Team Name" name="teamname" value="{{
-                request.form.course }}">
-            <br>
-            <input class="auth" type="text" placeholder="Team Description" name="teamdesc" value="{{
-                request.form.q1 }}">
-            <br>
-            <select name="industryselect">
-                <option value="" selected>Select Industry</option>
-                {% for item in industry %}
-                <option name="inst" value={{item.ind_id}}>{{item.name}}</option>
-                {% endfor %}
-            </select>
+            <input class="auth" type="text" placeholder="Search" name="search" value="{{
+                request.form.search }}">
             <br>
             <br>
-            <input class="btn" type="submit" value="Create Team">
+            <input class="btn" type="submit" value="Search">
         </form>
+        {% for item in data %}
+            <div class="container">
+                <a id="containername">
+                    <h1>{{item[0]}}</h1>
+                </a>
+                <section id='largedata'>
+                    <ul class="no_bullets">
+                        <br>
+                        <li><strong>Description: </strong>{{item[1]}}</li>
+                    </ul>
+                </section>
+            </div>
+        {% endfor %}
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
@@ -43,6 +46,7 @@
         <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
     </div>
+
     <div class="footer">
         <footer>
             <p>
@@ -50,6 +54,7 @@
             </p>
         </footer>
     </div>
+
 </body>
 
 </html>

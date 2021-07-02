@@ -1,10 +1,10 @@
-
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
-
 from DAO import DAO
 from joinTeamRequest import *
 from registration import registration
+from search import *
+
 from flask_cors import CORS
 from classes.Company import Company
 from classes.Request import Request
@@ -13,6 +13,11 @@ from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
 
+import mimetypes
+
+
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('application/javascript', '.mjs')
 
 app = Flask(__name__)
 CORS(app)
@@ -61,7 +66,7 @@ def previousHome():
 @app.route("/deleteAll")
 def delete_all():
     dao.delete_all()
-    return "Database Users, Teams are deleted!"
+    return "all tables are deleted!"
 
 
 @app.route("/create")
@@ -81,9 +86,11 @@ def create():
     output += "Also three roles:</br>"
     for role in roles:
         output += str(role.name) + "</br>"
+
     output += "Also two companies:</br>"
     for company in companies:
         output += str(company.name) +":"+str(company.description)+ "</br>"
+
     return output
 
 
@@ -146,7 +153,6 @@ def testReact():
     return {"title": "I am ready from app.py"}
 
 
-# EP-3: Accept and Decline pending requests
 
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):
@@ -164,6 +170,21 @@ def show_team_request(tid):
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
     return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
+
+# this version of search
+@app.route('/search', methods=['GET', 'POST'])
+def srch():
+    return search(dao)
+
+# related to frontend testing, won't interfere with back end
+@app.route('/searchTestSucceed', methods=['GET', 'POST'])
+def srch_test_succeed():
+    return search_frontend_test(dao, True)
+
+
+@app.route('/searchTestFail', methods=['GET', 'POST'])
+def srch_test_fail():
+    return search_frontend_test(dao, False)
 
 
 if __name__ == "__main__":

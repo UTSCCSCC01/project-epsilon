@@ -1,10 +1,11 @@
 class User:
-    def __init__(self, uid=0, rid=0, name="", contact="", password=""):
+    def __init__(self, uid=0, rid=0, name="", contact="",description="", password=""):
         self._uid = uid
         self._rid = rid
         self._name = name
         self._contact = contact
         self.password = password
+        self._description = description
 
     @property
     def uid(self):
@@ -46,8 +47,19 @@ class User:
     def password(self, password):
         self._password = password
 
+    @property
+    def description(self):
+         return self._description
+
+    @description.setter
+    def description(self, description):
+        self._description = description
+
 
     def __str__(self):
         """ Overloads str method. """
-        return 'User(uid = ' + str(self.uid) + ', rid = ' + str(self.rid) + ', name = ' \
-               + self.name + ', contact = ' + self.contact + ', password = ' + self.password + ')'
+        return 'User(uid = ' + str(self.uid) \
+            + ', rid = ' + str(self.rid) \
+            + ', name = ' + self.name \
+            + ', contact = ' + self.contact \
+            + ', description = ' + self.description + ')'

@@ -1,10 +1,13 @@
+from modules.UserModule import update_user
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-from DAO import DAO
+from databaseAccess.DAO import DAO
 from joinTeamRequest import *
 from registration import registration
 from userRegistration import user_register
+from search import *
+
 from flask_cors import CORS
 from classes.Company import Company
 from classes.Request import Request
@@ -12,6 +15,12 @@ from classes.Role import Role
 from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
+
+import mimetypes
+
+
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('application/javascript', '.mjs')
 
 
 app = Flask(__name__)
@@ -62,13 +71,14 @@ def previousHome():
         return redirect(url_for('login'))
     return render_template('previousHome.html')
 
-# Only go to this page if your database is empty
 
+
+# Only go to this page if your database is empty
 
 @app.route("/deleteAll")
 def delete_all():
     dao.delete_all()
-    return "Database Users, Teams are deleted!"
+    return "all tables are deleted!"
 
 
 @app.route("/create")
@@ -79,6 +89,7 @@ def create():
     roles = dao.get_roles()
     companies = dao.get_companies()
     output = "Database Users, Teams, Roles are populated!</br>"
+
     output += "Also five dummy employees:</br>"
     for user in users:
         output += str(user) + "</br>"
@@ -90,7 +101,8 @@ def create():
         output += str(role.name) + "</br>"
     output += "Also two companies:</br>"
     for company in companies:
-        output += str(company.name) +":"+str(company.description)+ "</br>"
+        output += str(company.name) + ":"+str(company.description) + "</br>"
+
     return output
 
 
@@ -148,7 +160,7 @@ def index():
     return request.base_url[:request.base_url.rfind('/')]
 
 
-# Only go to this page after you go to /create to add more tables and add key constraints
+# Only go to this page after you go to /create to add more tables and add key constraints 
 @app.route('/testReact', methods=['GET'])
 def testReact():
     return {"title": "I am ready from app.py"}
@@ -166,12 +178,57 @@ def show_team_request(tid):
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
     requests = dao.get_pending_requests(tid)
+    company = dao.get_company(tid)
     data = []
+    if not company:
+        return render_template("jointeamrequest.html",
+                               message="Your team does not exist.")
+    company_name = company.name
     if not requests:
-        return render_template("jointeamrequest.html", message="No pending requests!")
+        return render_template("jointeamrequest.html",
+                               message="No pending requests!",
+                               company_name=company_name)
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
-    return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
+    return render_template("jointeamrequest.html", data=data, tid=tid,
+                           message=message, company_name=company_name)
+
+
+# EP-20: Display user profile
+
+@app.route('/user/<int:uid>/', methods=['GET', 'POST'])
+def display_user(uid):
+    message = ""
+    if request.method == 'POST':
+        data = request.get_json
+        if data:
+            message = update_user(dao, uid, request.form["name"],
+                                  request.form["description"],
+                                  request.form["contact"])
+
+    user = dao.get_user(uid)
+    if user:
+        user_role = Role(user.rid)
+        user_details = [user.name, user.description, user.contact, user_role.name]
+        return render_template('userprofile.html', user_details=user_details, message= message)
+    else:
+        message = "The user does not exist"
+        return render_template("userprofile.html", message=message)
+
+# this version of search
+@app.route('/search', methods=['GET', 'POST'])
+def srch():
+    return search(dao)
+
+# related to frontend testing, won't interfere with back end
+@app.route('/searchTestSucceed', methods=['GET', 'POST'])
+def srch_test_succeed():
+    return search_frontend_test(dao, True)
+
+
+@app.route('/searchTestFail', methods=['GET', 'POST'])
+def srch_test_fail():
+    return search_frontend_test(dao, False)
 
 @app.route('/userRegistration', methods=['GET', 'POST'])
 def user_reg():

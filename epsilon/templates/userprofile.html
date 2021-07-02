@@ -22,20 +22,20 @@
         <form action="" method="POST" id="userForm">
             <table>
                 <tr>
-                    <td><button id="discardBtn" style="display: none;" onClick="window.location.reload();">Discard Changes</button></td>
-                    <td><button id="editBtn" name="editbtn" type="button" onClick="isEditing()"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button></td>
+                    <td><button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard Changes</button></td>
+                    <td><button id="editBtn" type="button" onClick="isEditing()"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button></td>
                 </tr>
                 <tr>
                     <td><label for="name">Name</label></td>
-                    <td><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly></td>
+                    <td><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> <span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td><label for="description">Description</label> </td>
-                    <td><textarea name="description" id="description" readonly>{{user_details[1]}}</textarea></td>
+                    <td><textarea name="description" id="description" style="width: 23vw; height: 6vw;" readonly>{{user_details[1]}}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="contact">Contact Information</label></td>
-                    <td><input type="email" name="contact" id="contact" value="{{user_details[2]}}" readonly></td>
+                    <td><input type="email" name="contact" id="contact" value="{{user_details[2]}}" required readonly></td>
                 </tr>
                 <tr>
                     <td><label for="user_type">Startup User or Service Provider</label></td>
@@ -51,8 +51,9 @@
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
         {% if message %}
-        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        <p class="message" id="responseMsg"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
+        <p class="message" id="validationMsg"></p>
     </div>
     <div class="footer">
         <footer>

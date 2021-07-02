@@ -1,12 +1,12 @@
-
-from flask import Flask
-from flask_mysqldb import MySQL
 from datetime import datetime
-
+from registration import update_tags_from_team_desc
 from classes.Company import Company
+from classes.CompanyTags import CompanyTags
+from classes.Industry import Industry
 from classes.RStatus import RStatus
 from classes.Request import Request
 from classes.Role import Role
+from classes.Tags import Tags
 from classes.Team import Team
 from classes.User import User
 
@@ -18,13 +18,35 @@ class DAO:
     def populate(self):
         # Create a table with 5 users. 2 admin and 3 normal users
         cur = self.db.connection.cursor()
+        cur.execute('''create table IF NOT EXISTS Tags(
+        tag_id int auto_increment,
+        name text not null,
+        ind_id int,
+        constraint Tags_pk
+        primary key (tag_id));''')
+
+        cur.execute('''create table IF NOT EXISTS CompanyTags(
+        ctid int auto_increment,
+        tid int null,
+        tag_id int null,
+        constraint CompanyTags_pk
+        primary key (ctid));''')
+
+        cur.execute('''create table IF NOT EXISTS Industry (
+                    ind_id int auto_increment,
+	                name text not null,
+	                constraint Industry_pk
+                    primary key (ind_id));''')
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,
                     name text not null,
                     description text not null,
+                    ind_id int,
                     create_date timestamp default current_timestamp null,
                     constraint Company_pk
                     primary key (tid));''')
+
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (
                     uid INTEGER auto_increment,
                     rid INTEGER,
@@ -60,9 +82,27 @@ class DAO:
                     "seen BOOLEAN,"
                     "PRIMARY KEY(req_id)"
                     ")")
+
+        cur.execute("ALTER TABLE CompanyTags "
+                    "ADD FOREIGN KEY(tag_id) REFERENCES Tags(tag_id),"
+                    "ADD FOREIGN KEY(tid) REFERENCES Company(tid)")
+
+        cur.execute("ALTER TABLE Tags "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
+                    )
+
         cur.execute("ALTER TABLE Users "
                     "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
                     )
+
+        cur.execute("ALTER TABLE Company "
+                    "ADD FOREIGN KEY(ind_id) REFERENCES Industry(ind_id)"
+                    )
+
+        cur.execute("ALTER TABLE Users "
+                    "ADD FOREIGN KEY(rid) REFERENCES Roles(rid)"
+                    )
+
         cur.execute("ALTER TABLE Teams "
                     "ADD FOREIGN KEY(tid) REFERENCES Company(tid), "
                     "ADD FOREIGN KEY(uid) REFERENCES Users(uid), "
@@ -92,6 +132,9 @@ class DAO:
         team_2 = Team(2, 2, 1)
         teams_to_add = [team_1, team_2]
 
+        industry = Industry(name="Other")
+        self.add_industry(industry)
+
         # tid, name, description, create_date
         epsilon = Company(
             1,
@@ -105,13 +148,17 @@ class DAO:
         r_status_to_add = [RStatus.ACCEPTED, RStatus.REJECTED, RStatus.PENDING]
 
         # req_id, tid, uid, sid, create_date, last_update, seen
-        request_1 = Request(1, 1, 3, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
-        request_2 = Request(2, 1, 4, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
-        request_3 = Request(3, 2, 5, RStatus.PENDING.value, datetime.now(), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_1 = Request(1, 1, 3, RStatus.PENDING.value, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 0)
+        request_2 = Request(2, 1, 4, RStatus.PENDING.value, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
+        request_3 = Request(3, 2, 5, RStatus.PENDING.value, datetime.now(),
+                            datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 1)
         requests_to_add = [request_1, request_2, request_3]
 
         for company in companies_to_add:
             self.add_company(company)
+            update_tags_from_team_desc(self, company.description, company.name)
 
         for r_status in r_status_to_add:
             self.add_r_status(r_status)
@@ -136,7 +183,8 @@ class DAO:
             cur.execute(sql_q, data)
             self.db.connection.commit()
             cur.close()
-        except BaseException:
+        except BaseException as be:
+            print(be)
             pass
 
     def get_data(self, sql_q, data):
@@ -146,7 +194,8 @@ class DAO:
             data = cur.fetchall()
             cur.close()
             return data
-        except BaseException:
+        except BaseException as be:
+            print(be)
             pass
 
     def delete_all(self):
@@ -156,11 +205,15 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS Request''')
             cur.execute('''DROP TABLE IF EXISTS Users''')
             cur.execute('''DROP TABLE IF EXISTS Roles''')
+            cur.execute('''DROP TABLE IF EXISTS CompanyTags''')
             cur.execute('''DROP TABLE IF EXISTS Company''')
             cur.execute('''DROP TABLE IF EXISTS RStatus''')
+            cur.execute('''DROP TABLE IF EXISTS Tags''')
+            cur.execute('''DROP TABLE IF EXISTS Industry''')
             self.db.connection.commit()
             cur.close()
-        except BaseException:
+        except BaseException as be:
+            print(be)
             pass
 
     # Add methods
@@ -170,9 +223,10 @@ class DAO:
         :param company: A Company object representing the company to be added.
         """
         self.modify_data(
-            '''INSERT INTO Company (name, description) VALUES (%s, %s)''',
+            '''INSERT INTO Company (name, description, ind_id) VALUES (%s, %s, %s)''',
             (company.name,
-             company.description))
+             company.description,
+             company.ind_id))
 
     def add_request(self, request: Request):
         """
@@ -282,7 +336,7 @@ class DAO:
         """
         team = None
         data = self.get_data('''SELECT * FROM Teams WHERE tid = %s''', (tid,))
-        if data:
+        if data is not None:
             team = data[0]
             team = Team(team[0], team[1], team[2])
         return team
@@ -427,3 +481,75 @@ class DAO:
                               request[6])
         return request
 
+    def get_search_data(self, keywords):
+        """
+        Returns Raw search data. Multiple copies of companies will be included.
+        :param keywords: a list of keywords
+        :return: A list of Raw search data.
+        """
+        # keywords_string = "{0}".format(keywords)
+        # keywords_string = (keywords_string.replace("[", "("))
+        # keywords_string = (keywords_string.replace("]", ")"))
+        search_data = []
+        for items in keywords:
+            search_q = '''SELECT Company.name, Company.description 
+                    FROM CompanyTags, Tags, Company 
+                    WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name LIKE '%''' \
+                       + items + "%'"
+            data = self.get_data(search_q, None)
+            for company in data:
+                search_data.append(company)
+        print(search_data)
+        return search_data
+
+    def add_company_tags(self, company_tags: CompanyTags):
+        """
+        :param company_tags: A CompnayTags object.
+        """
+        self.modify_data(
+            '''INSERT INTO CompanyTags (tid, tag_id) VALUES (%s, %s)''',
+            (company_tags.tid, company_tags.tag_id))
+
+    def add_tags(self, tags: Tags):
+        """
+        :param tags: A Tags object.
+        """
+        self.modify_data(
+            '''INSERT INTO Tags (name, ind_id) VALUES (%s, %s)''',
+            (tags.name, tags.ind_id))
+
+    def get_tag(self, name):
+        """
+        Gets a team from the database.
+        :param name: the name of the tag
+        :return: Tag object representing the matching tag. None if not found.
+        """
+        tag = None
+        data = self.get_data('''SELECT * FROM Tags WHERE name = %s''', (name,))
+        if data is not None:
+            tag = data[0]
+            tag = Tags(tag_id=tag[0], name=tag[1], ind_id=tag[2])
+        return tag
+
+    def get_industry(self):
+        """
+        Gets the list of all industries from the Industry table.
+        :return: A list of Industry Objects.
+        """
+        industry = []
+        data = self.get_data('''SELECT * FROM Industry''', None)
+        for ind in data:
+            industry.append(Industry(ind[0], ind[1]))
+        return industry
+
+    def add_industry(self, industry: Industry):
+        """
+        Adds the Industry to the industry table.
+        """
+        try:
+            self.modify_data(
+                '''INSERT INTO Industry (name) VALUES (%s)''',
+                (industry.name,))
+        except BaseException as bs:
+            print(bs)
+            pass

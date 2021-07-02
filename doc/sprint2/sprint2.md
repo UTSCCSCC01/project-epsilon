@@ -29,6 +29,7 @@ Improve project tracking with JIRA by adding acceptance criteria to all tickets.
 ### Technical
 Test navigability of the page now that there is a homepage with a new navigation menu.
 
+## Stories in this sprint
 ### EP - 15
 - Title: As a user, I want to be able to search for specific products
 - Assignee: Hritik Gandhi and Weiyu Li

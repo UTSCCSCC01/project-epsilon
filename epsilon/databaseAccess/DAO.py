@@ -1,3 +1,6 @@
+
+from flask import Flask
+from flask_mysqldb import MySQL
 from datetime import datetime
 from registration import update_tags_from_team_desc
 from classes.Company import Company
@@ -52,6 +55,7 @@ class DAO:
                     rid INTEGER,
                     name text not null,
                     contact text not null,
+                    password text not null,
                     description text not null,
                     constraint Users_pk
                     primary key (uid))''')
@@ -117,15 +121,15 @@ class DAO:
 
         # uid, rid, name, contact
         # TODO: change role to type here
-        paula = User(1, Role.TEAM_OWNER.value, "Paula", "ok@gmail.com", "Hi, I am Paula, team owner of Company Epsilon.")
-        tim = User(2, Role.TEAM_OWNER.value, "Tim", "ko@gmail.com", "This is Tim, owner of Company Delta.")
-        pritish = User(3, Role.TEAM_MEMBER.value, "Pritish", "lp@gmail.com", "I am waiting to join team Epsilon!.")
-        sam = User(4, Role.TEAM_MEMBER.value, "Sam", "opll@gmail.com", "Here comes Sam.")
-        water = User(5, Role.TEAM_OWNER.value, "Water", "no@gmail.com", "Water is good.")
+        paula = User(uid=1, rid=Role.TEAM_OWNER.value, name="Paula", contact="ok@gmail.com", description="Hi, I am Paula, team owner of Company Epsilon.")
+        tim = User(uid=2, rid=Role.TEAM_OWNER.value, name="Tim", contact="ko@gmail.com", description="This is Tim, owner of Company Delta.")
+        pritish = User(uid=3, rid=Role.TEAM_MEMBER.value, name="Pritish", contact="lp@gmail.com", description="I am waiting to join team Epsilon!.")
+        sam = User(uid=4, rid=Role.TEAM_MEMBER.value, name="Sam", contact="opll@gmail.com", description="Here comes Sam.")
+        water = User(uid=5, rid=Role.TEAM_OWNER.value, name="Water", contact="no@gmail.com", description="Water is good.")
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type
-        roles_to_add = [Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
+        roles_to_add = [Role.NO_TEAM, Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
 
         # tid, uid, rid
         team_1 = Team(1, 1, 1)
@@ -276,9 +280,10 @@ class DAO:
         Adds a new user into the database.
         :param user: A User object representing the user to be added.
         """
+        print("in add user"+str(user))
         self.modify_data(
-            '''INSERT INTO Users (rid, name, contact, description) VALUES (%s, %s, %s, %s)''',
-            (user.rid, user.name, user.contact, user.description)
+            '''INSERT INTO Users (rid, name, contact, password,description) VALUES (%s, %s, %s, %s, %s)''',
+            (user.rid, user.name, user.contact, user.password, user.description)
         )
 
     # Update methods
@@ -396,7 +401,7 @@ class DAO:
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
-            users.append(User(user[0], user[1], user[2], user[3], user[4]))
+            users.append(User(user[0], user[1], user[2], user[3], user[4], user[5]))
         return users
 
     def get_teams(self):
@@ -442,13 +447,13 @@ class DAO:
         """
         users = []
         data = self.get_data(
-            '''SELECT users.uid, users.rid, users.name, users.contact
+            '''SELECT users.uid, users.rid, users.name, users.contact, users.password
                         FROM epsilon_db.users JOIN epsilon_db.teams
                         ON users.uid = teams.uid
                         WHERE tid = %s''', (tid,))
 
         for user in data:
-            users.append(User(user[0], user[1], user[2], user[3]))
+            users.append(User(user[0], user[1], user[2], user[3], user[4]))
         return users
 
     def get_pending_requests(self, tid):
@@ -480,6 +485,33 @@ class DAO:
                               request[3], request[4], request[5],
                               request[6])
         return request
+
+
+    def get_user(self, email):
+        """
+        Gets a user from the database.
+        :param email: Email of the user to be retrieved.
+        :return: User object representing the matching User. None if not found.
+        """
+        user = None
+        data = self.get_data('''SELECT * FROM Users WHERE contact = %s''', (email,))
+        if data:
+            user = data[0]
+            user = User(user[0], user[1], user[2], user[3], user[4])
+        return user
+
+    def get_company(self, name):
+        """
+        Gets a company from the database.
+        :param name: name of the company to be retrieved.
+        :return: Company object representing the matching Company. None if not found.
+        """
+        company = None
+        data = self.get_data('''SELECT * FROM Company WHERE name = %s''', (name,))
+        if data:
+            company= data[0]
+            company = Company(company[0], company[1], company[2], company[3])
+        return company
 
     def get_search_data(self, keywords):
         """
@@ -552,4 +584,3 @@ class DAO:
                 (industry.name,))
         except BaseException as bs:
             print(bs)
-            pass

@@ -5,7 +5,9 @@ from flask_mysqldb import MySQL
 from databaseAccess.DAO import DAO
 from joinTeamRequest import *
 from registration import registration
+from userRegistration import user_register
 from search import *
+
 from flask_cors import CORS
 from classes.Company import Company
 from classes.Request import Request
@@ -46,9 +48,16 @@ def hello():
 def login():
     error = None
     if request.method == 'POST':
-        if (request.form['username'] != 'admin' or
-                request.form['password'] != 'admin'):
-            error = 'Invalid Credentials. Please try again.'
+        # if (request.form['username'] != 'admin' or
+        #         request.form['password'] != 'admin'):
+        #     error = 'Invalid Credentials. Please try again.'
+        inp_username = request.form['username']
+        inp_password = request.form['password']
+        user = dao.get_user(inp_username)
+        if (not user):
+            error = "The email does not exist in our record."
+        elif user.password != inp_password:
+            error = "Password does not match."
         else:
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
@@ -138,7 +147,8 @@ def displayteam(tid):
         for user in users:
             role = dao.get_role(user.rid)
             userDetails.append([user.name, role.name, user.contact,
-                                user.uid, tid, user.rid])
+                                user.uid, tid, user.rid, user.password])
+
         return render_template('displayteam.html', userDetails=userDetails)
     else:
         message = "Your team does not exist"
@@ -220,6 +230,9 @@ def srch_test_succeed():
 def srch_test_fail():
     return search_frontend_test(dao, False)
 
+@app.route('/userRegistration', methods=['GET', 'POST'])
+def user_reg():
+    return user_register(dao)
 
 if __name__ == "__main__":
     app.run(debug=True)

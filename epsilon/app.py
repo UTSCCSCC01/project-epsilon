@@ -39,9 +39,16 @@ def hello():
 def login():
     error = None
     if request.method == 'POST':
-        if (request.form['username'] != 'admin' or
-                request.form['password'] != 'admin'):
-            error = 'Invalid Credentials. Please try again.'
+        # if (request.form['username'] != 'admin' or
+        #         request.form['password'] != 'admin'):
+        #     error = 'Invalid Credentials. Please try again.'
+        inp_username = request.form['username']
+        inp_password = request.form['password']
+        user = dao.get_user(inp_username)
+        if (not user):
+            error = "The email does not exist in our record."
+        elif user.password != inp_password:
+            error = "Password does not match."
         else:
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)

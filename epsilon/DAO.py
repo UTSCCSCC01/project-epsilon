@@ -25,7 +25,7 @@ class DAO:
                     constraint Company_pk
                     primary key (tid));''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Users (uid INTEGER, rid INTEGER, 
-            name VARCHAR (50), contact VARCHAR (50))''')
+            name VARCHAR (50), contact VARCHAR (50), password text)''')
         cur.execute('''CREATE TABLE IF NOT EXISTS Teams (tid INTEGER, uid INTEGER, rid INTEGER)''')
         cur.execute("CREATE TABLE IF NOT EXISTS Roles ("
                     "rid INTEGER,"
@@ -65,15 +65,15 @@ class DAO:
         cur.close()
 
         # uid, rid, name, contact
-        paula = User(1, 1, "Paula", "ok@gmail.com")
-        tim = User(2, 1, "Tim", "ko@gmail.com")
-        pritish = User(3, 0, "Pritish", "lp@gmail.com")
-        sam = User(4, 0, "Sam", "opll@gmail.com")
-        water = User(5, 0, "Water", "no@gmail.com")
+        paula = User(1, 1, "Paula", "ok@gmail.com", "admin")
+        tim = User(2, 1, "Tim", "ko@gmail.com", "admin")
+        pritish = User(3, 3, "Pritish", "lp@gmail.com", "admin")
+        sam = User(4, 3, "Sam", "opll@gmail.com", "admin")
+        water = User(5, 3, "Water", "no@gmail.com", "admin")
         users_to_add = [paula, tim, pritish, sam, water]
 
         # rid, role_type
-        roles_to_add = [Role.NO_TEAM, Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
+        roles_to_add = [Role.TEAM_OWNER, Role.TEAM_ADMIN, Role.TEAM_MEMBER]
 
         # tid, uid, rid
         team_1 = Team(1, 1, 1)
@@ -217,8 +217,8 @@ class DAO:
         :param user: A User object representing the user to be added.
         """
         self.modify_data(
-            '''INSERT INTO Users (uid, rid, name, contact) VALUES (%s, %s, %s, %s)''',
-            (user.uid, user.rid, user.name, user.contact)
+            '''INSERT INTO Users (uid, rid, name, contact, password) VALUES (%s, %s, %s, %s, %s)''',
+            (user.uid, user.rid, user.name, user.contact, user.password)
         )
 
     # Update methods
@@ -273,7 +273,7 @@ class DAO:
         users = []
         data = self.get_data('''SELECT * FROM Users''', None)
         for user in data:
-            users.append(User(user[0], user[1], user[2], user[3]))
+            users.append(User(user[0], user[1], user[2], user[3], user[4]))
         return users
 
     def get_teams(self):

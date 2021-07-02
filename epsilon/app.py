@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
@@ -130,6 +129,7 @@ def displayteam(tid):
             role = dao.get_role(user.rid)
             userDetails.append([user.name, role.name, user.contact,
                                 user.uid, tid, user.rid, user.password])
+
         return render_template('displayteam.html', userDetails=userDetails)
     else:
         message = "Your team does not exist"

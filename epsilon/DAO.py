@@ -37,7 +37,6 @@ class DAO:
 	                constraint Industry_pk
                     primary key (ind_id));''')
 
-
         cur.execute('''CREATE TABLE IF NOT EXISTS Company (
                     tid int auto_increment,
                     name text not null,
@@ -135,6 +134,9 @@ class DAO:
         team_2 = Team(2, 2, 1)
         teams_to_add = [team_1, team_2]
 
+        industry = Industry(name="Other")
+        self.add_industry(industry)
+
         # tid, name, description, create_date
         epsilon = Company(
             1,
@@ -202,14 +204,14 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS Request''')
             cur.execute('''DROP TABLE IF EXISTS Users''')
             cur.execute('''DROP TABLE IF EXISTS Roles''')
+            cur.execute('''DROP TABLE IF EXISTS CompanyTags''')
             cur.execute('''DROP TABLE IF EXISTS Company''')
             cur.execute('''DROP TABLE IF EXISTS RStatus''')
             cur.execute('''DROP TABLE IF EXISTS Tags''')
-            cur.execute('''DROP TABLE IF EXISTS CompanyTags''')
             cur.execute('''DROP TABLE IF EXISTS Industry''')
             self.db.connection.commit()
             cur.close()
-        except BaseException:
+        except BaseException as be:
             pass
 
     # Add methods
@@ -433,17 +435,15 @@ class DAO:
                               request[6])
         return request
 
-
     def get_searchdata(self, keywords):
         keywords_string = "{0}".format(keywords)
-        keywords_string = (keywords_string.replace("[","("))
-        keywords_string = (keywords_string.replace("]",")"))
+        keywords_string = (keywords_string.replace("[", "("))
+        keywords_string = (keywords_string.replace("]", ")"))
         search_q = '''SELECT Company.name, Company.description 
         FROM CompanyTags, Tags, Company 
         WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
         searchdata = self.get_data(search_q, None)
         return searchdata
-    
 
     def get_search_data(self, keywords):
         """
@@ -505,3 +505,14 @@ class DAO:
         for ind in data:
             industry.append(Industry(ind[0], ind[1]))
         return industry
+
+    def add_industry(self, industry: Industry):
+        """
+        Adds the Industry to the industry table.
+        """
+        try:
+            self.modify_data(
+                '''INSERT INTO Industry (name) VALUES (%s)''',
+                (industry.name,))
+        except BaseException as bs:
+            pass

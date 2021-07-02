@@ -1,5 +1,5 @@
 class Industry:
-    def __init__(self, ind_id=0, name=""):
+    def __init__(self, ind_id=None, name=""):
         self._ind_id = ind_id
         self._name = name
 

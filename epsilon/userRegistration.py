@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from DAO import DAO
 from classes.User import User
+import re
 
 # EP-23 User Registration
 
@@ -42,17 +43,17 @@ def user_register(dao: DAO):
         elif (user_exists(dao,email)):
             e = "Email already in use, please use another one"
             return render_template('userRegistration.html', error = e)
+        # check email format
+        elif (not re.search(".+@{1}.+\..+",email) or len(re.findall("@",email))>1):
+            e = "Invalid email"
+            return render_template('userRegistration.html', error = e)
         else:
             try:
-                # retrieve next available uid
-                query = "SELECT max(uid) FROM Users"
-                temp = dao.get_data(query,None)
-                uid =  temp[0][0] + 1
+                # temp for auto incremented value
+                uid =  0
                 # create new user
                 user = User(uid,u_type,name,email,pwd)
-                print(user)
                 dao.add_user(user)
-                
                 # send success prompt
                 e = "Account successfully created!"
                 return render_template('userRegistration.html', msg = e)

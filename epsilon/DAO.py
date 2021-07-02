@@ -216,12 +216,10 @@ class DAO:
         Adds a new user into the database.
         :param user: A User object representing the user to be added.
         """
-        print(user)
         self.modify_data(
             '''INSERT INTO Users (uid, rid, name, contact, password) VALUES (%s, %s, %s, %s, %s)''',
             (user.uid, user.rid, user.name, user.contact, user.password)
         )
-        print("ran")
 
     # Update methods
     def update_role_of_employee(self, uid, new_rid):

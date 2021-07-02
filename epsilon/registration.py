@@ -3,7 +3,7 @@ from classes.Team import Team
 from classes.User import User
 from classes.Company import Company
 from flask import Flask, request, render_template
-from DAO import DAO
+from databaseAccess.DAO import DAO
 
 
 def is_pos_int(s):

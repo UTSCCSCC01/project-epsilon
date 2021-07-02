@@ -4,7 +4,7 @@ from classes.RStatus import RStatus
 from flask import Flask
 from flask_mysqldb import MySQL
 from datetime import datetime
-from DAO import DAO
+from databaseAccess.DAO import DAO
 
 
 def team_request_load(dao, tid):

@@ -1,7 +1,8 @@
+from modules.UserModule import update_user
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
-from DAO import DAO
+from databaseAccess.DAO import DAO
 from joinTeamRequest import *
 from registration import registration
 from flask_cors import CORS
@@ -11,8 +12,6 @@ from classes.Role import Role
 from classes.RStatus import RStatus
 from classes.Team import Team
 from classes.User import User
-
-
 
 app = Flask(__name__)
 CORS(app)
@@ -147,13 +146,42 @@ def show_team_request(tid):
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
     requests = dao.get_pending_requests(tid)
+    company = dao.get_company(tid)
     data = []
+    if not company:
+        return render_template("jointeamrequest.html",
+                               message="Your team does not exist.")
+    company_name = company.name
     if not requests:
-        return render_template("jointeamrequest.html", message="No pending requests!")
+        return render_template("jointeamrequest.html",
+                               message="No pending requests!",
+                               company_name=company_name)
     for req in requests:
         data.append([req.uid, req.create_date, req.req_id])
-    return render_template("jointeamrequest.html", data=data, tid=tid, message=message)
+    return render_template("jointeamrequest.html", data=data, tid=tid,
+                           message=message, company_name=company_name)
 
+
+# EP-20: Display user profile
+
+@app.route('/user/<int:uid>/', methods=['GET', 'POST'])
+def display_user(uid):
+    message = ""
+    if request.method == 'POST':
+        data = request.get_json
+        if data:
+            message = update_user(dao, uid, request.form["name"],
+                                  request.form["description"],
+                                  request.form["contact"])
+
+    user = dao.get_user(uid)
+    if user:
+        user_role = Role(user.rid)
+        user_details = [user.name, user.description, user.contact, user_role.name]
+        return render_template('userprofile.html', user_details=user_details, message= message)
+    else:
+        message = "The user does not exist"
+        return render_template("userprofile.html", message=message)
 
 
 if __name__ == "__main__":

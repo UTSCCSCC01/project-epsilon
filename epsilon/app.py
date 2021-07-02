@@ -70,8 +70,8 @@ def create():
     users = dao.get_users()
     teams = dao.get_teams()
     roles = dao.get_roles()
+    companies = dao.get_companies()
     output = "Database Users, Teams, Roles are populated!</br>"
-
     output += "Also five dummy employees:</br>"
     for user in users:
         output += str(user) + "</br>"
@@ -81,7 +81,9 @@ def create():
     output += "Also three roles:</br>"
     for role in roles:
         output += str(role.name) + "</br>"
-
+    output += "Also two companies:</br>"
+    for company in companies:
+        output += str(company.name) +":"+str(company.description)+ "</br>"
     return output
 
 

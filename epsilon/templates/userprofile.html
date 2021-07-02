@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Manage Team</title>
+    <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>
+    <!--If font awesome is included elsewhere, please remove the line below-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>User Profile</title>
 </head>
 
 <header>
@@ -16,31 +19,30 @@
         <h1>My Profile</h1>
         <hr>
         {% if user_details %}
-        <form action="" method="POST">
+        <form action="" method="POST" id="userForm">
             <table>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td><button type="button">Edit</button></td>
+                    <td><button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard Changes</button></td>
+                    <td><button id="editBtn" type="button" onClick="isEditing()"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button></td>
                 </tr>
                 <tr>
                     <td><label for="name">Name</label></td>
-                    <td><input type="text" name="name" value="{{user_details[0]}}"></td>
+                    <td><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> <span style="color: red;">*</span></td>
                 </tr>
                 <tr>
                     <td><label for="description">Description</label> </td>
-                    <td><textarea name="description">{{user_details[1]}}</textarea></td>
+                    <td><textarea name="description" id="description" style="width: 23vw; height: 6vw;" readonly>{{user_details[1]}}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="contact">Contact Information</label></td>
-                    <td><input type="email" name="contact" value="{{user_details[2]}}"></td>
+                    <td><input type="email" name="contact" id="contact" value="{{user_details[2]}}" required readonly></td>
                 </tr>
                 <tr>
                     <td><label for="user_type">Startup User or Service Provider</label></td>
                     <td><input type="text" name="user_type" value="{{user_details[3]}}" readonly></td>
                 </tr>
             </table>
-            <button type="submit" value="update_user">Update Info</button>
+            <!--<div id="editBtn"></div>-->
         </form>
         {% endif %}
     </div>
@@ -49,8 +51,9 @@
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
         {% if message %}
-        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        <p class="message" id="responseMsg"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
+        <p class="message" id="validationMsg"></p>
     </div>
     <div class="footer">
         <footer>

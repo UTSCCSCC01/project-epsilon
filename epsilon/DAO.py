@@ -1,4 +1,5 @@
 from datetime import datetime
+from registration import update_tags_from_team_desc
 from classes.Company import Company
 from classes.CompanyTags import CompanyTags
 from classes.Industry import Industry
@@ -184,7 +185,8 @@ class DAO:
             cur.execute(sql_q, data)
             self.db.connection.commit()
             cur.close()
-        except BaseException:
+        except BaseException as be:
+            print(be)
             pass
 
     def get_data(self, sql_q, data):
@@ -194,7 +196,8 @@ class DAO:
             data = cur.fetchall()
             cur.close()
             return data
-        except BaseException:
+        except BaseException as be:
+            print(be)
             pass
 
     def delete_all(self):
@@ -212,6 +215,7 @@ class DAO:
             self.db.connection.commit()
             cur.close()
         except BaseException as be:
+            print(be)
             pass
 
     # Add methods
@@ -295,7 +299,7 @@ class DAO:
         """
         Updates the sid and seen of a request in
         the database to new_sid and true.
-        :param uid: req_id of the request.
+        :param req_id: req_id of the request.
         :param new_sid: New status id of the request.
         """
         self.modify_data(

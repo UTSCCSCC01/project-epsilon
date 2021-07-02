@@ -435,16 +435,6 @@ class DAO:
                               request[6])
         return request
 
-    def get_searchdata(self, keywords):
-        keywords_string = "{0}".format(keywords)
-        keywords_string = (keywords_string.replace("[", "("))
-        keywords_string = (keywords_string.replace("]", ")"))
-        search_q = '''SELECT Company.name, Company.description 
-        FROM CompanyTags, Tags, Company 
-        WHERE Company.tid = CompanyTags.tid and CompanyTags.tag_id = Tags.tag_id and Tags.name in ''' + keywords_string
-        searchdata = self.get_data(search_q, None)
-        return searchdata
-
     def get_search_data(self, keywords):
         """
         Returns Raw search data. Multiple copies of companies will be included.
@@ -515,4 +505,5 @@ class DAO:
                 '''INSERT INTO Industry (name) VALUES (%s)''',
                 (industry.name,))
         except BaseException as bs:
+            print(bs)
             pass

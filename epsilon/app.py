@@ -53,7 +53,7 @@ def login():
         #     error = 'Invalid Credentials. Please try again.'
         inp_username = request.form['username']
         inp_password = request.form['password']
-        user = dao.get_user(inp_username)
+        user = dao.get_user_by_contact(inp_username)
         if (not user):
             error = "The email does not exist in our record."
         elif user.password != inp_password:
@@ -178,7 +178,7 @@ def show_team_request(tid):
         elif action[0] == "D":
             message = team_request_decline(dao, action[1])
     requests = dao.get_pending_requests(tid)
-    company = dao.get_company(tid)
+    company = dao.get_company_by_id(tid)
     data = []
     if not company:
         return render_template("jointeamrequest.html",
@@ -205,7 +205,6 @@ def display_user(uid):
             message = update_user(dao, uid, request.form["name"],
                                   request.form["description"],
                                   request.form["contact"])
-
     user = dao.get_user(uid)
     if user:
         user_role = Role(user.rid)

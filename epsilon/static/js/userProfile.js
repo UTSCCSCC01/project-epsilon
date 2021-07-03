@@ -33,12 +33,8 @@ var is_editing = false
 function isEditing() {
     //toggle edit/save button
     const valid = document.getElementById("userForm").checkValidity();
-    console.log("valid: " + valid);
-    console.log("beforeCHange: " + is_editing);
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
-        console.log("valid: " + valid);
-        console.log("afterCHange: " + is_editing);
     } else {
         is_editing = !is_editing;
 
@@ -47,8 +43,6 @@ function isEditing() {
         }
 
         updateEditDisplay();
-        console.log("valid: " + valid);
-        console.log("afterCHange: " + is_editing);
     }
 
 }
@@ -75,6 +69,5 @@ function updateEditDisplay() {
 
     document.getElementById('name').readOnly = !is_editing;
     document.getElementById('description').readOnly = !is_editing;
-    document.getElementById('contact').readOnly = !is_editing;
 }
 

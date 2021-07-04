@@ -1,19 +1,20 @@
+from databaseAccess.DAOUser import DAOUser
 from flask import Flask, request, render_template
-from DAO import DAO
+from flask_mysqldb import MySQL
 from classes.User import User
 import re
 
 # EP-23 User Registration
 
-def user_exists(dao: DAO, email: str):
+def user_exists(user_dao: DAOUser, email: str):
     '''
     Checks if the user already exists in the database
-    :param dao: database access point
-    :param user: the email of the user being registered
+    :param user_dao: database access point
+    :param email: the email of the user being registered
     :return: whether the email is already in use
     '''
     # get existing users in db
-    user = dao.get_user(email)
+    user = user_dao.get_user_by_contact(email)
     # iterate through users
     if user:
         # check for email match
@@ -22,10 +23,10 @@ def user_exists(dao: DAO, email: str):
     # no users remain that may exist already
     return False
 
-def user_register(dao: DAO):
+def user_register(mysql: MySQL):
     '''
     Registers a User into the database
-    :param dao: database to access
+    :param mysql: database to access
     :return: rendered template of the user registration page
     '''
     if request.method == "POST":
@@ -33,6 +34,7 @@ def user_register(dao: DAO):
         pwd = request.form['password']
         name = request.form['name']
         u_type = None
+        user_dao = DAOUser(mysql)
         if ('type' in request.form):
             u_type = request.form['type']
         # check if any required fields isn't filled
@@ -40,7 +42,7 @@ def user_register(dao: DAO):
             e = "Please fill required fields"
             return render_template('userRegistration.html', error = e)
         # check if the user email is already in use (username)
-        elif (user_exists(dao, email)):
+        elif (user_exists(user_dao, email)):
             e = "Email already in use, please use another one"
             return render_template('userRegistration.html', error = e)
         # check email format
@@ -51,7 +53,7 @@ def user_register(dao: DAO):
             try:
                 # create new user
                 user = User(rid=u_type, name=name, contact=email, password=pwd)
-                dao.add_user(user)
+                user_dao.add_user(user)
                 # send success prompt
                 e = "Account successfully created!"
                 return render_template('userRegistration.html', msg = e)

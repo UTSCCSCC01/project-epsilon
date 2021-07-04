@@ -1,4 +1,4 @@
-class CompanyTags:
+class CompanyTag:
     def __init__(self, ctid=0, tid=0, tag_id=0):
         self._ctid = ctid
         self._tid = tid
@@ -30,5 +30,5 @@ class CompanyTags:
 
     def __str__(self):
         """ Overloads str method. """
-        return 'CompanyTags(ctid = ' + str(self.ctid) + ', tid = ' + str(self.tid) + ', tag_id = ' \
+        return 'CompanyTag(ctid = ' + str(self.ctid) + ', tid = ' + str(self.tid) + ', tag_id = ' \
                + str(self.tag_id) + ')'

@@ -1,3 +1,4 @@
+from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from flask import Flask, request, render_template
 import json
 
@@ -20,11 +21,11 @@ def refine_search_data(search_data):
     return search_results
 
 
-def search(dao):
+def search(mysql):
     # TODO: improve filters
     if request.method == 'POST':
         # create both queries for checking and inserting data
-        sql_q = '''INSERT INTO Company (name, description) VALUES (%s, %s)'''
+        dao_company_tag = DAOCompanyTag(mysql)
         # check if all form boxes are completed
         if (len(request.form['search']) == 0):
             error = 'Search box cannot be empty!'
@@ -33,7 +34,7 @@ def search(dao):
         # if no errors
         try:
             keywords = make_keyword_list(request.form['search'])
-            search_results = refine_search_data(dao.get_search_data(keywords))
+            search_results = refine_search_data(dao_company_tag.get_search_data(keywords))
             message = ""
             if search_results is None:
                 message = "No results found!"
@@ -59,13 +60,13 @@ def convert_search_result(res):
     return json.dumps(final_res)
 
 
-
 # related to testing frontend, won't interfere with back end
 def generate_error_data():
     x = {
         "message": "sample error message"
     }
     return json.dumps(x)
+
 
 def generate_search_result():
     x = {
@@ -88,7 +89,8 @@ def generate_search_result():
     # return x
     return json.dumps(x)
 
-def search_frontend_test(dao, succeed=True):
+
+def search_frontend_test(succeed=True):
     print("search_frontend_test")
     if request.method == 'POST':
         if succeed:

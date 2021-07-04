@@ -1,4 +1,4 @@
-class Tags:
+class Tag:
     def __init__(self, name="", ind_id=None, tag_id=0):
         self._name = name
         self._ind_id = ind_id
@@ -30,5 +30,5 @@ class Tags:
 
     def __str__(self):
         """ Overloads str method. """
-        return 'Tags(tag_id = ' + str(self.tag_id) + ', name = ' + str(self.name) + ', ind_id = ' \
+        return 'Tag(tag_id = ' + str(self.tag_id) + ', name = ' + str(self.name) + ', ind_id = ' \
                + str(self.ind_id) + ')'

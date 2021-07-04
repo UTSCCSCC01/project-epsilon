@@ -1,9 +1,7 @@
-import sys
-sys.path.append('../epsilon/databaseAccess')
-from DAO import DAO
+from databaseAccess.DAOUser import DAOUser
 
 
-def update_user(dao: DAO, uid: int, name: str,
+def update_user(mysql, uid: int, name: str,
                 description: str, contact: str) -> str:
     """
     Updates a user with given parameters.
@@ -14,12 +12,13 @@ def update_user(dao: DAO, uid: int, name: str,
     :param contact: contact of user.
     :return: Message whether update was successful.
     """
-    user_to_update = dao.get_user(uid)
+    dao_user = DAOUser(mysql)
+    user_to_update = dao_user.get_user_by_uid(uid)
     if user_to_update is None:
         return "Error: The user does not exist."
     else:
         user_to_update.name = name
         user_to_update.description = description
         user_to_update.contact = contact
-        dao.update_user(user_to_update)
+        dao_user.update_user(user_to_update)
         return "User info updated."

@@ -1,3 +1,5 @@
+from databaseAccess.DAORequest import DAORequest
+from databaseAccess.DAOTeam import DAOTeam
 from classes.Role import Role
 from classes.Team import Team
 from classes.RStatus import RStatus
@@ -6,35 +8,35 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 from databaseAccess.DAO import DAO
 
-def team_request_accept(dao, req_id):
+
+def team_request_accept(mysql, req_id):
     # Update Request and Teams to reflect on accept action
-    message = team_request_update(dao, req_id, RStatus.ACCEPTED.value)
+    dao_request = DAORequest(mysql)
+    dao_team = DAOTeam(mysql)
+    message = team_request_update(dao_request, req_id, RStatus.ACCEPTED.value)
 
     if message is None:
-        request = dao.get_request(req_id)
+        request = dao_request.get_request_by_req_id(req_id)
         team = Team(request.tid, request.uid, Role.TEAM_MEMBER.value)
-        dao.add_team(team)
-        dao.update_role_of_employee(request.uid, Role.TEAM_MEMBER.value)
+        dao_team.add_team(team)
         message = "Accept Successful!"
     return message
 
-def team_request_decline(dao, req_id):
+
+def team_request_decline(mysql, req_id):
     # Update Request to reflect on decline action
-    message = team_request_update(dao, req_id, RStatus.REJECTED.value)
+    dao_request = DAORequest(mysql)
+    message = team_request_update(dao_request, req_id, RStatus.REJECTED.value)
     if message is None:
         message = "Decline Successful!"
     return message
 
-def team_request_update(dao, req_id, status):
-    request = dao.get_request(req_id)
+
+def team_request_update(dao_request, req_id, status):
+    request = dao_request.get_request_by_req_id(req_id)
     if request.sid == RStatus.PENDING.value:
-        dao.update_request_status(req_id, status)
+        request.sid = status
+        dao_request.update_request(request)
         return
     else:
         return "Status is not pending!"
-
-def team_request_load(dao, tid):
-    # Get data for pending join team requests
-    sql_q = '''SELECT uid, create_date, req_id FROM Request WHERE tid = %s AND sid = 3 ORDER BY create_date'''
-    data = dao.get_data(sql_q, (tid,))
-    return data

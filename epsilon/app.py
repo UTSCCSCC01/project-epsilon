@@ -1,8 +1,10 @@
-from databaseAccess.DAOTag import DAOTag
-from databaseAccess.DAORStatus import DAORStatus
+from reqHandler.reqTeamManage import act_on_employee
+from reqHandler.reqTeamRegister import render_team_registration
+from reqHandler.reqLogin import render_login
+from reqHandler.reqDatabaseManage import create_tables, delete_tables
+from reqHandler.reqHome import render_previous_home
+from reqHandler.reqHome import render_home
 from databaseAccess.DAORequest import DAORequest
-from databaseAccess.DAOIndustry import DAOIndustry
-from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAORole import DAORole
@@ -13,18 +15,12 @@ from flask_mysqldb import MySQL
 
 from databaseAccess.DAO import DAO
 from joinTeamRequest import *
-from modules.registration import registration
-from modules.registration import add_dummy_companies
 from userRegistration import user_register
 from modules.search import *
 
 from flask_cors import CORS
-from classes.Company import Company
-from classes.Request import Request
 from classes.Role import Role
 from classes.RStatus import RStatus
-from classes.Team import Team
-from classes.User import User
 
 import mimetypes
 
@@ -42,127 +38,38 @@ app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
 
 mysql = MySQL(app)
-dao = DAO(mysql)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    global baseUrl
-    baseUrl = request.base_url[:request.base_url.rfind('/')]
-    if request.method == 'POST':
-        return redirect(url_for('login'))
-    return render_template('home.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        # if (request.form['username'] != 'admin' or
-        #         request.form['password'] != 'admin'):
-        #     error = 'Invalid Credentials. Please try again.'
-        inp_username = request.form['username']
-        inp_password = request.form['password']
-        dao_user = DAOUser(mysql)
-        user = dao_user.get_user_by_contact(inp_username)
-        if (not user):
-            error = "The email does not exist in our record."
-        elif user.password != inp_password:
-            error = "Password does not match."
-        else:
-            return redirect(url_for('hello'))
-    return render_template('login.html', error=error)
+    return render_home()
 
 
 @app.route("/previousHome", methods=['GET', 'POST'])
 def previousHome():
-    global baseUrl
-    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
-    if request.method == 'POST':
-        return redirect(url_for('login'))
-    return render_template('previousHome.html')
+    return render_previous_home()
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_login(mysql)
 
-# Only go to this page if your database is empty
 
+# For database management
 @app.route("/deleteAll")
 def delete_all():
-    dao.delete_all()
-    return "all tables are deleted!"
+    return delete_tables(mysql)
 
 
 @app.route("/create")
 def create():
-    dao_company = DAOCompany(mysql)
-    dao_company_tag = DAOCompanyTag(mysql)
-    dao_industry = DAOIndustry(mysql)
-    dao_request = DAORequest(mysql)
-    dao_role = DAORole(mysql)
-    dao_rstatus = DAORStatus(mysql)
-    dao_tag = DAOTag(mysql)
-    dao_team = DAOTeam(mysql)
-    dao_user = DAOUser(mysql)
-
-    dao_company.create_company_table()
-    dao_company_tag.create_company_tag_table()
-    dao_industry.create_industry_table()
-    dao_request.create_request_table()
-    dao_role.create_role_table()
-    dao_rstatus.create_rstatus_table()
-    dao_tag.create_tag_table()
-    dao_team.create_team_table()
-    dao_user.create_user_table()
-
-    dao_company.add_foreign_key()
-    dao_company_tag.add_foreign_key()
-    dao_request.add_foreign_key()
-    dao_tag.add_foreign_key()
-    dao_team.add_foreign_key()
-    dao_user.add_foreign_key()
-
-    dao_role.add_roles()
-    dao_rstatus.add_r_statuses()
-    dao_industry.add_dummy_industries()
-    # to prevent circular import, dummy companies are added by registration
-    add_dummy_companies(mysql)
-    dao_user.add_dummy_users()
-    dao_team.add_dummy_team_members()
-    dao_request.add_dummy_requests()
-
-    users = dao_user.get_users()
-    teams = dao_team.get_teams()
-    roles = dao_role.get_roles()
-    companies = dao_company.get_companies()
-
-    t_names = ["Teams", "Request", "Users", "Roles",
-               "CompanyTags", "Company", "RStatus",
-               "Tags", "Industry"]
-
-    output = "The following tables are populated! </br> <ul>"
-    for t_name in t_names:
-        output += "<li>" + t_name + "</li>"
-
-    output += "</ul> </br>Also five dummy employees:</br>"
-    for user in users:
-        output += str(user) + "</br>"
-    output += "Also two dummy teams:</br>"
-    for team in teams:
-        output += str(team) + "</br>"
-    output += "Also three roles:</br>"
-    for role in roles:
-        output += str(role.name) + "</br>"
-    output += "Also two companies:</br>"
-    for company in companies:
-        output += str(company.name) + ":"+str(company.description) + "</br>"
-
-    return output
+    return create_tables(mysql)
 
 
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
 def reg():
-    return registration(mysql)
+    return render_team_registration(mysql)
 
 
 # result is returned correctly, just need todispaly
@@ -170,31 +77,7 @@ def reg():
 # EP-2/4/5
 @app.route('/testbtn/', methods=['POST'])
 def testbtn():
-    if request.method == 'POST':
-        # id2 is either tid or rid
-        op, uid, tid, rid = request.form['submit'].split(".")
-        dao_team = DAOTeam(mysql)
-        if op == 'r':
-            if(int(rid) != Role.TEAM_OWNER.value):
-                dao_team.remove_from_team(tid, uid)
-        elif op == 'p':
-            # newRole should be id of admin
-            team_to_update = dao_team.get_team_by_tid_uid(tid, uid)
-            if(int(rid) != Role.TEAM_OWNER.value):
-                team_to_update.rid = Role.TEAM_ADMIN.value
-                dao_team.update_team(team_to_update)
-        return redirect(url_for('displayteam', tid=tid))
-
-
-# @app.route('/remove', methods=['POST'])
-# def remove():
-#     data = request.json
-#     if data:
-#         uid = str(data['uid'][0])
-#         tid = str(data['tid'][0])
-#         dao.remove_from_team(tid, uid)
-#         return "Success"
-#     return "Invalid uid/tid"
+    return act_on_employee(mysql)
 
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])

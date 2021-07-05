@@ -1,9 +1,6 @@
-from modules.ModTeam import get_members
-from databaseAccess.DAORole import DAORole
-from databaseAccess.DAOTeam import DAOTeam
+from modules.ModTeam import *
 from modules.ModTeam import promote_admin, remove_from_team
-from flask import Flask, request, render_template, redirect, url_for
-from flask_mysqldb import MySQL
+from flask import request, render_template, redirect, url_for
 
 
 def act_on_employee(mysql):
@@ -24,3 +21,24 @@ def render_display_team(mysql, tid):
     else:
         message = "Your team does not exist"
         return render_template('displayteam.html', message=message)
+
+
+def render_join_team_request(mysql, tid):
+    message = ""
+    if request.method == 'POST':
+        action = request.form["action"].split("_")
+        if action[0] == "A":
+            message = team_request_accept(mysql, action[1])
+        elif action[0] == "D":
+            message = team_request_decline(mysql, action[1])
+    try:
+        data, company_name = get_join_requests(mysql, tid)
+    except Exception as e:
+        return render_template("jointeamrequest.html", tid=tid,
+                               message=e)
+    if len(data) == 0:
+        return render_template("jointeamrequest.html",
+                               message="No pending requests!", tid=tid,
+                               company_name=company_name)
+    return render_template("jointeamrequest.html", data=data, tid=tid,
+                           message=message, company_name=company_name)

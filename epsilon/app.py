@@ -1,9 +1,8 @@
-from reqHandler.reqTeamManage import act_on_employee
+from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
 from reqHandler.reqDatabaseManage import create_tables, delete_tables
-from reqHandler.reqHome import render_previous_home
-from reqHandler.reqHome import render_home
+from reqHandler.reqHome import *
 from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
@@ -66,13 +65,22 @@ def create():
     return create_tables(mysql)
 
 
+# For front end test? If you are sure it's not used please delete.
+@app.route('/test_get_base_url')
+def index():
+    return request.base_url[:request.base_url.rfind('/')]
+
+
+@app.route('/testReact', methods=['GET'])
+def testReact():
+    return {"title": "I am ready from app.py"}
+
+
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
 def reg():
     return render_team_registration(mysql)
 
-
-# result is returned correctly, just need todispaly
 
 # EP-2/4/5
 @app.route('/testbtn/', methods=['POST'])
@@ -82,65 +90,16 @@ def testbtn():
 
 @app.route("/displayteam/<int:tid>/", methods=['GET'])
 def displayteam(tid):
-    dao_team = DAOTeam(mysql)
-    dao_role = DAORole(mysql)
-    users = dao_team.get_users_from_team(tid)
-    if users:  # there are values in the database
-        userDetails = []
-        for user in users:
-            role = dao_role.get_role_by_rid(user.rid)
-            userDetails.append([user.name, role.name, user.contact,
-                                user.uid, tid, user.rid])
-
-        return render_template('displayteam.html', userDetails=userDetails)
-    else:
-        message = "Your team does not exist"
-        return render_template('displayteam.html', message=message)
-
-
-@app.route('/test_get_base_url')
-def index():
-    return request.base_url[:request.base_url.rfind('/')]
-
-
-# Only go to this page after you go to /create to add more tables and add key constraints 
-@app.route('/testReact', methods=['GET'])
-def testReact():
-    return {"title": "I am ready from app.py"}
+    return render_display_team(mysql, tid)
 
 
 # EP-3: Accept and Decline pending requests
-
 @app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
 def show_team_request(tid):
-    message = ""
-    if request.method == 'POST':
-        action = request.form["action"].split("_")
-        if action[0] == "A":
-            message = team_request_accept(mysql, action[1])
-        elif action[0] == "D":
-            message = team_request_decline(mysql, action[1])
-    dao_request = DAORequest(mysql)
-    dao_company = DAOCompany(mysql)    
-    requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
-    company = dao_company.get_company_by_tid(tid)
-    data = []
-    if not company:
-        return render_template("jointeamrequest.html",
-                               message="Your team does not exist.")
-    company_name = company.name
-    if not requests:
-        return render_template("jointeamrequest.html",
-                               message="No pending requests!",
-                               company_name=company_name)
-    for req in requests:
-        data.append([req.uid, req.create_date, req.req_id])
-    return render_template("jointeamrequest.html", data=data, tid=tid,
-                           message=message, company_name=company_name)
+    return render_join_team_request(mysql, tid)
 
 
 # EP-20: Display user profile
-
 @app.route('/user/<int:uid>/', methods=['GET', 'POST'])
 def display_user(uid):
     dao_user = DAOUser(mysql)
@@ -160,10 +119,12 @@ def display_user(uid):
         message = "The user does not exist"
         return render_template("userprofile.html", message=message)
 
+
 # this version of search
 @app.route('/search', methods=['GET', 'POST'])
 def srch():
     return search(mysql)
+
 
 # related to frontend testing, won't interfere with back end
 @app.route('/searchTestSucceed', methods=['GET', 'POST'])
@@ -175,9 +136,11 @@ def srch_test_succeed():
 def srch_test_fail():
     return search_frontend_test(False)
 
+
 @app.route('/userRegistration', methods=['GET', 'POST'])
 def user_reg():
     return user_register(mysql)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

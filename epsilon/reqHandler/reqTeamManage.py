@@ -15,12 +15,11 @@ def act_on_employee(mysql):
 
 
 def render_display_team(mysql, tid):
-    user_details = get_members(mysql, tid)
-    if user_details:
+    try:
+        user_details = get_members(mysql, tid)
         return render_template('displayteam.html', userDetails=user_details)
-    else:
-        message = "Your team does not exist"
-        return render_template('displayteam.html', message=message)
+    except Exception as e:
+        return render_template('displayteam.html', message=e)
 
 
 def render_join_team_request(mysql, tid):
@@ -33,12 +32,12 @@ def render_join_team_request(mysql, tid):
             message = team_request_decline(mysql, action[1])
     try:
         data, company_name = get_join_requests(mysql, tid)
+        if len(data) == 0:
+            return render_template("jointeamrequest.html",
+                                   message="No pending requests!", tid=tid,
+                                   company_name=company_name)
+        return render_template("jointeamrequest.html", data=data, tid=tid,
+                               message=message, company_name=company_name)
     except Exception as e:
         return render_template("jointeamrequest.html", tid=tid,
                                message=e)
-    if len(data) == 0:
-        return render_template("jointeamrequest.html",
-                               message="No pending requests!", tid=tid,
-                               company_name=company_name)
-    return render_template("jointeamrequest.html", data=data, tid=tid,
-                           message=message, company_name=company_name)

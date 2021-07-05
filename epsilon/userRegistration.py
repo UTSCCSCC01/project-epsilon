@@ -23,7 +23,7 @@ def user_exists(user_dao: DAOUser, email: str):
     # no users remain that may exist already
     return False
 
-def user_register(mysql: MySQL):
+def render_user_registration(mysql: MySQL):
     '''
     Registers a User into the database
     :param mysql: database to access

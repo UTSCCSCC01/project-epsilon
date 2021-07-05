@@ -27,26 +27,29 @@ def get_members(mysql, tid):
     dao_team = DAOTeam(mysql)
     dao_role = DAORole(mysql)
     users = dao_team.get_users_from_team(tid)
-    if users:  # there are values in the database
-        user_details = []
-        for user in users:
-            role = dao_role.get_role_by_rid(user.rid)
-            user_details.append([user.name, role.name, user.contact,
-                                user.uid, tid, user.rid])
-        return user_details
+    if not users:
+        raise ObjectNotExistsError("Your team")
+    # there are values in the database
+    user_details = []
+    for user in users:
+        role = dao_role.get_role_by_rid(user.rid)
+        user_details.append([user.name, role.name, user.contact,
+                            user.uid, tid, user.rid])
+    return user_details
+
 
 def get_join_requests(mysql, tid):
-        dao_request = DAORequest(mysql)
-        dao_company = DAOCompany(mysql)
+    dao_request = DAORequest(mysql)
+    dao_company = DAOCompany(mysql)
 
-        requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
-        company = dao_company.get_company_by_tid(tid)
-        if not company:
-            raise ObjectNotExistsError("Your team")
-        data = []
-        for req in requests:
-            data.append([req.uid, req.create_date, req.req_id])
-        return data, company.name
+    requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
+    company = dao_company.get_company_by_tid(tid)
+    if not company:
+        raise ObjectNotExistsError("Your team")
+    data = []
+    for req in requests:
+        data.append([req.uid, req.create_date, req.req_id])
+    return data, company.name
 
 
 def team_request_accept(mysql, req_id):

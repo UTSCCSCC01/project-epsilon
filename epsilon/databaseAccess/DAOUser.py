@@ -1,5 +1,4 @@
 from classes.Type import Type
-from classes.Role import Role
 from typing import List
 from .DAO import DAO
 from classes.User import User

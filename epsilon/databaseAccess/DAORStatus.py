@@ -1,4 +1,3 @@
-from typing import List
 from .DAO import DAO
 from classes.RStatus import RStatus
 

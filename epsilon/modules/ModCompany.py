@@ -1,7 +1,10 @@
 from datetime import datetime
+from flask_mysqldb import MySQL
+from classes.Company import Company
+from classes.Role import Role
+from classes.Team import Team
+from classes.User import User
 from classes.Type import Type
-from exceptions.FormIncompleteError import FormIncompleteError
-from exceptions.ObjectExistsError import ObjectExistsError
 from classes.CompanyTag import CompanyTag
 from classes.Tag import Tag
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
@@ -9,27 +12,31 @@ from databaseAccess.DAOTag import DAOTag
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAOCompany import DAOCompany
+from exceptions.FormIncompleteError import FormIncompleteError
+from exceptions.ObjectExistsError import ObjectExistsError
 from rake_nltk import Rake
-from classes.Company import Company
-from classes.Role import Role
-from classes.Team import Team
-from classes.User import User
 
 
-def check_team_exists(dao_company, name):
+def check_team_exists(dao_company: DAOCompany, name: str) -> bool:
+    """
+    Check if the name for a new company exists in the database.
+    :param dao_company: DAO object for Company class.
+    :param name: name of new company.
+    :return true if name matches (case insensitive), false otherwise.
+    """
     # Returns 1 if match is found else returns 0
-    company = dao_company.get_company_by_name(name)
-    if company:
+    companies = dao_company.get_companies()
+    for company in companies:
         if company.name.lower() == name.lower():
             return True
     return False
 
 
-def is_pos_int(s):
+def is_pos_int(s) -> bool:
     """
     Checks if the char is a integer or not
     :param s: The character
-    :return: Bool based on if the char is int or not.
+    :return Bool based on if the char is int or not.
     """
     # EP-1: Team management
     try:
@@ -41,11 +48,14 @@ def is_pos_int(s):
         return False
 
 
-def update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag,
-                               desc, team_name):
+def update_tags_from_team_desc(dao_company: DAOCompany, dao_tag: DAOTag,
+                               dao_company_tag: DAOCompanyTag,
+                               desc: str, team_name: str) -> None:
     """
     Adds tags to the database and links them to the team
-    :param dao: The DAO object
+    :param dao_company: The DAO object for Company class
+    :param dao_tag: The DAO object for tag class
+    :param dao_company_tag: The DAO object for CompanyTag class
     :param desc: The team description
     :param team_name: the name of the team
     """
@@ -53,6 +63,7 @@ def update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag,
     rake_nltk_var.extract_keywords_from_text(desc)
     keyword_extracted = rake_nltk_var.get_ranked_phrases()
     keyword_extracted.append(team_name)
+
     companies = dao_company.get_companies()
     tid = 0
     for team in companies:
@@ -67,11 +78,14 @@ def update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag,
         dao_company_tag.add_company_tag(company_tags)
 
 
-def register_team(mysql, name, desc, indust):
+def register_team(mysql: MySQL, name: str, desc: str, indust: int) -> str:
     """
     Renders the template for team registration.
-    :param dao: The DAO object
-    :return Renders the template for team registration.
+    :param mysql: mysql db.
+    :param name: name for new company.
+    :param desc: team description for new company.
+    :param indust: ind_id for new company.
+    :return response message for the registration.
     """
     dao_company = DAOCompany(mysql)
     dao_user = DAOUser(mysql)
@@ -106,9 +120,10 @@ def register_team(mysql, name, desc, indust):
         raise e
 
 
-def add_dummy_companies(mysql) -> None:
+def add_dummy_companies(mysql: MySQL) -> None:
     """
     Populate Company table with dummy data.
+    :param mysql: mysql db.
     """
     epsilon = Company(
         tid=1,

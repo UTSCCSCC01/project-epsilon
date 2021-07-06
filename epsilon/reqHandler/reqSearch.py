@@ -1,9 +1,15 @@
+from flask_mysqldb import MySQL
 from modules.ModSearch import company_search
 import json
-from flask import Flask, request, render_template
+from flask import request, render_template
 
 
-def render_company_search(mysql):
+def render_company_search(mysql: MySQL):
+    """
+    Handler for searching a company.
+    :param mysql: mysql db.
+    :return template for search test
+    """
     if request.method == 'POST':
         try:
             search = request.form['search']

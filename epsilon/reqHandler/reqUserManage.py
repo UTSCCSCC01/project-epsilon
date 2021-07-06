@@ -2,7 +2,13 @@ from modules.ModUser import *
 from flask import request, render_template, redirect, url_for
 
 
-def render_user_profile(mysql, uid):
+def render_user_profile(mysql: MySQL, uid: int):
+    """
+    Handler for user profile.
+    :param mysql: mysql db.
+    :param uid: uid of user
+    :return template for user profile page.
+    """
     message = ""
     try:
         if request.method == 'POST':

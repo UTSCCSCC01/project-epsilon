@@ -1,10 +1,16 @@
+from typing import List
+from flask_mysqldb import MySQL
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from exceptions.FormIncompleteError import FormIncompleteError
-from flask import Flask, request, render_template
 import json
 
 
-def make_keyword_list(keyword_string):
+def make_keyword_list(keyword_string: str) -> List[str]:
+    """
+    Returns a list of words from keyword_string removing articles.
+    :param keyword_string: A sentence to obtain key word list from.
+    :return List of keywords.
+    """
     keyword_list = []
     irrelevent = ["and", "the", "a", "an"]
     for word in keyword_string.split():
@@ -24,7 +30,12 @@ def refine_search_data(search_data):
     return search_results
 
 
-def company_search(mysql, search):
+def company_search(mysql: MySQL, search: str):
+    """
+    :param mysql: mysql db.
+    :param search: user's search string
+    :return json for search result and status message for search
+    """
     # TODO: improve filters
     # create both queries for checking and inserting data
     dao_company_tag = DAOCompanyTag(mysql)

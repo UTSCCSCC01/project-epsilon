@@ -55,7 +55,7 @@ class DAORole(DAO):
             roles.append(Role(role[0]))
         return roles
 
-    def get_role_by_rid(self, rid) -> Role:
+    def get_role_by_rid(self, rid: int) -> Role:
         """
         Gets a role from the database.
         :param rid: Role id of the role to be retrieved.

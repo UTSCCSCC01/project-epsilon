@@ -1,12 +1,13 @@
+from flask_mysqldb import MySQL
 from modules.ModCompany import register_team
 from databaseAccess.DAOIndustry import DAOIndustry
-from flask import Flask, request, render_template, redirect, url_for
+from flask import request, render_template
 
 
-def render_team_registration(mysql):
+def render_team_registration(mysql: MySQL):
     """
     Renders the template for team registration.
-    :param dao: The DAO object
+    :param mysql: mysql db.
     :return Renders the template for team registration.
     """
     dao_industry = DAOIndustry(mysql)

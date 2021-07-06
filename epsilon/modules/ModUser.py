@@ -1,21 +1,20 @@
+from typing import List
 from classes.Type import Type
-from classes.Role import Role
-from exceptions.ObjectNotExistsError import ObjectNotExistsError
+from classes.User import User
 from databaseAccess.DAOUser import DAOUser
+from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.InputInvalidError import InputInvalidError
 from exceptions.FormIncompleteError import FormIncompleteError
 from exceptions.ObjectExistsError import ObjectExistsError
-from databaseAccess.DAOUser import DAOUser
 from flask_mysqldb import MySQL
-from classes.User import User
 import re
 
 
-def update_user(mysql, uid: int, name: str,
+def update_user(mysql: MySQL, uid: int, name: str,
                 description: str, contact: str) -> str:
     """
     Updates a user with given parameters.
-    :param dao: DAO from app.
+    :param mysql: mysql db.
     :param uid: uid of user.
     :param name: name of user.
     :param description: description of user.
@@ -34,7 +33,13 @@ def update_user(mysql, uid: int, name: str,
         return "User info updated."
 
 
-def get_user_profile(mysql, uid):
+def get_user_profile(mysql: MySQL, uid: int) -> List:
+    """
+    Return the detaisl of a user.
+    :param mysql: mysql db.
+    :param uid: uid of user.
+    :return List of user details.
+    """
     dao_user = DAOUser(mysql)
     user = dao_user.get_user_by_uid(uid)
     if user is None:
@@ -46,11 +51,16 @@ def get_user_profile(mysql, uid):
 
 
 # EP-23 User Registration
-def user_registration(mysql: MySQL, name, email, pwd, u_type):
+def user_registration(mysql: MySQL, name: str, email: str,
+                      pwd: str, u_type: int) -> str:
     '''
     Registers a User into the database
-    :param mysql: database to access
-    :return: rendered template of the user registration page
+    :param mysql: mysql db.
+    :param name: name of new user.
+    :param email: email of new user.
+    :param pwd: password of new user.
+    :param u_type: the type id for new user.
+    :return: status message of adding user.
     '''
     dao_user = DAOUser(mysql)
     # check if any required fields isn't filled
@@ -75,3 +85,23 @@ def user_registration(mysql: MySQL, name, email, pwd, u_type):
         except Exception as e:
             # display issue w db
             raise e
+
+
+def user_login(mysql: MySQL, username: str, password: str) -> User:
+    """
+    Checks if inputs are valid username and correct password.
+    :param mysql: mysql db.
+    :param username: email of user.
+    :param password: password of user.
+    :return: User object matching username.
+    """
+    if (len(username) == 0 or len(password) == 0):
+        raise FormIncompleteError()
+    dao_user = DAOUser(mysql)
+    user = dao_user.get_user_by_contact(username)
+    if (not user):
+        raise ObjectNotExistsError("The email",
+                                   " does not exist in our record.")
+    elif user.password != password:
+        raise InputInvalidError("Password does not match.")
+    return user

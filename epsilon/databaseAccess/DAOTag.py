@@ -1,5 +1,4 @@
 from .DAO import DAO
-from typing import List
 from classes.Tag import Tag
 
 
@@ -46,7 +45,7 @@ class DAOTag(DAO):
             '''INSERT INTO Tags (name, ind_id) VALUES (%s, %s)''',
             (tag.name, tag.ind_id))
 
-    def get_tag_by_name(self, name) -> Tag:
+    def get_tag_by_name(self, name: str) -> Tag:
         """
         Gets a team from the database.
         :param name: the name of the tag

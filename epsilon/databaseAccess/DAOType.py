@@ -55,7 +55,7 @@ class DAOType(DAO):
             types.append(Type(type[0]))
         return types
 
-    def get_type_by_type_id(self, type_id) -> Type:
+    def get_type_by_type_id(self, type_id: int) -> Type:
         """
         Gets a type from the database.
         :param type_id: Type id of the user type to be retrieved.

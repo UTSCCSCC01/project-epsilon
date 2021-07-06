@@ -1,15 +1,14 @@
 from datetime import datetime
+from classes.Type import Type
 from exceptions.FormIncompleteError import FormIncompleteError
 from exceptions.ObjectExistsError import ObjectExistsError
 from classes.CompanyTag import CompanyTag
 from classes.Tag import Tag
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOTag import DAOTag
-from databaseAccess.DAOIndustry import DAOIndustry
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAOCompany import DAOCompany
-from flask import Flask, request, render_template
 from rake_nltk import Rake
 from classes.Company import Company
 from classes.Role import Role
@@ -92,7 +91,7 @@ def register_team(mysql, name, desc, indust):
         company = Company(name=name, description=desc, ind_id=indust)
         dao_company.add_company(company)
         # TODO: change when there is user in session
-        joe = User(rid=Role.TEAM_OWNER.value,
+        joe = User(type_id=Type.STARTUP_USER.value,
                    name="Joe",
                    contact="Jo@gmail.com")
         team = Team(tid=3, uid=6, rid=Role.TEAM_OWNER.value)

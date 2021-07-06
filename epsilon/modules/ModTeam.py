@@ -33,7 +33,8 @@ def get_members(mysql, tid):
     user_details = []
     for user in users:
         role = dao_role.get_role_by_rid(user.rid)
-        user_details.append([user.name, role.name, user.contact,
+        role_name = role.name.replace("_", " ").title()
+        user_details.append([user.name, role_name, user.contact,
                             user.uid, tid, user.rid])
     return user_details
 

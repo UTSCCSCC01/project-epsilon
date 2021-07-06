@@ -1,5 +1,6 @@
+from reqHandler.reqSearch import render_company_search, search_frontend_test
 from reqHandler.reqUserManage import render_user_profile
-from userRegistration import render_user_registration
+from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
@@ -7,9 +8,6 @@ from reqHandler.reqDatabaseManage import create_tables, delete_tables
 from reqHandler.reqHome import *
 from flask import Flask, request
 from flask_mysqldb import MySQL
-
-from modules.search import *
-
 from flask_cors import CORS
 
 import mimetypes
@@ -99,7 +97,7 @@ def display_user(uid):
 # this version of search
 @app.route('/search', methods=['GET', 'POST'])
 def srch():
-    return search(mysql)
+    return render_company_search(mysql)
 
 
 # related to frontend testing, won't interfere with back end

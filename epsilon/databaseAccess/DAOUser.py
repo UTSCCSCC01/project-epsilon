@@ -1,3 +1,4 @@
+from classes.Type import Type
 from classes.Role import Role
 from typing import List
 from .DAO import DAO
@@ -21,7 +22,7 @@ class DAOUser(DAO):
         try:
             cur.execute('''CREATE TABLE IF NOT EXISTS Users (
             uid INTEGER auto_increment,
-            rid INTEGER,
+            type_id INTEGER,
             name text not null,
             contact text not null,
             password text not null,
@@ -39,29 +40,29 @@ class DAOUser(DAO):
         Add foreign key constraints to the created table.
         Require: Roles tables to be created.
         """
-        super().add_foreign_key("Users", "rid", "Roles")
+        super().add_foreign_key("Users", "type_id", "Types")
 
     def add_dummy_users(self) -> None:
         """
         Populate Users table with dummy data.
         """
-        user1 = User(uid=1, rid=Role.TEAM_OWNER.value,
+        user1 = User(uid=1, type_id=Type.STARTUP_USER.value,
                      name="Paula", contact="ok@gmail.com",
                      description="Hi, I am Paula, team owner of Epsilon.",
                      password="admin")
-        user2 = User(uid=2, rid=Role.TEAM_OWNER.value,
+        user2 = User(uid=2, type_id=Type.STARTUP_USER.value,
                      name="Tim", contact="ko@gmail.com",
                      description="This is Tim, owner of Company Delta.",
                      password="admin")
-        user3 = User(uid=3, rid=Role.TEAM_MEMBER.value,
+        user3 = User(uid=3, type_id=Type.STARTUP_USER.value,
                      name="Pritish", contact="lp@gmail.com",
                      description="I am waiting to join team Epsilon!.",
                      password="admin")
-        user4 = User(uid=4, rid=Role.TEAM_MEMBER.value,
+        user4 = User(uid=4, type_id=Type.STARTUP_USER.value,
                      name="Sam", contact="opll@gmail.com",
                      description="Here comes Sam.",
                      password="admin")
-        user5 = User(uid=5, rid=Role.TEAM_OWNER.value,
+        user5 = User(uid=5, type_id=Type.STARTUP_USER.value,
                      name="Water", contact="no@gmail.com",
                      description="Water is good.",
                      password="admin")
@@ -77,9 +78,9 @@ class DAOUser(DAO):
         :param user: A User object representing the user to be added.
         """
         self.modify_data(
-            '''INSERT INTO Users (rid, name, contact, password,description)
+            '''INSERT INTO Users (type_id, name, contact, password,description)
                VALUES (%s, %s, %s, %s, %s)''',
-            (user.rid, user.name, user.contact,
+            (user.type_id, user.name, user.contact,
              user.password, user.description))
 
     def update_user(self, user: User) -> None:

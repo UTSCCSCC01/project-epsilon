@@ -1,7 +1,6 @@
-from modules.registration import register_team
+from modules.ModCompany import register_team
 from databaseAccess.DAOIndustry import DAOIndustry
 from flask import Flask, request, render_template, redirect, url_for
-from flask_mysqldb import MySQL
 
 
 def render_team_registration(mysql):

@@ -1,3 +1,4 @@
+from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search, search_frontend_test
 from reqHandler.reqUserManage import render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
@@ -114,6 +115,12 @@ def srch_test_fail():
 @app.route('/userRegistration', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
+
+
+# EP-69: Display company profile
+@app.route('/company/<int:tid>/', methods=['GET', 'POST'])
+def display_company(tid):
+    return render_company_profile(mysql, tid)
 
 
 if __name__ == "__main__":

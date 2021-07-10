@@ -1,4 +1,6 @@
 from datetime import datetime
+from typing import List
+
 from flask_mysqldb import MySQL
 from classes.Company import Company
 from classes.Role import Role
@@ -13,6 +15,7 @@ from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAOCompany import DAOCompany
 from exceptions.FormIncompleteError import FormIncompleteError
+from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.ObjectExistsError import ObjectExistsError
 from rake_nltk import Rake
 
@@ -143,3 +146,18 @@ def add_dummy_companies(mysql: MySQL) -> None:
         dao_company.add_company(company)
         update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag,
                                    company.description, company.name)
+
+
+def get_company_profile(mysql: MySQL, tid: int) -> List:
+    """
+    Return the details of a company in a list.
+    :param mysql: mysql db.
+    :param tid: tid of the company.
+    :return List of company details. L[0] is the company name and L[1] is the company description.
+    """
+    dao_company = DAOCompany(mysql)
+    company = dao_company.get_company_by_tid(tid)
+    if company is None:
+        raise ObjectNotExistsError("The company")
+    company_details = [company.name, company.description]
+    return company_details

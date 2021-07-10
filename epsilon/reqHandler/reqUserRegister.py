@@ -1,4 +1,4 @@
-from modules.ModUser import user_registration
+from epsilon.modules.ModUser import user_registration
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 
@@ -18,8 +18,8 @@ def render_user_registration(mysql: MySQL):
             if ('type' in request.form):
                 u_type = request.form['type']
             message = user_registration(mysql, name, email, pwd, u_type)
-            return render_template('userRegistration.html', msg=message)
+            return render_template('user_registration.html', msg=message)
         except Exception as e:
-            return render_template('userRegistration.html', error=e)
+            return render_template('user_registration.html', error=e)
     else:
-        return render_template('userRegistration.html')
+        return render_template('user_registration.html')

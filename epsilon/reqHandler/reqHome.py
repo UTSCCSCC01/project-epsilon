@@ -22,4 +22,4 @@ def render_previous_home():
     baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
     if request.method == 'POST':
         return redirect(url_for('login'))
-    return render_template('previousHome.html')
+    return render_template('previous_home.html')

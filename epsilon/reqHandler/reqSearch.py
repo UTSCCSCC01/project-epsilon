@@ -1,5 +1,5 @@
 from flask_mysqldb import MySQL
-from modules.ModSearch import company_search
+from epsilon.modules.ModSearch import company_search
 import json
 from flask import request, render_template
 

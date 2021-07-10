@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!--If font awesome is included elsewhere, please remove the line below-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Company Profile</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>My Company Profile</h1>
+        <hr>
+        {% if company_details %}
+        <table>
+            <tr>
+                <td><label for="name">Name</label></td>
+                <td><p>{{company_details[0]}}</p></td>
+            </tr>
+            <tr>
+                <td><label for="description">Description</label> </td>
+                <td><p>{{company_details[1]}}</p></td>
+            </tr>
+        </table>
+        {% endif %}
+    </div>
+    <div class="contents">
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message" id="responseMsg"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+        <p class="message" id="validationMsg"></p>
+    </div>
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

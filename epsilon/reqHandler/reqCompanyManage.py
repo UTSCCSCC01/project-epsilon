@@ -15,4 +15,4 @@ def render_company_profile(mysql: MySQL, tid: int):
         return render_template('company_profile.html', company_details=company_details,
                                message=message)
     except Exception as e:
-        return render_template('user_profile.html', message=e)
+        return render_template('company_profile.html', message=e)

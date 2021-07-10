@@ -18,7 +18,12 @@
         <hr>
     </div>
     <div class="contents">
-        <form action="" method="post">
+
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        
+        <form id="form" action="" method="post">
             <br>
             <input class="auth" type="text" placeholder="Username" name="username" value="{{
                 request.form.course }}">
@@ -27,11 +32,9 @@
                 request.form.q1 }}">
             <br>
             <br>
-            <input class="btn" type="submit" value="Login">
+            <div class="btn_container" data-value="Login" data-text="Login"/>
         </form>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
+        
     </div>
     <div class="footer">
         <footer>
@@ -40,6 +43,13 @@
             </p>
         </footer>
     </div>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load our React component. -->
+    <script type='text/javascript' src="{{ url_for('static', filename='js/btn.js') }}"></script>
 </body>
 
 </html>

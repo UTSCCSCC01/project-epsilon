@@ -33,7 +33,6 @@ var is_editing = false
 function isEditing() {
     //toggle edit/save button
     const valid = document.getElementById("userForm").checkValidity();
-
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
     } else {
@@ -56,7 +55,11 @@ function disableEdit() {
 function updateEditDisplay() {
     // switch between editable/readonly fields 
     
-    document.getElementById("responseMsg").innerHTML = "";
+    var response_msg = document.getElementById("responseMsg");
+
+    if(response_msg) {
+        response_msg.innerHTML = "";
+    }
     
     const pencil_icon = '<i class="fa fa-pencil" aria-hidden="true""></i> ';
     let display_name = is_editing ? "Save" : "Edit";
@@ -66,6 +69,5 @@ function updateEditDisplay() {
 
     document.getElementById('name').readOnly = !is_editing;
     document.getElementById('description').readOnly = !is_editing;
-    document.getElementById('contact').readOnly = !is_editing;
 }
 

@@ -1,5 +1,4 @@
-from modules.ModTeam import *
-from modules.ModTeam import promote_admin, remove_from_team
+from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
 
 
@@ -28,9 +27,9 @@ def render_display_team(mysql: MySQL, tid: int):
     """
     try:
         user_details = get_members(mysql, tid)
-        return render_template('displayteam.html', userDetails=user_details)
+        return render_template('display_team.html', userDetails=user_details)
     except Exception as e:
-        return render_template('displayteam.html', message=e)
+        return render_template('display_team.html', message=e)
 
 
 def render_join_team_request(mysql: MySQL, tid: int):
@@ -50,11 +49,11 @@ def render_join_team_request(mysql: MySQL, tid: int):
     try:
         data, company_name = get_join_requests(mysql, tid)
         if len(data) == 0:
-            return render_template("jointeamrequest.html",
+            return render_template("join_team_request.html",
                                    message="No pending requests!", tid=tid,
                                    company_name=company_name)
-        return render_template("jointeamrequest.html", data=data, tid=tid,
+        return render_template("join_team_request.html", data=data, tid=tid,
                                message=message, company_name=company_name)
     except Exception as e:
-        return render_template("jointeamrequest.html", tid=tid,
+        return render_template("join_team_request.html", tid=tid,
                                message=e)

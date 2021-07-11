@@ -1,5 +1,5 @@
 from flask_mysqldb import MySQL
-from modules.ModCompany import register_team
+from epsilonModules.ModCompany import register_team
 from databaseAccess.DAOIndustry import DAOIndustry
 from flask import request, render_template
 

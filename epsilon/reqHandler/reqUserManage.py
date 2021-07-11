@@ -1,4 +1,4 @@
-from modules.ModUser import *
+from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
 
 
@@ -20,7 +20,7 @@ def render_user_profile(mysql: MySQL, uid: int):
                 message = update_user(mysql, uid, name,
                                       description, contact)
         user_details = get_user_profile(mysql, uid)
-        return render_template('userprofile.html', user_details=user_details,
+        return render_template('user_profile.html', user_details=user_details,
                                message=message)
     except Exception as e:
-        return render_template('userprofile.html', message=e)
+        return render_template('user_profile.html', message=e)

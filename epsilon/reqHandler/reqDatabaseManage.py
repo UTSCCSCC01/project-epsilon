@@ -9,7 +9,7 @@ from databaseAccess.DAOIndustry import DAOIndustry
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAO import DAO
-from epsilon.modules.ModCompany import add_dummy_companies
+from epsilonModules.ModCompany import add_dummy_companies
 from flask_mysqldb import MySQL
 
 

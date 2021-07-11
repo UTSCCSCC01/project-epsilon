@@ -1,4 +1,4 @@
-from epsilon.modules.ModUser import user_registration
+from epsilonModules.ModUser import user_registration
 from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 

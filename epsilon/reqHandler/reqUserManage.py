@@ -1,4 +1,4 @@
-from epsilon.modules.ModUser import *
+from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
 
 

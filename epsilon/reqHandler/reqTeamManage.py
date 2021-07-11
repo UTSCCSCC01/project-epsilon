@@ -1,5 +1,4 @@
-from epsilon.modules.ModTeam import *
-from epsilon.modules.ModTeam import promote_admin, remove_from_team
+from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
 
 

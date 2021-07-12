@@ -6,51 +6,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>User Registration Page.</title>
+
+        <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/font-awesome.css">
+    <link rel="stylesheet" href="../static/css/homepage/templatemo-softy-pinko.css">
+
+        <!-- Personalized in file css for sign up page -->
+    <style type="text/css">
+        html, body { margin: 0; padding: 0; height: 100%; width: 100%; background-image: linear-gradient(127deg, #a759d1 0%, #8261ee 91%); }
+    </style>
 </head>
 
 <header>
 </header>
 
 <body>
-    <div id="background" class="title-card">
-        <h1>Epsilon</h1>
-        <h2>Create Account</h2>
-        <hr>
-    </div>
-    <div class="contents">
-        <form action="" method="post">
-            <br>
-            <input class="auth" type="text" placeholder="Name" name="name" value="">
-            <br>
-            <input class="auth" type="text" placeholder="Email" name="username" value="">
-            <br>
-            <input class="auth" type="text" placeholder="Password" name="password" value="">
-            <br>
-            <br>
-            <input class="auth" type="radio" id="t1" name="type" value=1>
-            <label for="t1">Startup User</label><br>
-            <input class="auth" type="radio" id="t2" name="type" value=2>
-            <label for="t2">Service Provider</label><br>
-            <input class="auth" type="radio" id="t3" name="type" value=3>
-            <label for="t3">Admin</label><br>
-            <br>
-            <br>
-            <input class="btn" type="submit" value="Create Account">
-        </form>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
-        {% if msg %}
-        <p class="msg"><strong>Message:</strong> {{ msg }}</p>
-        {% endif %}
-    </div>
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-6 mx-auto">
+                <div class="jumbotron shadow-lg p-3 mb-5 rounded" style="background-color: #f2f2fe">
+                    <div id="title" class="center-heading">
+                        <h2 class="section-title">Sign Up</h2>
+                        <hr>
+                    </div>
+                    <div class="contents center-text">
+                        <form action="" method="post">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Full Name</span>
+                                </div>
+                                <input name="name" type="text" class="auth form-control" placeholder="John Doe" aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">E-mail</span>
+                                </div>
+                                <input name="username" type="text" class="auth form-control" placeholder="johndoe@example.com" aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3" id="show_hide_password">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Password</span>
+                                </div>
+                                <input id="password" name="password" type="password" class="auth form-control" placeholder="Password" aria-describedby="basic-addon1">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary fa fa-eye-slash" type="button" id="button-addon2" onclick="show_hide_password()"></button>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">User Type</label>
+                                </div>
+                                <select class="custom-select" id="inputGroupSelect01" name="type">
+                                    <option selected>Choose...</option>
+                                    <option class="auth" value="1">Startup User</option>
+                                    <option class="auth" value="2">Service Provider</option>
+                                    <option class="auth" value="3">Admin</option>
+                                </select>
+                            </div>
+                            <br>
+                            <div>
+                                <button type="submit" id="form-submit" class="btn main-button">Create Account</button>
+                            </div>
+                        </form>
+                        {% if error %}
+                        <p class="error"><strong>Error:</strong> {{ error }}</p>
+                        {% endif %}
+                        {% if msg %}
+                        <p class="msg"><strong>Message:</strong> {{ msg }}</p>
+                        {% endif %}
+                    </div>
+                    <a href="/"><- Go back to homepage</a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
 </html>
+
+<script type="text/javascript">
+    function show_hide_password(){
+        let password = document.getElementById("password");
+        let button = document.getElementById("button-addon2");
+        if(password.getAttribute("type") == "text"){
+                password.setAttribute('type', 'password');
+                button.classList.add("fa-eye-slash");
+                button.classList.remove("fa-eye");
+            }else if(password.getAttribute("type") == "password"){
+                password.setAttribute('type', 'text');
+                button.classList.remove( "fa-eye-slash" );
+                button.classList.add( "fa-eye" );
+            }
+    }
+</script>

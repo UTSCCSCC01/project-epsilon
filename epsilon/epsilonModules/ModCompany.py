@@ -175,6 +175,8 @@ def update_company(mysql: MySQL, tid: int, name: str,
     :return: Message whether update was successful.
     """
     dao_company = DAOCompany(mysql)
+    dao_tag = DAOTag(mysql)
+    dao_company_tag = DAOCompanyTag(mysql)
     team_to_update = dao_company.get_company_by_tid(tid)
     if team_to_update is None:
         raise ObjectNotExistsError("The user")
@@ -182,4 +184,5 @@ def update_company(mysql: MySQL, tid: int, name: str,
         team_to_update.name = name
         team_to_update.description = description
         dao_company.update_company(team_to_update)
+        update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag, description, name)
         return "Company info updated."

@@ -1,3 +1,8 @@
+import {BrowserRouter as Router, Link} from "react-router-dom";
+import {Component} from "react";
+import {Route, Switch} from "react-router";
+import { BrowserRouter} from 'react-router-dom';
+
 const Home = () => {
   return (
     <div>
@@ -19,8 +24,12 @@ const Home = () => {
               Here are the pages that are available:
           </h3>
           <ul>
-              <li><a href="">this page</a></li>
-              <li><a href="/login">login page</a></li>
+              {/*for testing*/}
+              {/*<li><Link to={`/info`}>infopage</Link></li>*/}
+
+              <li><a href="http://localhost:5000">this page</a></li>
+              <li><a href="http://localhost:5000/login">login page</a></li>
+              <li><a href="http://localhost:5000/info">info page</a></li>
               <li><a href="/registration">EP-1 team registration/create team page</a></li>
               <li><a href="/displayteam/1/">EP-2,4,5 Display team page</a></li>
               <li><a href="/jointeamrequest/1/">EP-3 Display pending join team request page</a></li>
@@ -35,6 +44,7 @@ const Home = () => {
           </ul>
       </div>
   </div>
+
   );
 }
 

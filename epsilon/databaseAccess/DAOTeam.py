@@ -134,7 +134,7 @@ class DAOTeam(DAO):
         """
         teams = []
         data = self.get_data('''SELECT * FROM Teams
-                                WHERE uid = %s''', (uid))
+                                WHERE uid = %s''', (uid,))
         for team in data:
             teams.append(Team(team[0], team[1], team[2]))
         return teams

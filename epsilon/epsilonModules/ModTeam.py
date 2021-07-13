@@ -157,7 +157,7 @@ def add_team(mysql: MySQL,tid:int, uid: int):
     :param uid: uid of the user.
     """
     dao_team = DAOTeam(mysql)
-    team = Team(tid, uid, 1)
+    team = Team(tid, uid, Role.TEAM_OWNER.value)
     dao_team.add_team(team)
 
     

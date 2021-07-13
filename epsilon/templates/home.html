@@ -62,13 +62,13 @@ https://templatemo.com/tm-535-softy-pinko
                                 <div class="dropdown">
                                     <button class="dropbtn"><a href="/previousHome">Your Team</a></button>
                                     <div class="dropdown-content">
-                                        <a href="/displayteam/1">Display Team</a>
-                                        <a href="/jointeamrequest/1">Pending Requests</a>
+                                        <a href="/displayteam">Display Team</a>
+                                        <a href="/jointeamrequest">Pending Requests</a>
                                         <a href="/registration">Create New Team</a>
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="/company/1">Your Company</a></li>
+                            <li><a href="/company">Your Company</a></li>
                             <li>
                                 <div class="dropdown">
                                     <button class="dropbtn"><a href="">Resources</a></button>
@@ -83,8 +83,12 @@ https://templatemo.com/tm-535-softy-pinko
                             </li>
                             <li><a href="">Startup Market</a></li>
                             <li><a href="">Job Seeking</a></li>
+                            {% if current_user.is_anonymous %}
                             <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>
                             <li><a href="/userRegistration" style="color:rebeccapurple;">Sign Up</a></li>
+                            {% else %}
+                            <li><a href="/logout" style="color:rebeccapurple;">Log Out</a></li>
+                            {% endif %}
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>

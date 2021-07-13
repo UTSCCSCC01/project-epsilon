@@ -1,13 +1,14 @@
-class User:
+from flask_login import UserMixin
+
+class User(UserMixin):
     def __init__(self, uid=0, type_id=0, name="", contact="",
-                 password="", description="", rid=0):
+                 password="", description=""):
         self._uid = uid
         self._type_id = type_id
         self._name = name
         self._contact = contact
         self._description = description
         self._password = password
-        self.rid = rid
 
     @property
     def uid(self):
@@ -57,13 +58,11 @@ class User:
     def description(self, description):
         self._description = description
 
-    @property
-    def rid(self):
-        return self._rid
-
-    @rid.setter
-    def rid(self, rid):
-        self._rid = rid
+    def get_id(self):
+        try:
+            return str(self.uid)
+        except AttributeError:
+            raise NotImplementedError('No `id` attribute - override `get_id`')
 
     def __str__(self):
         """ Overloads str method. """

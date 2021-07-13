@@ -1,4 +1,5 @@
 from typing import List
+
 from classes.Type import Type
 from classes.User import User
 from databaseAccess.DAOUser import DAOUser
@@ -104,4 +105,16 @@ def user_login(mysql: MySQL, username: str, password: str) -> User:
                                    " does not exist in our record.")
     elif user.password != password:
         raise InputInvalidError("Password does not match.")
+    return user
+
+
+def load_User_Object(mysql: MySQL, uid: int) -> User:
+    """
+    Return a user object.
+    :param mysql: mysql db.
+    :param uid: uid of user.
+    :return user object.
+    """
+    dao_user = DAOUser(mysql)
+    user = dao_user.get_user_by_uid(uid)
     return user

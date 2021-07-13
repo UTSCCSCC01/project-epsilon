@@ -126,3 +126,15 @@ class DAOTeam(DAO):
         """
         self.modify_data(
             '''DELETE FROM Teams WHERE tid = %s AND uid = %s  ''', (tid, uid))
+
+    def get_teams_by_uid(self, uid: int) -> List[Team]:
+        """
+        Gets all teams that user with uid is in.
+        :return: List of Team objects.
+        """
+        teams = []
+        data = self.get_data('''SELECT * FROM Teams
+                                WHERE uid = %s''', (uid))
+        for team in data:
+            teams.append(Team(team[0], team[1], team[2]))
+        return teams

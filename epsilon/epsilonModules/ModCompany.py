@@ -1,4 +1,5 @@
 from datetime import datetime
+from epsilonModules.ModTeam import add_team
 from typing import List
 
 from flask_mysqldb import MySQL
@@ -81,7 +82,7 @@ def update_tags_from_team_desc(dao_company: DAOCompany, dao_tag: DAOTag,
         dao_company_tag.add_company_tag(company_tags)
 
 
-def register_team(mysql: MySQL, name: str, desc: str, indust: int) -> str:
+def register_team(mysql: MySQL, name: str, desc: str, indust: int, uid: int) -> str:
     """
     Renders the template for team registration.
     :param mysql: mysql db.
@@ -108,15 +109,10 @@ def register_team(mysql: MySQL, name: str, desc: str, indust: int) -> str:
         company = Company(name=name, description=desc, ind_id=indust)
         dao_company.add_company(company)
         # TODO: change when there is user in session
-        joe = User(type_id=Type.STARTUP_USER.value,
-                   name="Joe",
-                   contact="Jo@gmail.com")
-        team = Team(tid=3, uid=6, rid=Role.TEAM_OWNER.value)
-
         update_tags_from_team_desc(dao_company, dao_tag,
                                    dao_company_tag, desc, name)
-        dao_user.add_user(joe)
-        dao_team.add_team(team)
+        company = dao_company.get_company_by_name(name)
+        add_team(mysql, company.tid, uid)
         message = "Registered!"
         return message
     except Exception as e:
@@ -160,4 +156,18 @@ def get_company_profile(mysql: MySQL, tid: int) -> List:
     if company is None:
         raise ObjectNotExistsError("The company")
     company_details = [company.name, company.description]
+    return company_details
+
+def get_company_profile_by_name(mysql: MySQL, name: str) -> List:
+    """
+    Return the details of a company in a list.
+    :param mysql: mysql db.
+    :param name: name of the company.
+    :return List of company details. L[0] is the company name and L[1] is the company description.
+    """
+    dao_company = DAOCompany(mysql)
+    company = dao_company.get_company_by_name(name)
+    if company is None:
+        raise ObjectNotExistsError("The company")
+    company_details = [company.tid, company.name, company.description]
     return company_details

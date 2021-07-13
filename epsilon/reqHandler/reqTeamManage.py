@@ -1,5 +1,6 @@
 from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
+from flask_login import current_user
 
 
 def act_on_employee(mysql: MySQL):
@@ -18,7 +19,7 @@ def act_on_employee(mysql: MySQL):
     return redirect(url_for('displayteam', tid=tid))
 
 
-def render_display_team(mysql: MySQL, tid: int):
+def render_display_team(mysql: MySQL):
     """
     Handler for displaying team members in a team.
     :param mysql: mysql db.
@@ -26,19 +27,23 @@ def render_display_team(mysql: MySQL, tid: int):
     :return template for display team.
     """
     try:
+        teams = get_user_teams(mysql, current_user.uid)
+        tid = teams[0][0]
         user_details = get_members(mysql, tid)
         return render_template('display_team.html', userDetails=user_details)
     except Exception as e:
         return render_template('display_team.html', message=e)
 
 
-def render_join_team_request(mysql: MySQL, tid: int):
+def render_join_team_request(mysql: MySQL):
     """
     Handler for join team request.
     :param mysql: mysql db.
     :param tid: tid of team.
     :return template for join team request.
     """
+    teams = get_user_teams(mysql, current_user.uid)
+    tid = teams[0][0]
     message = ""
     if request.method == 'POST':
         action = request.form["action"].split("_")

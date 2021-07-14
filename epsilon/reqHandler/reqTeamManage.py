@@ -28,7 +28,7 @@ def render_display_team(mysql: MySQL):
     """
     try:
         teams = get_user_teams(mysql, current_user.uid)
-        tid = teams[0][0]
+        tid = teams[0].tid
         user_details = get_members(mysql, tid)
         return render_template('display_team.html', userDetails=user_details)
     except Exception as e:
@@ -51,7 +51,7 @@ def render_join_team_request(mysql: MySQL):
             message = team_request_decline(mysql, action[1])
     try:
         teams = get_user_teams(mysql, current_user.uid)
-        tid = teams[0][0]
+        tid = teams[0].tid
         data, company_name = get_join_requests(mysql, tid)
         if len(data) == 0:
             return render_template("join_team_request.html",

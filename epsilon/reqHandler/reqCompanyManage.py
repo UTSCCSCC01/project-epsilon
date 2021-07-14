@@ -14,7 +14,7 @@ def render_company_profile(mysql: MySQL):
     message = ""
     try:
         teams = get_user_teams(mysql, current_user.uid)
-        company_details = get_company_profile(mysql, teams[0][0])
+        company_details = get_company_profile(mysql, teams[0].tid)
         return render_template('company_profile.html', company_details=company_details,
                                message=message)
     except Exception as e:

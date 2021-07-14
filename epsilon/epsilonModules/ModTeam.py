@@ -136,7 +136,7 @@ def team_request_update(dao_request: DAORequest, req_id: int, status: int):
     else:
         return "Status is not pending!"
 
-def get_user_teams(mysql: MySQL, uid: int) -> list:
+def get_user_teams(mysql: MySQL, uid: int) -> list[Team]:
     """
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.
@@ -147,10 +147,7 @@ def get_user_teams(mysql: MySQL, uid: int) -> list:
     teams = dao_team.get_teams_by_uid(uid)
     if not teams:
         raise ObjectNotExistsError("The Team")
-    team_details = []
-    for team in teams:
-        team_details.append([team.tid, team.uid, team.rid])
-    return team_details
+    return teams
 
 def add_team(mysql: MySQL,tid:int, uid: int):
     """

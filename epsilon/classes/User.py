@@ -1,14 +1,15 @@
 from flask_login import UserMixin
-
+# rid is required for display team
 class User(UserMixin):
     def __init__(self, uid=0, type_id=0, name="", contact="",
-                 password="", description=""):
+                 password="", description="", rid=0):
         self._uid = uid
         self._type_id = type_id
         self._name = name
         self._contact = contact
         self._description = description
         self._password = password
+        self._rid = rid
 
     @property
     def uid(self):
@@ -23,8 +24,8 @@ class User(UserMixin):
         return self._type_id
 
     @type_id.setter
-    def rid(self, type_id):
-        self._rid = type_id
+    def type_id(self, type_id):
+        self._type_id = type_id
 
     @property
     def name(self):
@@ -57,6 +58,14 @@ class User(UserMixin):
     @description.setter
     def description(self, description):
         self._description = description
+
+    @property
+    def rid(self):
+        return self._rid
+
+    @rid.setter
+    def rid(self, rid):
+        self._rid = rid
 
     def get_id(self):
         try:

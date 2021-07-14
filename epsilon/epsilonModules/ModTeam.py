@@ -145,6 +145,8 @@ def get_user_teams(mysql: MySQL, uid: int) -> list:
     """
     dao_team = DAOTeam(mysql)
     teams = dao_team.get_teams_by_uid(uid)
+    if not teams:
+        raise ObjectNotExistsError("The Team")
     team_details = []
     for team in teams:
         team_details.append([team.tid, team.uid, team.rid])

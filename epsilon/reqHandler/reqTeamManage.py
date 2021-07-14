@@ -42,8 +42,6 @@ def render_join_team_request(mysql: MySQL):
     :param tid: tid of team.
     :return template for join team request.
     """
-    teams = get_user_teams(mysql, current_user.uid)
-    tid = teams[0][0]
     message = ""
     if request.method == 'POST':
         action = request.form["action"].split("_")
@@ -52,6 +50,8 @@ def render_join_team_request(mysql: MySQL):
         elif action[0] == "D":
             message = team_request_decline(mysql, action[1])
     try:
+        teams = get_user_teams(mysql, current_user.uid)
+        tid = teams[0][0]
         data, company_name = get_join_requests(mysql, tid)
         if len(data) == 0:
             return render_template("join_team_request.html",
@@ -60,5 +60,5 @@ def render_join_team_request(mysql: MySQL):
         return render_template("join_team_request.html", data=data, tid=tid,
                                message=message, company_name=company_name)
     except Exception as e:
-        return render_template("join_team_request.html", tid=tid,
+        return render_template("join_team_request.html",
                                message=e)

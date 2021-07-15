@@ -15,7 +15,6 @@ def render_company_profile(mysql: MySQL):
     try:
         teams = get_user_teams(mysql, current_user.uid)
         tid = teams[0].tid
-        company_details = get_company_profile(mysql, tid)
         if request.method == 'POST':
             data = request.get_json
             if data:

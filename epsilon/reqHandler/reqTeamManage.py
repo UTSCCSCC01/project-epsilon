@@ -1,7 +1,9 @@
+import json
 from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
-
+from classes.Type import Type
+import sys, traceback
 
 def act_on_employee(mysql: MySQL):
     """
@@ -62,3 +64,37 @@ def render_join_team_request(mysql: MySQL):
     except Exception as e:
         return render_template("join_team_request.html",
                                message=e)
+
+
+def render_send_join_team_message(mysql: MySQL):
+    """
+    """
+    if request.method == 'POST':
+        print("!!!!!!!!!! entering POST")
+        try:
+            print("before getting tid ")
+            tid = request.form['search']
+            print("tid is ", tid)
+            uid = current_user.uid
+            print("uid is ", uid)
+            type_id = current_user.type_id
+            print(type(type_id))
+            print("type_id is ", type_id)
+
+            if type_id == Type.STARTUP_USER.value:
+                message = add_join_team_request(mysql, tid, uid)
+                return render_template('send_join_request.html', message=message)
+            else:
+                if type_id == Type.SERVICE_PROVIDER.value:
+                    error = "a service provider cannot request to join a company."
+                elif type_id == Type.ADMIN.value:
+                    error = "an admin can only process requests, not to send request."
+                else:
+                    error = "you are not currently registered as any user type, please register as startup user and try again."
+                return render_template('send_join_request.html', error=error)
+        except Exception as e:
+            traceback.print_exc()
+            return render_template('send_join_request.html', error=e)
+    else:
+        print("!!!!!!!!!! entering GET")
+        return render_template("send_join_request.html")

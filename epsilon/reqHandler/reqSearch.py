@@ -12,15 +12,17 @@ def render_company_search(mysql: MySQL):
     """
     if request.method == 'POST':
         try:
+            print("before getting search")
             search = request.form['search']
+            print("search is", search)
             data, message = company_search(mysql, search)
-            return render_template('search_test.html', message=message,
+            return render_template('search.html', message=message,
                                    data=data)
         except Exception as e:
             error_json = json.dumps({"message": str(e)})
-            return render_template('search_test.html', error=error_json)
+            return render_template('search.html', error=error_json)
     else:
-        return render_template("search_test.html")
+        return render_template("search.html")
 
 
 # related to testing frontend, won't interfere with back end

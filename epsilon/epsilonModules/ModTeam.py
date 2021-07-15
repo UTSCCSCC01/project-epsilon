@@ -4,6 +4,7 @@ from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from classes.Team import Team
 from classes.Role import Role
 from classes.RStatus import RStatus
+from classes.Request import Request
 from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
@@ -136,7 +137,7 @@ def team_request_update(dao_request: DAORequest, req_id: int, status: int):
     else:
         return "Status is not pending!"
 
-def get_user_teams(mysql: MySQL, uid: int) -> list[Team]:
+def get_user_teams(mysql: MySQL, uid: int) -> [Team]:
     """
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.
@@ -160,3 +161,15 @@ def add_team(mysql: MySQL,tid:int, uid: int):
     dao_team.add_team(team)
 
     
+def add_join_team_request(mysql: MySQL, tid:int, uid:int):
+    """
+    Add a join team request to the database
+    :param mysql: mysql db.
+    :param tid: the id of team to join.
+    :param uid: uid of the user.
+    :param sid: the status id.
+    """
+    dao_req = DAORequest(mysql)
+    req = Request(tid=tid, uid=uid, sid=RStatus.PENDING.value)
+    dao_req.add_request(req)
+    return 'request sent successfully'

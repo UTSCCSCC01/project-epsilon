@@ -18,31 +18,41 @@
 </header>
 
 <body>
-    <div id="background" class="title-card">
+    <div id="background" class="jumbotron jumbotron-fluid p-3 mb-5 title-card">
+        <div class="container">
         <h1>{{company_name}}</h1>
-        <h2>Manage Team</h2>
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="section-title">Manage Join Team Requests</h2>
         <hr>
     </div>
-    <div class="contents">
-        {% if data %}
-        <table border="1">
-            <tr>
-                <th>User</th>
-                <th>Creation Time</th>
-                <th>Action</th>
-            </tr>
-            {% for row in data %}
-            <tr>
-                <th> {{ row[0] }} </th>
-                <td> {{ row[1] }} </td>
-                <td><form action="" method="POST" id="form_{{row[2]}}">
-                    <button type="submit" value="A_{{row[2]}}_{{tid}}" name="action">Accept</button>
-                    <button type="submit" value="D_{{row[2]}}_{{tid}}" name="action">Decline</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+    <div class="contents table table-hover table-responsive-sm container">
+        <div class="align-items-center h-100">
+            {% if data %}
+            <table>
+                <thead class="thead-light">
+                    <tr>
+                        <th>User</th>
+                        <th>Request Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% for row in data %}
+                <tr>
+                    <th> {{ row[0] }} </th>
+                    <td> {{ row[1] }} </td>
+                    <td><form action="" method="POST" id="form_{{row[2]}}">
+                        <button class="adjacent-btn positive" type="submit" value="A_{{row[2]}}_{{tid}}" name="action">Accept</button>
+                        <button class="adjacent-btn" type="submit" value="D_{{row[2]}}_{{tid}}" name="action">Decline</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+       
         {% endif %}
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
@@ -51,13 +61,13 @@
         <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
     </div>
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
-    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <p class="copyright">Epsilon 2021</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

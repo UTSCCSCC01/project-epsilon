@@ -22,3 +22,8 @@ body {
     background: #fff;
     font-family: "Raleway", sans-serif;
 }
+
+button.dropbtn {
+    text-transform:initial;
+    padding-top: 0%;
+}

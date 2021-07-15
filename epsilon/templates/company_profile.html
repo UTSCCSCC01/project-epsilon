@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/companyProfile.js') }}"></script>
     <!--If font awesome is included elsewhere, please remove the line below-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Company Profile</title>
@@ -18,16 +19,23 @@
         <h1>My Company Profile</h1>
         <hr>
         {% if company_details %}
-        <table>
-            <tr>
-                <td><label for="name">Name</label></td>
-                <td><p>{{company_details[0]}}</p></td>
-            </tr>
-            <tr>
-                <td><label for="description">Description</label> </td>
-                <td><p>{{company_details[1]}}</p></td>
-            </tr>
-        </table>
+        <form action="" method="POST" id="companyForm">
+            <table>
+                <tr>
+                    <td><button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard Changes</button></td>
+                    <td><button id="editBtn" type="button" onClick="isEditing()"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button></td>
+                </tr>
+                <tr>
+                    <td><label for="name">Name</label></td>
+                    <td><input type="text" name="name" id="name" value="{{company_details[0]}}" required readonly> <span style="color: red;">*</span></td>
+                </tr>
+                <tr>
+                    <td><label for="description">Description</label> </td>
+                    <td><textarea name="description" id="description" style="width: 23vw; height: 6vw;" readonly>{{company_details[1]}}</textarea></td>
+                </tr>
+            </table>
+            <!--<div id="editBtn"></div>-->
+        </form>
         {% endif %}
     </div>
     <div class="contents">

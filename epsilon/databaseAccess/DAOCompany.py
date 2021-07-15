@@ -94,7 +94,8 @@ class DAOCompany(DAO):
                     company[0],
                     company[1],
                     company[2],
-                    company[3])
+                    company[3],
+                    company[4])
         return company
 
     def get_company_by_name(self, name: str) -> Company:
@@ -113,5 +114,6 @@ class DAOCompany(DAO):
                     company[0],
                     company[1],
                     company[2],
-                    company[3])
+                    company[3],
+                    company[4])
         return company

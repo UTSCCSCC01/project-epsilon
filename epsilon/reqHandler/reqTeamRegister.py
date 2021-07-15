@@ -1,7 +1,9 @@
 from flask_mysqldb import MySQL
-from epsilonModules.ModCompany import register_team
+from epsilonModules.ModCompany import get_company_profile_by_name, register_team
+from epsilonModules.ModTeam import add_team
 from databaseAccess.DAOIndustry import DAOIndustry
 from flask import request, render_template
+from flask_login import current_user
 
 
 def render_team_registration(mysql: MySQL):
@@ -17,7 +19,8 @@ def render_team_registration(mysql: MySQL):
         desc = request.form['teamdesc']
         indust = request.form['industryselect']
         try:
-            message = register_team(mysql, name, desc, indust)
+            message = register_team(mysql, name, desc, indust, current_user.uid)
+
             return render_template("registration.html", message=message,
                                    industry=industry)
         except Exception as e:

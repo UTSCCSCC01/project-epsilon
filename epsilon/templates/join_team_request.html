@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- jQuery -->
-    <script src="{{ url_for('static', filename='js/homepage/jquery-2.1.0.min.js') }}"></script>
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Join Team Requests</title>
-</head>
-
-<header class="header-area header-sticky" id="navMenu">
-</header>
-
-<body>
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Join Team Request{% endblock %}
+{% block content %}
 <div class="pagewrap">
     <div class="main">
         <div id="background" class="jumbotron jumbotron-fluid p-3 mb-5 title-card">
@@ -66,18 +53,4 @@
         </div>
         </div>
     </div>
-    <footer>
-        <div class="container" style="margin: auto;">
-                <p class="copyright">Epsilon 2021</p>
-        </div>
-    </footer>
-</div>
-</body>
-
-</html>
-
-<script>
-    $(function(){
-        $("#navMenu").load("{{ url_for('static', filename='html/navbar.html') }}"); 
-        });
-</script>
+{% endblock %}

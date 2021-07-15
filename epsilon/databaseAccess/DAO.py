@@ -63,7 +63,7 @@ class DAO:
         """
         t_names = ["Teams", "Request", "Users", "Roles",
                    "CompanyTags", "Company", "RStatus",
-                   "Tags", "Industry"]
+                   "Tags", "Industry", "Type"]
         for t_name in t_names:
             self.drop_table(t_name)
 

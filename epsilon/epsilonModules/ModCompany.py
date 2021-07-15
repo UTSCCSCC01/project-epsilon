@@ -2,22 +2,22 @@ from datetime import datetime
 from epsilonModules.ModTeam import add_team
 from typing import List
 
-from flask_mysqldb import MySQL
 from classes.Company import Company
-from classes.Role import Role
-from classes.Team import Team
-from classes.User import User
-from classes.Type import Type
 from classes.CompanyTag import CompanyTag
+from classes.Role import Role
 from classes.Tag import Tag
+from classes.Team import Team
+from classes.Type import Type
+from classes.User import User
+from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOTag import DAOTag
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOUser import DAOUser
-from databaseAccess.DAOCompany import DAOCompany
 from exceptions.FormIncompleteError import FormIncompleteError
-from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.ObjectExistsError import ObjectExistsError
+from exceptions.ObjectNotExistsError import ObjectNotExistsError
+from flask_mysqldb import MySQL
 from rake_nltk import Rake
 
 
@@ -155,8 +155,9 @@ def get_company_profile(mysql: MySQL, tid: int) -> List:
     company = dao_company.get_company_by_tid(tid)
     if company is None:
         raise ObjectNotExistsError("The company")
-    company_details = [company.name, company.description]
+    company_details = [company.name, company.description, company.ind_id]
     return company_details
+
 
 def get_company_profile_by_name(mysql: MySQL, name: str) -> List:
     """
@@ -171,3 +172,28 @@ def get_company_profile_by_name(mysql: MySQL, name: str) -> List:
         raise ObjectNotExistsError("The company")
     company_details = [company.tid, company.name, company.description]
     return company_details
+
+def update_company(mysql: MySQL, tid: int, name: str,
+                   description: str) -> str:
+    """
+    Updates a user with given parameters.
+    :param mysql: mysql db.
+    :param tid: tid of company.
+    :param name: name of user.
+    :param description: description of user.
+    :param ind_id: industry id of the company.
+    :return: Message whether update was successful.
+    """
+    dao_company = DAOCompany(mysql)
+    dao_tag = DAOTag(mysql)
+    dao_company_tag = DAOCompanyTag(mysql)
+    team_to_update = dao_company.get_company_by_tid(tid)
+    if team_to_update is None:
+        raise ObjectNotExistsError("The user")
+    else:
+        team_to_update.name = name
+        team_to_update.description = description
+        dao_company.update_company(team_to_update)
+        update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag, description, name)
+        return "Company info updated."
+

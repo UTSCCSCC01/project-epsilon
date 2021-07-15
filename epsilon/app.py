@@ -2,6 +2,7 @@ from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search, search_frontend_test
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
+from reqHandler.reqAboutUs import render_about_us
 from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
@@ -128,6 +129,10 @@ def user_reg():
     return render_user_registration(mysql)
 
 
+@app.route('/aboutUs/', methods=['GET', 'POST'])
+def about():
+    return render_about_us()
+
 # EP-69: Display company profile
 @app.route('/company/', methods=['GET', 'POST'])
 @login_required
@@ -139,9 +144,11 @@ def display_company():
 def logout():
     return render_logout()
 
+
 @login_manager.user_loader
 def load_user(id):
     return load_User_O(mysql, int(id))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

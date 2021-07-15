@@ -51,7 +51,7 @@ table {
     width: 75%;
     background-color: #f2f2fe;
     margin: auto;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 table th, table td {
@@ -78,5 +78,19 @@ tr {
 }
 
 footer {
-    bottom: 0px;
+    bottom: 0;
+    width: 100%;
 }
+/* footer stays bottom solution obtain from https://dev.to/akshay_rajput/keep-footer-at-bottom-of-page-using-flexbox-4a6f */
+.pagewrap{
+    display: flex;
+    /*vertically stack children*/
+    flex-direction: column;
+    /* expand to take full height of page */
+    /* min-height overrides both height & max-height */
+    min-height: 100vh; 
+  } 
+.main{
+    flex-grow: 1;
+  }
+/* solution end*/

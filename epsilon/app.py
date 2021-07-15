@@ -1,15 +1,18 @@
 from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search, search_frontend_test
-from reqHandler.reqUserManage import render_user_profile
+from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
+from reqHandler.reqLogout import render_logout
 from reqHandler.reqDatabaseManage import create_tables, delete_tables
 from reqHandler.reqHome import *
 from flask import Flask, request
 from flask_mysqldb import MySQL
+from flask_login import LoginManager, login_required
 from flask_cors import CORS
+from databaseAccess.DAOUser import *
 
 import mimetypes
 
@@ -20,11 +23,14 @@ mimetypes.add_type('application/javascript', '.mjs')
 
 app = Flask(__name__)
 CORS(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
 app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
+app.config['SECRET_KEY'] = 'henlo'
 
 mysql = MySQL(app)
 
@@ -68,31 +74,36 @@ def testReact():
 
 # EP-1: Team management
 @app.route('/registration', methods=['GET', 'POST'])
+@login_required
 def reg():
     return render_team_registration(mysql)
 
 
 # EP-2/4/5
 @app.route('/testbtn/', methods=['POST'])
+@login_required
 def testbtn():
     return act_on_employee(mysql)
 
 
-@app.route("/displayteam/<int:tid>/", methods=['GET'])
-def displayteam(tid):
-    return render_display_team(mysql, tid)
+@app.route("/displayteam", methods=['GET'])
+@login_required
+def displayteam():
+    return render_display_team(mysql)
 
 
 # EP-3: Accept and Decline pending requests
-@app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
-def show_team_request(tid):
-    return render_join_team_request(mysql, tid)
+@app.route('/jointeamrequest', methods=['GET', 'POST'])
+@login_required
+def show_team_request():
+    return render_join_team_request(mysql)
 
 
 # EP-20: Display user profile
-@app.route('/user/<int:uid>/', methods=['GET', 'POST'])
-def display_user(uid):
-    return render_user_profile(mysql, uid)
+@app.route('/user', methods=['GET', 'POST'])
+@login_required
+def display_user():
+    return render_user_profile(mysql)
 
 
 # this version of search
@@ -118,10 +129,19 @@ def user_reg():
 
 
 # EP-69: Display company profile
-@app.route('/company/<int:tid>/', methods=['GET', 'POST'])
-def display_company(tid):
-    return render_company_profile(mysql, tid)
+@app.route('/company', methods=['GET', 'POST'])
+@login_required
+def display_company():
+    return render_company_profile(mysql)
 
+@app.route('/logout')
+@login_required
+def logout():
+    return render_logout()
+
+@login_manager.user_loader
+def load_user(id):
+    return load_User_O(mysql, int(id))
 
 if __name__ == "__main__":
     app.run(debug=True)

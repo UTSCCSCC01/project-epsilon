@@ -1,4 +1,6 @@
-class User:
+from flask_login import UserMixin
+# rid is required for display team
+class User(UserMixin):
     def __init__(self, uid=0, type_id=0, name="", contact="",
                  password="", description="", rid=0):
         self._uid = uid
@@ -7,7 +9,7 @@ class User:
         self._contact = contact
         self._description = description
         self._password = password
-        self.rid = rid
+        self._rid = rid
 
     @property
     def uid(self):
@@ -22,8 +24,8 @@ class User:
         return self._type_id
 
     @type_id.setter
-    def rid(self, type_id):
-        self._rid = type_id
+    def type_id(self, type_id):
+        self._type_id = type_id
 
     @property
     def name(self):
@@ -64,6 +66,12 @@ class User:
     @rid.setter
     def rid(self, rid):
         self._rid = rid
+
+    def get_id(self):
+        try:
+            return str(self.uid)
+        except AttributeError:
+            raise NotImplementedError('No `id` attribute - override `get_id`')
 
     def __str__(self):
         """ Overloads str method. """

@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
+{% block title %}About Us{% endblock %}
 
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+{% block head %}
 
     <!-- Site made with Mobirise Website Builder v5.3.10, https://mobirise.com -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="generator" content="Mobirise v5.3.10, mobirise.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/logo5.png" type="image/x-icon">
-    <meta name="description" content="">
-
-
-    <title>Home</title>
     <link rel="stylesheet" href="../static/assets/tether/tether.min.css">
     <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap-grid.min.css">
@@ -34,24 +20,10 @@
     </noscript>
     <link rel="preload" as="style" href="../static/assets/mobirise/css/mbr-additional.css">
     <link rel="stylesheet" href="../static/assets/mobirise/css/mbr-additional.css" type="text/css">
+    {{ super() }}
+{% endblock %}
 
-    <title>Epsilon</title>
-    <!--
-SOFTY PINKO
-https://templatemo.com/tm-535-softy-pinko
--->
-
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" href="../static/css/homepage/bootstrap.min.css">
-
-    <link rel="stylesheet" type="text/css" href="../static/css/homepage/font-awesome.css">
-
-    <link rel="stylesheet" href="../static/css/homepage/templatemo-softy-pinko.css">
-
-</head>
-
-<body>
-
+{% block content %}
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
         <div class="jumper">
@@ -62,67 +34,6 @@ https://templatemo.com/tm-535-softy-pinko
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
-
-
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <!--<a href="#" class="logo">
-                            <img src="../static/images/logo.png" alt="Epsilon" /> -->
-                        <!-- <h1>Epsilon</h1> -->
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li>
-                                <h2
-                                    style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                                    Epsilon</h2>
-                            </li>
-                            <li><a href="" class="active">Home</a></li>
-                            <li>
-                                <div class="dropdown">
-                                    <button class="dropbtn"><a href="/previousHome">Your Team</a></button>
-                                    <div class="dropdown-content">
-                                        <a href="/displayteam/1">Display Team</a>
-                                        <a href="/jointeamrequest/1">Pending Requests</a>
-                                        <a href="/registration">Create New Team</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li><a href="/company/1">Your Company</a></li>
-                            <li>
-                                <div class="dropdown">
-                                    <button class="dropbtn"><a href="">Resources</a></button>
-                                    <div class="dropdown-content">
-                                        <a href="">Product Development</a>
-                                        <a href="">Accounting and Bookkeeping</a>
-                                        <a href="">Legal</a>
-                                        <a href="">Marketing</a>
-                                        <a href="">Sales and CRM</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li><a href="">Startup Market</a></li>
-                            <li><a href="">Job Seeking</a></li>
-                            <li><a href="/aboutUs">About Us</a></li>
-                            <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>
-                            <li><a href="/userRegistration" style="color:rebeccapurple;">Sign Up</a></li>
-                        </ul>
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
 
     <section class="header11 cid-sDedfmVf38" id="header11-k">
 
@@ -152,11 +63,16 @@ https://templatemo.com/tm-535-softy-pinko
                             <h6 class="card-title mbr-fonts-style display-2" style="font-size:xx-large;">
                                 <strong>What We Do</strong>
                             </h6>
-                            <p class="mbr-text mbr-fonts-style mb-4 display-4" style="font-size:larger;">Lorem Ipsum is
-                                simply dummy text of the
-                                printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-                                text ever since the 1500s, when an unknown printer took a galley of type and scrambled
-                                it to make a type specimen book.&nbsp;</p>
+                            <p class="mbr-text mbr-fonts-style mb-4 display-4" style="font-size:larger;">
+                                For startup users, we provide the following features:
+                                <ul>
+                                    <li>Publishing your own company profile page</li>
+                                    <li>Post job postings to recruit like-minded fellows</li>
+                                    <li>Browse Service Providers and offers that you need to start your business</li>
+                                    <li>Create your company's bank account</li>
+                                    <li>Learn how to be successful with our exclusive learning Resourses</li>
+                                </ul>
+                            </p>
 
                         </div>
                     </div>
@@ -187,8 +103,9 @@ https://templatemo.com/tm-535-softy-pinko
                                 <strong>Why We Do It</strong>
                             </h6>
                             <p class="mbr-text mbr-fonts-style mb-4 display-4" style="font-size:larger;">
-                                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-                                piece of classical Latin literature from 45 BC, making it over 2000 years old.&nbsp;</p>
+                                We hope that our product will make a valuable impact to the African Impact Challenge in helping
+                                Young Startups build their business, so they can focus on pursuing their dream to make a larger impact to Africa.
+                            </p>
 
                         </div>
                     </div>
@@ -461,12 +378,12 @@ https://templatemo.com/tm-535-softy-pinko
             </div>
         </div>
     </section>
+{% endblock %}
 
 
-
-
+{% block footer %}
+    {{ super() }}
     <!-- ***** Footer Start ***** -->
-    <footer>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
@@ -481,52 +398,18 @@ https://templatemo.com/tm-535-softy-pinko
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
+                    <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo<br><br>
+                    <a href="https://mobirise.site/f" style="color: #fff;">Copyright &copy; Mobirise</a></p>
                 </div>
             </div>
         </div>
-    </footer>
-
-    <section
-        style="background-color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; color:#aaa; font-size:12px; padding: 0; align-items: center; display: flex;">
-        <a href="https://mobirise.site/f" style="flex: 1 1; height: 3rem; padding-left: 1rem;"></a>
-    </section>
+{% endblock %}
+{% block more_imports %}
+{{ super() }}
     <script src="../static/assets/web/assets/jquery/jquery.min.js"></script>
     <script src="../static/assets/popper/popper.min.js"></script>
     <script src="../static/assets/tether/tether.min.js"></script>
     <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/assets/smoothscroll/smooth-scroll.js"></script>
     <script src="../static/assets/theme/js/script.js"></script>
-
-    <!-- jQuery -->
-    <script src="../static/js/homepage/jquery-2.1.0.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="../static/js/homepage/popper.js"></script>
-    <script src="../static/js/homepage/bootstrap.min.js"></script>
-
-    <!-- Plugins -->
-    <script src="../static/js/homepage/scrollreveal.min.js"></script>
-    <script src="../static/js/homepage/waypoints.min.js"></script>
-    <script src="../static/js/homepage/jquery.counterup.min.js"></script>
-    <script src="../static/js/homepage/imgfix.min.js"></script>
-
-    <!-- Global Init -->
-    <script src="../static/js/homepage/custom.js"></script>
-
-    <!--just to test if we can embed react script-->
-    {% block app_content %}
-    <!-- We will put our React component inside this div. -->
-    <div id="nav_menu_container"></div>
-
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-
-    <!-- Load our React component. -->
-    <script src="{{ url_for('static', filename='js/homepage/nav_menu.js') }}"></script>
-    {% endblock %}
-</body>
-
-</html>
+{% endblock %}

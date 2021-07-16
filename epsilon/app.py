@@ -41,29 +41,29 @@ def hello():
     return render_home()
 
 
-@app.route("/previousHome", methods=['GET', 'POST'])
+@app.route("/previousHome/", methods=['GET', 'POST'])
 def previousHome():
     return render_previous_home()
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     return render_login(mysql)
 
 
 # For database management
-@app.route("/deleteAll")
+@app.route("/deleteAll/")
 def delete_all():
     return delete_tables(mysql)
 
 
-@app.route("/create")
+@app.route("/create/")
 def create():
     return create_tables(mysql)
 
 
 # EP-1: Team management
-@app.route('/registration', methods=['GET', 'POST'])
+@app.route('/registration/', methods=['GET', 'POST'])
 @login_required
 def reg():
     return render_team_registration(mysql)
@@ -76,54 +76,60 @@ def testbtn():
     return act_on_employee(mysql)
 
 
-@app.route("/displayteam", methods=['GET'])
+@app.route("/displayteam/", methods=['GET'])
 @login_required
 def displayteam():
     return render_display_team(mysql)
 
 
 # EP-3: Accept and Decline pending requests
-@app.route('/jointeamrequest', methods=['GET', 'POST'])
+@app.route('/jointeamrequest/', methods=['GET', 'POST'])
 @login_required
 def show_team_request():
     return render_join_team_request(mysql)
 
 
 # EP-20: Display user profile
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user/', methods=['GET', 'POST'])
 @login_required
 def display_user():
     return render_user_profile(mysql)
 
 
 # this version of search
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search/', methods=['GET', 'POST'])
 def srch():
     return render_company_search(mysql)
 
 
-@app.route('/userRegistration', methods=['GET', 'POST'])
+@app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
 
 
-@app.route('/aboutUs', methods=['GET', 'POST'])
+@app.route('/aboutUs/', methods=['GET', 'POST'])
 def about():
     return render_about_us()
 
+
 # EP-69: Display company profile
-
-
-@app.route('/company', methods=['GET', 'POST'])
+@app.route('/company/', methods=['GET', 'POST'])
 @login_required
 def display_company():
     return render_company_profile(mysql)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     return render_logout()
+
+
+#E EP-73 
+@app.route('/teamManagement/', methods=['GET', 'POST'])
+@login_required
+def teamMgmt():
+    return render_team_mgmt_combined(mysql)
 
 
 @login_manager.user_loader

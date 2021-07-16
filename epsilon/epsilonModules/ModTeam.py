@@ -20,26 +20,29 @@ import traceback
 
 
 def remove_from_team(mysql: MySQL, tid: int,
-                     uid: int, rid: int) -> None:
+                     uid: int, rid: int) -> str:
     """
-    Remove member from team.
+    Remove member from team. Return successful message
     :param mysql: mysql db.
     :param tid: tid of company.
     :param uid: uid of user.
     :param rid: role of user in company.
+    :return: successful message
     """
     dao_team = DAOTeam(mysql)
     if(int(rid) != Role.TEAM_OWNER.value):
         dao_team.remove_from_team(tid, uid)
+        return "Remove from team successful!"
 
 
-def promote_admin(mysql: MySQL, tid: int, uid: int, rid: int):
+def promote_admin(mysql: MySQL, tid: int, uid: int, rid: int) -> str:
     """
     Promote user in company to admin.
     :param mysql: mysql db.
     :param tid: tid of company.
     :param uid: uid of user.
     :param rid: role of user in company.
+    :return: successful message
     """
     # newRole should be id of admin
     dao_team = DAOTeam(mysql)
@@ -47,6 +50,7 @@ def promote_admin(mysql: MySQL, tid: int, uid: int, rid: int):
     if(int(rid) != Role.TEAM_OWNER.value):
         team_to_update.rid = Role.TEAM_ADMIN.value
         dao_team.update_team(team_to_update)
+        return "Promote admin successful!"
 
 
 def get_members(mysql: MySQL, tid: int) -> List:
@@ -89,7 +93,7 @@ def get_join_requests(mysql: MySQL, tid: int):
     data = []
     for req in requests:
         user = dao_user.get_user_by_uid(req.uid)
-        data.append([user.name, req.create_date, req.req_id])
+        data.append([user.name, user.contact, req.create_date, req.req_id, user.uid])
     return data, company.name
 
 
@@ -195,7 +199,7 @@ def add_team(mysql: MySQL,tid:int, uid: int):
     team = Team(tid, uid, Role.TEAM_OWNER.value)
     dao_team.add_team(team)
 
-    
+
 def add_join_team_request_by_tid(mysql: MySQL, tid:str, uid:int, type_id:int) -> str:
     """
     Add a join team request to the database, return a message on success

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Choose How to Send Join Team Request</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <button id="byIdBtn" class="float-left submit-button" >By Company Id</button>
+        <script type="text/javascript">
+            document.getElementById("byIdBtn").onclick = function () {
+            location.href = "/sendJoinRequestByTid";
+            };
+        </script>
+
+        <button id="byNameBtn" class="float-left submit-button" >By Company Name</button>
+        <script type="text/javascript">
+            document.getElementById("byNameBtn").onclick = function () {
+            location.href = "/sendJoinRequestByCompanyName";
+            };
+        </script>
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

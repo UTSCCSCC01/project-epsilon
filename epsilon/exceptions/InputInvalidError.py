@@ -1,5 +1,5 @@
 class InputInvalidError(Exception):
-    """Exception raised for errors in object already exist in database.
+    """Exception raised for invalid input type.
 
     Attributes:
         obj -- object name that is causing the error

@@ -5,50 +5,72 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Register a new Company.</title>
+    <title>Register a new Company</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/font-awesome.css">
+    <link rel="stylesheet" href="../static/css/homepage/templatemo-softy-pinko.css">
+
+    <style type="text/css">
+        html, body { margin: 0; padding: 0; height: 100%; width: 100%; background-image: linear-gradient(127deg, #a759d1 0%, #8261ee 91%); }
+    </style>
 </head>
 
 <header>
 </header>
 
 <body>
-    <div id="background" class="title-card">
-        <h1>Epsilon</h1>
-        <h2>Register a new Company.</h2>
-        <hr>
-    </div>
-    <div class="contents">
-        <form action="" method="post">
-            <br>
-            <input class="auth" type="text" placeholder="Team Name" name="teamname" value="{{
-                request.form.course }}">
-            <br>
-            <input class="auth" type="text" placeholder="Team Description" name="teamdesc" value="{{
-                request.form.q1 }}">
-            <br>
-            <select name="industryselect">
-                <option value="" selected>Select Industry</option>
-                {% for item in industry %}
-                <option name="inst" value={{item.ind_id}}>{{item.name}}</option>
-                {% endfor %}
-            </select>
-            <br>
-            <br>
-            <input class="btn" type="submit" value="Create Team">
-        </form>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
-        {% if message %}
-        <p class="message"><strong>Message:</strong> {{ message }}</p>
-        {% endif %}
-    </div>
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-6 mx-auto">
+                <div class="jumbotron shadow-lg p-3 mb-5 rounded" style="background-color: #f2f2fe">
+                    <div id="title" class="center-heading">
+                        <h2 class="section-title">Register a new Company</h2>
+                        <hr>
+                    </div>
+                    <div class="contents center-text">
+                        <form action="" method="post">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Company Name</span>
+                                </div>
+                                <input name="teamname" type="text" class="auth form-control" placeholder="Epsilon" aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Description</span>
+                                </div>
+                                <textarea id="teamdesc" name="teamdesc" placeholder="The best startup" style="height:200px; width: 388px;"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Industry</label>
+                                </div>
+                                <select class="custom-select" id="inputGroupSelect01" name="industryselect">
+                                    <option value="" selected>Select Industry</option>
+                                    {% for item in industry %}
+                                    <option name="inst" value={{item.ind_id}}>{{item.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                            <div>
+                                <button type="submit" id="form-submit" class="btn main-button">Create Team</button>
+                            </div>
+                        </form>
+                        {% if error %}
+                        <p class="error"><strong>Error:</strong> {{ error }}</p>
+                        {% endif %}
+                        {% if msg %}
+                        <p class="msg"><strong>Message:</strong> {{ msg }}</p>
+                        {% endif %}
+                    </div>
+                    <a href="/"><- Go back to homepage</a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

@@ -14,7 +14,7 @@ def render_login(mysql):
         # if (request.form['username'] != 'admin' or
         #         request.form['password'] != 'admin'):
         #     error = 'Invalid Credentials. Please try again.'
-        inp_username = request.form['username']
+        inp_username = request.form['E-mail']
         inp_password = request.form['password']
         try:
             user = user_login(mysql, inp_username, inp_password)

@@ -37,16 +37,16 @@
                     <thead class="thead-light">
                         <tr>
                             <th>User</th>
-                            <th>Role</th>
                             <th>Contact Info</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     {% for user in userDetails %}
                     <tr>
                         <th> {{ user[0] }} </th>
-                        <td> {{ user[1] }} </td>
                         <td> {{ user[2] }} </td>
+                        <td> {{ user[1] }} </td>
                         <td>
                             <form action="" method="POST">
                                 <button class="adjacent-btn positive" type="submit" value="P_{{user[3]}}_{{user[4]}}_{{user[5]}}">Set Admin</button>

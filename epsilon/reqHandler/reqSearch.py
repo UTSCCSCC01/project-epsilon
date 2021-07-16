@@ -12,7 +12,9 @@ def render_company_search(mysql: MySQL):
     """
     if request.method == 'POST':
         try:
+            print("before getting search")
             search = request.form['search']
+            print("search is", search)
             data, message = company_search(mysql, search)
             return render_template('search_page.html', message=message,
                                    data=data)

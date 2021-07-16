@@ -1,7 +1,9 @@
+import json
 from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
-
+from classes.Type import Type
+import sys, traceback
 
 def act_on_employee(mysql: MySQL):
     """
@@ -62,3 +64,45 @@ def render_join_team_request(mysql: MySQL):
     except Exception as e:
         return render_template("join_team_request.html",
                                message=e)
+
+
+def render_send_join_team_message(mysql: MySQL, by_tid:bool):
+    """
+    Handler for sending join team request.
+    :param mysql: mysql db.
+    :return template for sending join team request.
+    """
+    template_choice_dict = {True: "company ID", False: "company name"}
+    if request.method == "POST":
+        try:
+            uid = current_user.uid
+            type_id = current_user.type_id
+            if by_tid:
+                tid = str(request.form["search"])
+                message = add_join_team_request_by_tid(mysql=mysql, tid=tid,
+                                                    uid=uid, type_id=type_id)
+
+            else:
+                company_name = request.form["search"]
+                message = add_join_team_request_by_company_name(mysql=mysql,
+                                company_name=company_name, uid=uid, type_id=type_id)
+            return render_template("send_join_request.html",
+                                   choice=template_choice_dict[by_tid],
+                                   message=message)
+        except ValueError as ve:
+            return render_template("send_join_request.html", error="company id is digit format",
+                                   choice=template_choice_dict[by_tid])
+        except Exception as e:
+            traceback.print_exc()
+            return render_template("send_join_request.html", error=e,
+                                   choice=template_choice_dict[by_tid])
+    else:
+        return render_template("send_join_request.html",
+                               choice=template_choice_dict[by_tid])
+
+
+def render_choose_how_to_send_join_request():
+    """
+    Handler for choose how to send join team request.
+    """
+    return render_template("choose_how_to_send_join_request.html")

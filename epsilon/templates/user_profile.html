@@ -47,7 +47,7 @@
               {% if user_details %}
               <form action="" method="POST" id="userForm">
 
-                <div class="bio-row">
+                <div class="bio-row" id="des-row-1">
                       <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> </p>
                 </div>
                   <div class="bio-row">
@@ -57,7 +57,7 @@
                       <p><span>User Type</span><input type="text" name="user_type" value="{{user_details[3]}}" required readonly></p>
                   </div>
                     <div class="bio-row" id="des-row">
-                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}" required readonly></p>
+                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}"  readonly></p>
                     </div>
                   </form>
               </div>
@@ -67,8 +67,6 @@
       </div>
   </div>
 </div>
-
-
 
 <style type="text/css">
 body {

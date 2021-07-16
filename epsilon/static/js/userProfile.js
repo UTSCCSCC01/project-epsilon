@@ -1,5 +1,6 @@
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
+document.getElementById('des-row-1').style.display =  "none";
 
 function isEditing() {
     //toggle edit/save button
@@ -8,14 +9,11 @@ function isEditing() {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
     } else {
         is_editing = !is_editing;
-
         if (!is_editing) {
             document.getElementById("userForm").submit();
         }
-
         updateEditDisplay();
     }
-
 }
 
 function disableEdit() {
@@ -25,7 +23,6 @@ function disableEdit() {
 
 function updateEditDisplay() {
     // switch between editable/readonly fields
-
     var response_msg = document.getElementById("responseMsg");
 
     if(response_msg) {
@@ -43,13 +40,11 @@ function updateEditDisplay() {
 
     if (display_name==="Save"){
         document.getElementById('des-row').style.display =  "block";
+        document.getElementById('des-row-1').style.display =  "block";
+
     } else{
         document.getElementById('des-row').style.display =  "none";
+        document.getElementById('des-row-1').style.display =  "none";
+
     }
-    // document.getElementById('des-row').style.display = is_edit ? "block" : "none";
-
 }
-
-
-// let x = document.getElementById('des-row');
-// x.style.display = "none";

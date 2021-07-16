@@ -136,7 +136,7 @@ def team_request_update(dao_request: DAORequest, req_id: int, status: int):
     else:
         return "Status is not pending!"
 
-def get_user_teams(mysql: MySQL, uid: int) -> list[Team]:
+def get_user_teams(mysql: MySQL, uid: int) -> [Team]:
     """
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.

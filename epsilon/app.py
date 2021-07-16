@@ -144,7 +144,7 @@ def display_company():
 def logout():
     return render_logout()
 
-@app.route('/teamManagement/')
+@app.route('/teamManagement/', methods=['GET', 'POST'])
 @login_required
 def teamMgmt():
     return render_team_mgmt_combined(mysql)

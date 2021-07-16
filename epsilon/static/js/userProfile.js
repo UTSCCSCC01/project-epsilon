@@ -1,35 +1,6 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
-// class EditBtn extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             isEditing: false,
-//         }
-//     };
-
-//     handleClick() {
-//         isEditing = this.state.isEditing;
-//         this.setState({
-//             isEditing: !isEditing,
-//         });
-//     };
-
-//     render() {
-//         const saveOrEdit = isEditing ? "Save" : "Edit";
-//         return (
-//             <button type="submit">{saveOrEdit}</button>
-//         )
-//     }
-// }
-
-//     ReactDOM.render(
-//         <EditBtn />,
-//         document.getElementById("editBtn")
-//     );
-
 var is_editing = false
+document.getElementById('des-row').style.display =  "none";
+
 function isEditing() {
     //toggle edit/save button
     const valid = document.getElementById("userForm").checkValidity();
@@ -53,14 +24,14 @@ function disableEdit() {
 }
 
 function updateEditDisplay() {
-    // switch between editable/readonly fields 
-    
+    // switch between editable/readonly fields
+
     var response_msg = document.getElementById("responseMsg");
 
     if(response_msg) {
         response_msg.innerHTML = "";
     }
-    
+
     const pencil_icon = '<i class="fa fa-pencil" aria-hidden="true""></i> ';
     let display_name = is_editing ? "Save" : "Edit";
 
@@ -69,5 +40,16 @@ function updateEditDisplay() {
 
     document.getElementById('name').readOnly = !is_editing;
     document.getElementById('description').readOnly = !is_editing;
+
+    if (display_name==="Save"){
+        document.getElementById('des-row').style.display =  "block";
+    } else{
+        document.getElementById('des-row').style.display =  "none";
+    }
+    // document.getElementById('des-row').style.display = is_edit ? "block" : "none";
+
 }
 
+
+// let x = document.getElementById('des-row');
+// x.style.display = "none";

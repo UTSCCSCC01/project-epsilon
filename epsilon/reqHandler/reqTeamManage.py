@@ -86,16 +86,17 @@ def render_team_mgmt_combined(mysql: MySQL):
     try:
         teams = get_user_teams(mysql, current_user.uid)
         tid = teams[0].tid
+        cur_role = teams[0].rid
         data, company_name = get_join_requests(mysql, tid)
         user_details = get_members(mysql, tid)
         if len(data) == 0:
             return render_template("team_management_combined.html",
                                    message="No pending requests!", tid=tid,
                                    company_name=company_name, userDetails=
-                                   user_details)
+                                   user_details, cur_role=cur_role)
         return render_template("team_management_combined.html", data=data, tid=tid,
                                message=message, company_name=company_name, 
-                               userDetails=user_details)
+                               userDetails=user_details, cur_role=cur_role)
     except Exception as e:
         return render_template("team_management_combined.html",
                                message=e)

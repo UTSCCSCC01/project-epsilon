@@ -31,7 +31,7 @@
         </div>
         {% if userDetails %}
         <div class="contents table table-hover table-responsive-sm container" id="Team">
-            <h3 class="section-title" id="subtitle-h3">Current Team</h3>
+            <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Current Team</h3>
             <div class="align-items-center h-100">
                 <table>
                     <thead class="thead-light">
@@ -39,7 +39,9 @@
                             <th>User</th>
                             <th>Contact Info</th>
                             <th>Role</th>
+                            {% if cur_role != 3 %}
                             <th>Action</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     {% for user in userDetails %}
@@ -47,12 +49,16 @@
                         <th> {{ user[0] }} </th>
                         <td> {{ user[2] }} </td>
                         <td> {{ user[1] }} </td>
+                        {% if cur_role != 3 %} <!--current user not member => admin or owner-->
                         <td>
+                            {% if current_user.uid != user[3] and user[1] != "Team Owner" %} <!-- current user not themselves or owner-->
                             <form action="" method="POST">
                                 <button class="adjacent-btn positive" type="submit" value="P_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Set Admin</button>
                                 <button class="adjacent-btn" type="submit" value="R_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Remove</button>
                             </form>
+                            {% endif %}
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>
@@ -62,7 +68,7 @@
         <hr>
         {% if data %}
         <div class="contents table table-hover table-responsive-sm container" id="Team-Request">
-            <h3 class="section-title" id="subtitle-h3">Team Requests</h3>
+            <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Team Requests</h3>
             <div class="align-items-center h-100">
                 <table>
                     <thead class="thead-light">
@@ -70,7 +76,9 @@
                             <th>User</th>
                             <th>Contact Info</th>
                             <th>Request Time</th>
+                            {% if cur_role != 3 %}
                             <th>Action</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     {% for row in data %}
@@ -78,11 +86,16 @@
                         <th> {{ row[0] }} </th>
                         <td> {{ row[1] }} </td>
                         <td> {{ row[2] }} </td>
-                        <td><form action="" method="POST" id="form_{{row[3]}}">
+                        {% if cur_role != 3 %}
+                        <td>
+                            {% if current_user.uid != row[4] %}
+                            <form action="" method="POST" id="form_{{row[3]}}">
                             <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
                             <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
                             </form>
+                            {% endif %}
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>

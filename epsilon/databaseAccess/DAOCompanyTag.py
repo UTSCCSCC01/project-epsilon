@@ -59,7 +59,7 @@ class DAOCompanyTag(DAO):
         # keywords_string = (keywords_string.replace("]", ")"))
         search_data = []
         for items in keywords:
-            search_q = '''SELECT Company.name, Company.description
+            search_q = '''SELECT Company.tid, Company.name, Company.description, Company.ind_id, Company.create_date
                     FROM CompanyTags, Tags, Company
                     WHERE Company.tid = CompanyTags.tid and
                     CompanyTags.tag_id = Tags.tag_id and

@@ -16,13 +16,13 @@ def render_company_search(mysql: MySQL):
             search = request.form['search']
             print("search is", search)
             data, message = company_search(mysql, search)
-            return render_template('search.html', message=message,
+            return render_template('search_page.html', message=message,
                                    data=data)
         except Exception as e:
             error_json = json.dumps({"message": str(e)})
-            return render_template('search.html', error=error_json)
+            return render_template('search_page.html', error=error_json)
     else:
-        return render_template("search.html")
+        return render_template("search_page.html")
 
 
 # related to testing frontend, won't interfere with back end
@@ -59,10 +59,10 @@ def search_frontend_test(succeed=True):
     print("search_frontend_test")
     if request.method == 'POST':
         if succeed:
-            return render_template("search_test.html",
+            return render_template("search_page.html",
                                    data=generate_search_result())
         else:
-            return render_template("search_test.html",
+            return render_template("search_page.html",
                                    error=generate_error_data())
     else:
-        return render_template("search_test.html")
+        return render_template("search_page.html")

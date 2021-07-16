@@ -17,10 +17,8 @@ from databaseAccess.DAOUser import *
 
 import mimetypes
 
-
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
-
 
 app = Flask(__name__)
 CORS(app)

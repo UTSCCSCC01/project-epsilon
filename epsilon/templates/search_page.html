@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+
+    <div class="pagewrap">
+        <div class="main">
+            <!-- ***** Search Page Start ***** -->
+            <section class="section" id="search">
+                <div class="container">
+                    <div class="row justify-content-center" style="margin-top: 10%;">
+                        <form class="input-group col-md-4" method="post" action="">
+                            <input class="form-control py-2" type="search" placeholder="Search" name="search"
+                                   value="{{ request.form.search }}">
+                            <span class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+      </span>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="search_page" class="search-page"></div>
+                <br>
+                {% if data %}
+                    <div id="search-data" class="search-result-box card-box">
+                    </div>
+
+                    <script language="javascript">
+                        const company_data = JSON.parse('{{ data | safe}}');
+                        render_data()
+                    </script>
+                {% endif %}
+                {% if message %}
+                    <div id="message-data" class="message-result-box card-box">
+                        <p class="message">{{ message }}</p>
+                    </div>
+                {% endif %}
+                {% if error %}
+                    <div id="error-data" class="error-result-box card-box">
+                    </div>
+                    <script language="javascript">
+                        const error = JSON.parse('{{ error | safe}}');
+                        render_error()
+                    </script>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

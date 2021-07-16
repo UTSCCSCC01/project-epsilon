@@ -44,12 +44,11 @@ def company_search(mysql: MySQL, search: str):
         raise FormIncompleteError('Search box cannot be empty!')
     try:
         keywords = make_keyword_list(search)
-        search_results = refine_search_data(
-                         dao_company_tag.get_search_data(keywords))
+        raw_search = dao_company_tag.get_search_data(keywords)
+        search_results = refine_search_data(raw_search)
         message = ""
-        if search_results is None:
+        if len(search_results) is 0:
             message = "No results found!"
-            search_results = ()
         return convert_search_result(search_results), message
     except Exception as e:
         raise e
@@ -63,6 +62,6 @@ def convert_search_result(res):
     """
     all_comp = []
     for d in res.keys():
-        all_comp.append({"name": d[0], "description": d[1]})
+        all_comp.append({"tid": d[0], "name": d[1], "description": d[2], "industry": d[3]})
     final_res = {"company_list": all_comp}
     return json.dumps(final_res)

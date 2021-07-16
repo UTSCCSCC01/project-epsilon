@@ -100,7 +100,7 @@ def srch():
     return render_company_search(mysql)
 
 
-@app.route('/userRegistration', methods=['GET', 'POST'])
+@app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
 
@@ -121,6 +121,13 @@ def display_company():
 @login_required
 def logout():
     return render_logout()
+
+
+#E EP-73 
+@app.route('/teamManagement/', methods=['GET', 'POST'])
+@login_required
+def teamMgmt():
+    return render_team_mgmt_combined(mysql)
 
 
 @login_manager.user_loader

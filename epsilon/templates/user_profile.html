@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<div class="pagewrap">
+
 <head>
     <meta charset="utf-8">
     <title>My Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
-<!--    <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>-->
 
 </head>
-<body>
+<body scroll="no" style="overflow: hidden">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container bootstrap snippets bootdey">
 <div class="row">
@@ -34,8 +40,6 @@
           <div class="bio-graph-heading">
               <p>{{user_details[1]}}</p>
           </div>
-
-
 
           <div class="panel-body bio-graph-info">
               <h1>Bio Graph</h1>
@@ -63,7 +67,8 @@
       </div>
   </div>
 </div>
-</div>
+
+
 
 <style type="text/css">
 body {
@@ -319,4 +324,6 @@ ul.summary-list > li:last-child  {
 <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>
 
 </body>
+</div>
 </html>
+{% endblock %}

@@ -1,9 +1,16 @@
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
 document.getElementById('des-row-1').style.display =  "none";
+var prevName="";
+var prevDes="";
 
 function isEditing() {
+    // window.location.reload(false);
     //toggle edit/save button
+    prevName = document.getElementById('name').value
+    prevDes = document.getElementById('description').value
+    console.log(prevName)
+    console.log(prevDes)
     const valid = document.getElementById("userForm").checkValidity();
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
@@ -18,6 +25,8 @@ function isEditing() {
 
 function disableEdit() {
     is_editing = false;
+    document.getElementById('name').value=prevName
+    document.getElementById('description').value=prevDes
     updateEditDisplay();
 }
 
@@ -41,7 +50,6 @@ function updateEditDisplay() {
     if (display_name==="Save"){
         document.getElementById('des-row').style.display =  "block";
         document.getElementById('des-row-1').style.display =  "block";
-
     } else{
         document.getElementById('des-row').style.display =  "none";
         document.getElementById('des-row-1').style.display =  "none";

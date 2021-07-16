@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>send join team request</title>
+</head>
+
+<header>
+</header>
+
+<body>
+    <div id="background" class="title-card">
+        <h1>Epsilon</h1>
+        {% if choice %}
+            <h2>Enter {{choice}} to send join request</h2>
+        {% endif %}
+    </div>
+    <div class="contents">
+        <form action="" method="post">
+            <br>
+            <input class="auth" type="text" name="search" value="{{
+                request.form.tid }}">
+            <br>
+            <br>
+            <input class="btn" type="submit" value="send">
+        </form>
+
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+        {% if message %}
+        <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

@@ -144,6 +144,11 @@ def display_company():
 def logout():
     return render_logout()
 
+@app.route('/teamManagement/')
+@login_required
+def teamMgmt():
+    return render_team_mgmt_combined(mysql)
+
 
 @login_manager.user_loader
 def load_user(id):

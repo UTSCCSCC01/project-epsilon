@@ -151,3 +151,22 @@ class DAORequest(DAO):
                                     request[3], request[4], request[5],
                                     request[6]))
         return requests
+
+    def get_requests_by_tid_uid_sid(self, tid: int, uid: int, sid: int) -> List[Request]:
+        """
+        Gets all pending requests for team with tid from the database.
+        :param tid: Team id of the requests to be retrieved.
+        :param sid: Status id of requests wanted.
+        :return: List of Request objects representing
+                 the matching team and status.
+        """
+        requests = []
+        data = self.get_data('''SELECT * FROM Request
+                                WHERE tid = %s AND uid = %s AND sid=%s
+                                ORDER BY create_date''',
+                             (tid, uid, sid))
+        for request in data:
+            requests.append(Request(request[0], request[1], request[2],
+                                    request[3], request[4], request[5],
+                                    request[6]))
+        return requests

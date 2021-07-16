@@ -1,14 +1,22 @@
 from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
+from exceptions.ObjectExistsError import ObjectExistsError
+from exceptions.AccessDeniedError import AccessDeniedError
+from exceptions.FormIncompleteError import FormIncompleteError
 from classes.Team import Team
 from classes.Role import Role
 from classes.RStatus import RStatus
+from classes.Request import Request
 from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
+from flask_login import current_user
+from classes.Type import Type
+from classes.RStatus import RStatus
+import traceback
 
 
 def remove_from_team(mysql: MySQL, tid: int,
@@ -89,6 +97,34 @@ def get_join_requests(mysql: MySQL, tid: int):
     return data, company.name
 
 
+def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, status_choice:[int])->bool:
+    """
+    Check whether there's at least one request with specified tid, uid and
+    status given by status_choice. the tid or uid may not exist.
+    :param mysql: mysql db.
+    :param tid: tid of company.
+    :param uid: user id.
+    :param status_choice: list of desired status of the requests, can only
+    be chosen from: 1(ACCEPTED), 2(REJECTED), 3(PENDING).
+    :return: whether data exist.
+    """
+    dao_request = DAORequest(mysql)
+    dao_company = DAOCompany(mysql)
+    dao_user = DAOUser(mysql)
+    if not dao_company.get_company_by_tid(tid):
+        raise ObjectNotExistsError("Your team")
+    if not dao_user.get_user_by_uid(uid):
+        raise ObjectNotExistsError("The user")
+    requests = []
+    for status in status_choice:
+        new_requests = dao_request.get_requests_by_tid_uid_sid(tid,uid, status)
+        if new_requests==None:
+            new_requests=[]
+        requests.extend(new_requests)
+        if len(requests)>0:
+            return True
+    return False
+
 def team_request_accept(mysql: MySQL, req_id: int) -> str:
     """
     Updates request of id req_id to accpet and add the user to team as member.
@@ -140,7 +176,7 @@ def team_request_update(dao_request: DAORequest, req_id: int, status: int):
     else:
         return "Status is not pending!"
 
-def get_user_teams(mysql: MySQL, uid: int) -> list[Team]:
+def get_user_teams(mysql: MySQL, uid: int) -> [Team]:
     """
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.
@@ -162,3 +198,54 @@ def add_team(mysql: MySQL,tid:int, uid: int):
     dao_team = DAOTeam(mysql)
     team = Team(tid, uid, Role.TEAM_OWNER.value)
     dao_team.add_team(team)
+
+
+def add_join_team_request_by_tid(mysql: MySQL, tid:str, uid:int, type_id:int) -> str:
+    """
+    Add a join team request to the database, return a message on success
+    or raise an error if access is denied or company doesn't exist.
+    :param mysql: mysql db.
+    :param tid: the id of team to join.
+    :param uid: uid of the user.
+    :param type_id: the type of user.
+    """
+    if len(tid)==0:
+        raise FormIncompleteError()
+    tid=int(tid)
+    exist_flag= check_join_requests_by_tid_uid_status(
+                                            mysql=mysql, tid=tid,
+                                            uid=uid,
+                                            status_choice=[
+                                                RStatus.PENDING.value,
+                                                RStatus.ACCEPTED.value])
+    # only create request if this user hasn't created the join request to the
+    # company before or it's been declined
+    if exist_flag:
+        raise ObjectExistsError(obj="a same request from you (accepted or pending)")
+    if type_id == Type.STARTUP_USER.value:
+        message = "the request was sent successfully."
+        dao_req = DAORequest(mysql)
+        req = Request(tid=tid, uid=uid, sid=RStatus.PENDING.value)
+        dao_req.add_request(req)
+        return message
+    else:
+        raise AccessDeniedError(functionality="send request to join a company.")
+
+
+def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:int, type_id:int) -> str:
+    """
+    Add a join team request to the database, return a message on success
+    or raise an error if access is denied or company doesn't exist.
+    :param mysql: mysql db.
+    :param company_name: the name of company to join.
+    :param uid: uid of the user.
+    :param type_id: the type of user.
+    """
+    if len(company_name)==0:
+        raise FormIncompleteError()
+    dao_company= DAOCompany(mysql)
+    company = dao_company.get_company_by_name(company_name)
+    if company:
+        return add_join_team_request_by_tid(mysql=mysql, tid=str(company.tid), uid=uid, type_id=type_id)
+    else:
+        raise ObjectNotExistsError(obj="the company")

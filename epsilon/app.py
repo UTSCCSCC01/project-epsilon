@@ -62,17 +62,6 @@ def create():
     return create_tables(mysql)
 
 
-# For front end test? If you are sure it's not used please delete.
-@app.route('/test_get_base_url/')
-def index():
-    return request.base_url[:request.base_url.rfind('/')]
-
-
-@app.route('/testReact/', methods=['GET'])
-def testReact():
-    return {"title": "I am ready from app.py"}
-
-
 # EP-1: Team management
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -113,17 +102,6 @@ def srch():
     return render_company_search(mysql)
 
 
-# related to frontend testing, won't interfere with back end
-@app.route('/searchTestSucceed/', methods=['GET', 'POST'])
-def srch_test_succeed():
-    return search_frontend_test(True)
-
-
-@app.route('/searchTestFail/', methods=['GET', 'POST'])
-def srch_test_fail():
-    return search_frontend_test(False)
-
-
 @app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
@@ -157,6 +135,24 @@ def teamMgmt():
 @login_manager.user_loader
 def load_user(id):
     return load_User_O(mysql, int(id))
+
+  
+@app.route('/sendJoinRequest', methods=['GET', 'POST'])
+@login_required
+def choose_how_to_send_join_request():
+    return render_choose_how_to_send_join_request()
+
+  
+@app.route('/sendJoinRequestByTid', methods=['GET', 'POST'])
+@login_required
+def send_join_request_by_tid():
+    return render_send_join_team_message(mysql, by_tid=True)
+
+  
+@app.route('/sendJoinRequestByCompanyName', methods=['GET', 'POST'])
+@login_required
+def send_join_request_by_company_name():
+    return render_send_join_team_message(mysql,by_tid=False)
 
 
 if __name__ == "__main__":

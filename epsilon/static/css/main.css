@@ -12,13 +12,85 @@ button {
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
+    border: 0px;
 }
 
 button:hover {
     background-color: #ff589e;
 }
 
+button.positive:hover {
+    background-color: #58b5ff;
+}
+
+button.adjacent-btn {
+    margin: 0 1%;
+}
+
 body {
     background: #fff;
     font-family: "Raleway", sans-serif;
 }
+
+button.dropbtn {
+    text-transform:initial;
+    padding-top: 0%;
+}
+
+.title-card {
+    background: linear-gradient(270.59deg, #8261ee80 56.81%,
+     rgba(255, 88, 158, 0.53) 94.19%);
+    color:#fff;
+}
+
+.title-card h1 {
+    padding-top: 18%;
+}
+
+table {
+    width: 75%;
+    background-color: #f2f2fe;
+    margin: auto;
+    margin-bottom: 2%;
+}
+
+table th, table td {
+    padding: 0.5% 3%;
+    color: #665699;
+}
+
+tr {
+    border-top: 0px;
+    border-bottom:1px solid #8261ee;
+}
+
+.table.table-hover tr:hover {
+    background-color: #ffdffd;
+    border-bottom: 1px solid #ff589e;
+}
+
+.table.table-hover tr:hover td, .table.table-hover tr:hover th {
+    color: #ff589e;
+}
+
+.table.table-hover thead:hover td, .table.table-hover thead:hover th {
+    color: #665699;
+}
+
+footer {
+    bottom: 0;
+    width: 100%;
+}
+/* footer stays bottom solution obtain from https://dev.to/akshay_rajput/keep-footer-at-bottom-of-page-using-flexbox-4a6f */
+.pagewrap{
+    display: flex;
+    /*vertically stack children*/
+    flex-direction: column;
+    /* expand to take full height of page */
+    /* min-height overrides both height & max-height */
+    min-height: 100vh; 
+  } 
+.main{
+    flex-grow: 1;
+  }
+/* solution end*/

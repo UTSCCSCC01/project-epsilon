@@ -81,7 +81,7 @@ def get_join_requests(mysql: MySQL, tid: int):
     data = []
     for req in requests:
         user = dao_user.get_user_by_uid(req.uid)
-        data.append([user.name, req.create_date, req.req_id])
+        data.append([user.name, user.contact, req.create_date, req.req_id])
     return data, company.name
 
 

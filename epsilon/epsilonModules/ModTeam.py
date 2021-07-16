@@ -189,7 +189,8 @@ def get_user_teams(mysql: MySQL, uid: int) -> [Team]:
         raise ObjectNotExistsError("The Team")
     return teams
 
-def add_team(mysql: MySQL,tid:int, uid: int):
+
+def add_team(mysql: MySQL, tid: int, uid: int):
     """
     Add's a team to the database
     :param mysql: mysql db.
@@ -198,7 +199,6 @@ def add_team(mysql: MySQL,tid:int, uid: int):
     dao_team = DAOTeam(mysql)
     team = Team(tid, uid, Role.TEAM_OWNER.value)
     dao_team.add_team(team)
-
 
 def add_join_team_request_by_tid(mysql: MySQL, tid:str, uid:int, type_id:int) -> str:
     """

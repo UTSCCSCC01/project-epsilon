@@ -61,7 +61,6 @@ def delete_all():
 def create():
     return create_tables(mysql)
 
-
 # EP-1: Team management
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -100,7 +99,6 @@ def display_user():
 @app.route('/search/', methods=['GET', 'POST'])
 def srch():
     return render_company_search(mysql)
-
 
 @app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():

@@ -65,7 +65,7 @@ def render_join_team_request(mysql: MySQL):
         return render_template("join_team_request.html",
                                message=e)
 
-
+      
 def render_team_mgmt_combined(mysql: MySQL):
     """
     Handler for page containing both join 
@@ -103,6 +103,7 @@ def render_team_mgmt_combined(mysql: MySQL):
     except Exception as e:
         return render_template("team_management_combined.html",
                                message=e)
+
 
 def render_send_join_team_message(mysql: MySQL, by_tid:bool):
     """

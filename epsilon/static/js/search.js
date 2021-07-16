@@ -14,7 +14,7 @@ function render_data() {
             badge.className = 'search-result-box card-box';
             badge.innerHTML =
                 '<div class="search-item">' +
-                '<h4 class="mb-1"><a href="#">' + title + '</a></h4>' +
+                '<h4 class="search-title">' + title + '</h4>' +
                 '<div class="font-13 text-success mb-3">' +
                 '<a class="link" href='+ link +'>' + link + '</a>' +
                 '</div>' +

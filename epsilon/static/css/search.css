@@ -44,11 +44,15 @@
 }
 
 .card-box {
-    padding: 10px 25px 0px 25px;
+    padding: 10px 50px 0px 50px;
     border-radius: 3px;
     margin-bottom: 10px;
 }
 
 .link{
     color: rebeccapurple;
+}
+
+.search-title{
+    color: #6610f2;
 }

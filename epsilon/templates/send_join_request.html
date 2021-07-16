@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Enter a company ID to send join request</title>
+    <title>send join team request</title>
 </head>
 
 <header>
@@ -14,13 +14,14 @@
 <body>
     <div id="background" class="title-card">
         <h1>Epsilon</h1>
-        <h2>Join a company</h2>
-        <hr>
+        {% if choice %}
+            <h2>Enter {{choice}} to send join request</h2>
+        {% endif %}
     </div>
     <div class="contents">
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" placeholder="CompanyId" name="search" value="{{
+            <input class="auth" type="text" name="search" value="{{
                 request.form.tid }}">
             <br>
             <br>

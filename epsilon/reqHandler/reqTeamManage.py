@@ -66,35 +66,43 @@ def render_join_team_request(mysql: MySQL):
                                message=e)
 
 
-def render_send_join_team_message(mysql: MySQL):
+def render_send_join_team_message(mysql: MySQL, by_tid:bool):
     """
+    Handler for sending join team request.
+    :param mysql: mysql db.
+    :return template for sending join team request.
     """
-    if request.method == 'POST':
-        print("!!!!!!!!!! entering POST")
+    template_choice_dict = {True: "company ID", False: "company name"}
+    if request.method == "POST":
         try:
-            print("before getting tid ")
-            tid = request.form['search']
-            print("tid is ", tid)
             uid = current_user.uid
-            print("uid is ", uid)
             type_id = current_user.type_id
-            print(type(type_id))
-            print("type_id is ", type_id)
+            if by_tid:
+                tid = str(request.form["search"])
+                message = add_join_team_request_by_tid(mysql=mysql, tid=tid,
+                                                    uid=uid, type_id=type_id)
 
-            if type_id == Type.STARTUP_USER.value:
-                message = add_join_team_request(mysql, tid, uid)
-                return render_template('send_join_request.html', message=message)
             else:
-                if type_id == Type.SERVICE_PROVIDER.value:
-                    error = "a service provider cannot request to join a company."
-                elif type_id == Type.ADMIN.value:
-                    error = "an admin can only process requests, not to send request."
-                else:
-                    error = "you are not currently registered as any user type, please register as startup user and try again."
-                return render_template('send_join_request.html', error=error)
+                company_name = request.form["search"]
+                message = add_join_team_request_by_company_name(mysql=mysql,
+                                company_name=company_name, uid=uid, type_id=type_id)
+            return render_template("send_join_request.html",
+                                   choice=template_choice_dict[by_tid],
+                                   message=message)
+        except ValueError as ve:
+            return render_template("send_join_request.html", error="company id is digit format",
+                                   choice=template_choice_dict[by_tid])
         except Exception as e:
             traceback.print_exc()
-            return render_template('send_join_request.html', error=e)
+            return render_template("send_join_request.html", error=e,
+                                   choice=template_choice_dict[by_tid])
     else:
-        print("!!!!!!!!!! entering GET")
-        return render_template("send_join_request.html")
+        return render_template("send_join_request.html",
+                               choice=template_choice_dict[by_tid])
+
+
+def render_choose_how_to_send_join_request():
+    """
+    Handler for choose how to send join team request.
+    """
+    return render_template("choose_how_to_send_join_request.html")

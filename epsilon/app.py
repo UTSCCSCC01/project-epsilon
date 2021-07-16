@@ -17,10 +17,8 @@ from databaseAccess.DAOUser import *
 
 import mimetypes
 
-
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
-
 
 app = Flask(__name__)
 CORS(app)
@@ -133,11 +131,13 @@ def user_reg():
 def about():
     return render_about_us()
 
+
 # EP-69: Display company profile
 @app.route('/company/', methods=['GET', 'POST'])
 @login_required
 def display_company():
     return render_company_profile(mysql)
+
 
 @app.route('/logout/')
 @login_required

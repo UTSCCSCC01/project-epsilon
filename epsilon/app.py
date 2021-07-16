@@ -133,17 +133,21 @@ def user_reg():
 def about():
     return render_about_us()
 
+
 # EP-69: Display company profile
 @app.route('/company/', methods=['GET', 'POST'])
 @login_required
 def display_company():
     return render_company_profile(mysql)
 
+
 @app.route('/logout/')
 @login_required
 def logout():
     return render_logout()
 
+
+#E EP-73 
 @app.route('/teamManagement/', methods=['GET', 'POST'])
 @login_required
 def teamMgmt():

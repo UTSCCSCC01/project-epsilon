@@ -61,7 +61,6 @@ def delete_all():
 def create():
     return create_tables(mysql)
 
-  
 # EP-1: Team management
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -101,7 +100,6 @@ def display_user():
 def srch():
     return render_company_search(mysql)
 
- 
 @app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
@@ -111,16 +109,25 @@ def user_reg():
 def about():
     return render_about_us()
 
+
 # EP-69: Display company profile
 @app.route('/company/', methods=['GET', 'POST'])
 @login_required
 def display_company():
     return render_company_profile(mysql)
 
+
 @app.route('/logout/')
 @login_required
 def logout():
     return render_logout()
+
+
+#E EP-73 
+@app.route('/teamManagement/', methods=['GET', 'POST'])
+@login_required
+def teamMgmt():
+    return render_team_mgmt_combined(mysql)
 
 
 @login_manager.user_loader

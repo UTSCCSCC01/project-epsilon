@@ -130,4 +130,6 @@ class DAOUser(DAO):
             user = data[0]
             user = User(user[0], user[1], user[2],
                         user[3], user[4], user[5])
+
+        # to be added get rid from teams table
         return user

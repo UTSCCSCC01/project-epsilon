@@ -1,6 +1,6 @@
 class Company:
     def __init__(self, tid=0, name="", description="",
-                 create_date="", ind_id=1):
+                 ind_id=1, create_date=""):
         self._tid = tid
         self._name = name
         self._description = description

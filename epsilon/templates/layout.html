@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!-- for more info, please read: https://flask.palletsprojects.com/en/2.0.x/patterns/templateinheritance/-->
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="Mobirise v5.3.10, mobirise.com">
+    <link rel="shortcut icon" href="assets/images/logo5.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
+
+    <!--
+SOFTY PINKO
+https://templatemo.com/tm-535-softy-pinko
+-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+  </head>
+<header class="header-area header-sticky" id="navMenu">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <!--<a href="#" class="logo">
+                    <img src="../static/images/logo.png" alt="Epsilon" /> -->
+                        <!-- <h1>Epsilon</h1> -->
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li>
+                            <h2
+                                style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                                Epsilon</h2>
+                        </li>
+                        <li><a href="/" class="active">Home</a></li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn"><a href="/company">Your Company</a></button>
+                                <div class="dropdown-content">
+                                    <a href="/displayteam/">Display Team</a>
+                                    <a href="/jointeamrequest/">Pending Requests</a>
+                                    <a href="/teamManagement/">Team Management</a>
+                                    <a href="/registration">Create New Team</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn"><a href="">Resources</a></button>
+                                <div class="dropdown-content">
+                                    <a href="">Product Development</a>
+                                    <a href="">Accounting and Bookkeeping</a>
+                                    <a href="">Legal</a>
+                                    <a href="">Marketing</a>
+                                    <a href="">Sales and CRM</a>
+                                </div>
+                            </div>
+                        </li> <!--Resource currently same as Startup Market, if we have a page for templates, fundraising stuff then we can add this back-->
+                        <li><a href="/search">Startup Market</a></li>
+                        <li><a href="/">Job Seeking</a></li>
+                        <li><a href="/aboutUs">About Us</a></li>
+                        {% if current_user.is_anonymous %}
+                        <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>
+                        <li><a href="/userRegistration" style="color:rebeccapurple;">Sign Up</a></li>
+                        {% else %}
+                        <li><a href="/user/">{{current_user.name}}'s Profile</a></li>
+                        <li><a href="/logout" style="color:rebeccapurple;">Log Out</a></li>
+                        {% endif %}
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+  <body>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <footer>
+        {% block footer %}
+        <div class="container" style="margin: auto;">
+                <p class="copyright">Epsilon 2021</p>
+        </div>
+        {% endblock %}
+    </footer>
+    {% block more_imports %}
+           <!-- jQuery -->
+           <script src="../static/js/homepage/jquery-2.1.0.min.js"></script>
+
+           <!-- Bootstrap -->
+           <script src="../static/js/homepage/popper.js"></script>
+           <script src="../static/js/homepage/bootstrap.min.js"></script>
+    
+           <!-- Plugins -->
+           <script src="../static/js/homepage/scrollreveal.min.js"></script>
+           <script src="../static/js/homepage/waypoints.min.js"></script>
+           <script src="../static/js/homepage/jquery.counterup.min.js"></script>
+           <script src="../static/js/homepage/imgfix.min.js"></script>
+       
+           <!-- Global Init -->
+           <script src="../static/js/homepage/custom.js"></script>
+       
+           <!--just to test if we can embed react script-->
+           {% block app_content %}
+           <!-- We will put our React component inside this div. -->
+           <div id="nav_menu_container"></div>
+       
+           <!-- Load React. -->
+           <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+           <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+           <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+       
+           <!-- Load our React component. -->
+           <script src="{{ url_for('static', filename='js/homepage/nav_menu.js') }}"></script>
+           {% endblock %}
+    {% endblock %}
+  </body>
+</html>

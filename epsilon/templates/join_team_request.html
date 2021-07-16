@@ -1,0 +1,60 @@
+
+{% extends "layout.html" %} <!-- read more on layout.html-->
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Join Team Request{% endblock %}
+{% block content %}
+<div class="pagewrap">
+    <div class="main">
+        <div id="background" class="jumbotron jumbotron-fluid p-3 mb-5 title-card">
+            <div class="container">
+                <h1>{{company_name}}</h1>
+            </div>
+        </div>
+        <div class="container">
+            <h2 class="section-title">Manage Join Team Requests</h2>
+            <hr>
+        </div>
+        {% if data %}
+        <div class="contents table table-hover table-responsive-sm container">
+            <div class="align-items-center h-100">
+                <table>
+                    <thead class="thead-light">
+                        <tr>
+                            <th>User</th>
+                            <th>Contact Info</th>
+                            <th>Request Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    {% for row in data %}
+                    <tr>
+                        <th> {{ row[0] }} </th>
+                        <td> {{ row[1] }} </td>
+                        <td> {{ row[2] }} </td>
+                        <td><form action="" method="POST" id="form_{{row[3]}}">
+                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
+                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="align-items-center h-100" style="margin-bottom: 3%;">
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+            {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}</p>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

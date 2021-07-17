@@ -1,5 +1,6 @@
 class Company:
-    def __init__(self, tid=0, name="", description="", create_date="", ind_id=1):
+    def __init__(self, tid=0, name="", description="",
+                 ind_id=1, create_date=""):
         self._tid = tid
         self._name = name
         self._description = description
@@ -37,7 +38,7 @@ class Company:
     @create_date.setter
     def create_date(self, create_date):
         self._create_date = create_date
-    
+
     @property
     def ind_id(self):
         return self._ind_id
@@ -48,5 +49,8 @@ class Company:
 
     def __str__(self):
         """ Overloads str method. """
-        return 'Company(tid = ' + str(self.tid) + ', name = ' + self.name + ', description = ' \
-               + self.description + ', ind_id = ' + str(self.ind_id) + ', create_date = ' + str(self.create_date) + ')'
+        return 'Company(tid = ' + str(self.tid) + ', name = ' + self.name \
+               + ', description = ' + self.description \
+               + ', ind_id = ' + str(self.ind_id) \
+               + ', create_date = ' + str(self.create_date) \
+               + ')'

@@ -1,237 +1,155 @@
-from modules.UserModule import update_user
-from flask import Flask, request, render_template, redirect, url_for
+from reqHandler.reqCompanyManage import render_company_profile
+from reqHandler.reqSearch import render_company_search, search_frontend_test
+from reqHandler.reqUserManage import load_User_O, render_user_profile
+from reqHandler.reqUserRegister import render_user_registration
+from reqHandler.reqAboutUs import render_about_us
+from reqHandler.reqTeamManage import *
+from reqHandler.reqTeamRegister import render_team_registration
+from reqHandler.reqLogin import render_login
+from reqHandler.reqLogout import render_logout
+from reqHandler.reqDatabaseManage import create_tables, delete_tables
+from reqHandler.reqHome import *
+from flask import Flask, request
 from flask_mysqldb import MySQL
-
-from databaseAccess.DAO import DAO
-from joinTeamRequest import *
-from registration import registration
-from userRegistration import user_register
-from search import *
-
+from flask_login import LoginManager, login_required
 from flask_cors import CORS
-from classes.Company import Company
-from classes.Request import Request
-from classes.Role import Role
-from classes.RStatus import RStatus
-from classes.Team import Team
-from classes.User import User
+from databaseAccess.DAOUser import *
 
 import mimetypes
-
 
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('application/javascript', '.mjs')
 
-
 app = Flask(__name__)
 CORS(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'epsilon'
 app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
+app.config['SECRET_KEY'] = 'henlo'
 
 mysql = MySQL(app)
-dao = DAO(mysql)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    global baseUrl
-    baseUrl = request.base_url[:request.base_url.rfind('/')]
-    if request.method == 'POST':
-        return redirect(url_for('login'))
-    return render_template('home.html')
+    return render_home()
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        # if (request.form['username'] != 'admin' or
-        #         request.form['password'] != 'admin'):
-        #     error = 'Invalid Credentials. Please try again.'
-        inp_username = request.form['username']
-        inp_password = request.form['password']
-        user = dao.get_user_by_contact(inp_username)
-        if (not user):
-            error = "The email does not exist in our record."
-        elif user.password != inp_password:
-            error = "Password does not match."
-        else:
-            return redirect(url_for('hello'))
-    return render_template('login.html', error=error)
-
-
-@app.route("/previousHome", methods=['GET', 'POST'])
+@app.route("/previousHome/", methods=['GET', 'POST'])
 def previousHome():
-    global baseUrl
-    baseUrl = request.base_url[:request.base_url.rfind('/previousHome')]
-    if request.method == 'POST':
-        return redirect(url_for('login'))
-    return render_template('previousHome.html')
+    return render_previous_home()
 
 
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    return render_login(mysql)
 
-# Only go to this page if your database is empty
 
-@app.route("/deleteAll")
+# For database management
+@app.route("/deleteAll/")
 def delete_all():
-    dao.delete_all()
-    return "all tables are deleted!"
+    return delete_tables(mysql)
 
 
-@app.route("/create")
+@app.route("/create/")
 def create():
-    dao.populate()
-    users = dao.get_users()
-    teams = dao.get_teams()
-    roles = dao.get_roles()
-    companies = dao.get_companies()
-    output = "Database Users, Teams, Roles are populated!</br>"
-
-    output += "Also five dummy employees:</br>"
-    for user in users:
-        output += str(user) + "</br>"
-    output += "Also two dummy teams:</br>"
-    for team in teams:
-        output += str(team) + "</br>"
-    output += "Also three roles:</br>"
-    for role in roles:
-        output += str(role.name) + "</br>"
-    output += "Also two companies:</br>"
-    for company in companies:
-        output += str(company.name) + ":"+str(company.description) + "</br>"
-
-    return output
-
+    return create_tables(mysql)
 
 # EP-1: Team management
-@app.route('/registration', methods=['GET', 'POST'])
+@app.route('/registration/', methods=['GET', 'POST'])
+@login_required
 def reg():
-    return registration(dao)
+    return render_team_registration(mysql)
 
-
-# result is returned correctly, just need todispaly
 
 # EP-2/4/5
-@app.route('/testbtn', methods=['POST'])
+@app.route('/testbtn/', methods=['POST'])
+@login_required
 def testbtn():
-    if request.method == 'POST':
-        # id2 is either tid or rid
-        op, uid, id2 = request.form['submit'].split(".")
-        if op == 'r':
-            dao.remove_from_team(id2, uid)
-        elif op == 'p':
-            # newRole should be id of admin
-            dao.update_role_of_employee(uid, Role.TEAM_ADMIN.value)
-        return render_template('displayteam.html')
+    return act_on_employee(mysql)
 
 
-@app.route('/remove', methods=['POST'])
-def remove():
-    data = request.json
-    if data:
-        uid = str(data['uid'][0])
-        tid = str(data['tid'][0])
-        dao.remove_from_team(tid, uid)
-        return "Success"
-    return "Invalid uid/tid"
-
-
-@app.route("/displayteam/<int:tid>/", methods=['GET'])
-def displayteam(tid):
-    users = dao.get_users_from_team(tid)
-    if users:  # there are values in the database
-        userDetails = []
-        for user in users:
-            role = dao.get_role(user.rid)
-            userDetails.append([user.name, role.name, user.contact,
-                                user.uid, tid, user.rid, user.password])
-
-        return render_template('displayteam.html', userDetails=userDetails)
-    else:
-        message = "Your team does not exist"
-        return render_template('displayteam.html', message=message)
-
-
-@app.route('/test_get_base_url')
-def index():
-    return request.base_url[:request.base_url.rfind('/')]
-
-
-# Only go to this page after you go to /create to add more tables and add key constraints 
-@app.route('/testReact', methods=['GET'])
-def testReact():
-    return {"title": "I am ready from app.py"}
+@app.route("/displayteam/", methods=['GET'])
+@login_required
+def displayteam():
+    return render_display_team(mysql)
 
 
 # EP-3: Accept and Decline pending requests
-
-@app.route('/jointeamrequest/<int:tid>/', methods=['GET', 'POST'])
-def show_team_request(tid):
-    message = ""
-    if request.method == 'POST':
-        action = request.form["action"].split("_")
-        if action[0] == "A":
-            message = team_request_accept(dao, action[1])
-        elif action[0] == "D":
-            message = team_request_decline(dao, action[1])
-    requests = dao.get_pending_requests(tid)
-    company = dao.get_company_by_id(tid)
-    data = []
-    if not company:
-        return render_template("jointeamrequest.html",
-                               message="Your team does not exist.")
-    company_name = company.name
-    if not requests:
-        return render_template("jointeamrequest.html",
-                               message="No pending requests!",
-                               company_name=company_name)
-    for req in requests:
-        data.append([req.uid, req.create_date, req.req_id])
-    return render_template("jointeamrequest.html", data=data, tid=tid,
-                           message=message, company_name=company_name)
+@app.route('/jointeamrequest/', methods=['GET', 'POST'])
+@login_required
+def show_team_request():
+    return render_join_team_request(mysql)
 
 
 # EP-20: Display user profile
+@app.route('/user/', methods=['GET', 'POST'])
+@login_required
+def display_user():
+    return render_user_profile(mysql)
 
-@app.route('/user/<int:uid>/', methods=['GET', 'POST'])
-def display_user(uid):
-    message = ""
-    if request.method == 'POST':
-        data = request.get_json
-        if data:
-            message = update_user(dao, uid, request.form["name"],
-                                  request.form["description"],
-                                  request.form["contact"])
-    user = dao.get_user(uid)
-    if user:
-        user_role = Role(user.rid)
-        user_details = [user.name, user.description, user.contact, user_role.name]
-        return render_template('userprofile.html', user_details=user_details, message= message)
-    else:
-        message = "The user does not exist"
-        return render_template("userprofile.html", message=message)
 
 # this version of search
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search/', methods=['GET', 'POST'])
 def srch():
-    return search(dao)
+    return render_company_search(mysql)
 
-# related to frontend testing, won't interfere with back end
-@app.route('/searchTestSucceed', methods=['GET', 'POST'])
-def srch_test_succeed():
-    return search_frontend_test(dao, True)
-
-
-@app.route('/searchTestFail', methods=['GET', 'POST'])
-def srch_test_fail():
-    return search_frontend_test(dao, False)
-
-@app.route('/userRegistration', methods=['GET', 'POST'])
+@app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
-    return user_register(dao)
+    return render_user_registration(mysql)
+
+
+@app.route('/aboutUs/', methods=['GET', 'POST'])
+def about():
+    return render_about_us()
+
+
+# EP-69: Display company profile
+@app.route('/company/', methods=['GET', 'POST'])
+@login_required
+def display_company():
+    return render_company_profile(mysql)
+
+
+@app.route('/logout/')
+@login_required
+def logout():
+    return render_logout()
+
+
+#E EP-73 
+@app.route('/teamManagement/', methods=['GET', 'POST'])
+@login_required
+def teamMgmt():
+    return render_team_mgmt_combined(mysql)
+
+
+@login_manager.user_loader
+def load_user(id):
+    return load_User_O(mysql, int(id))
+
+  
+@app.route('/sendJoinRequest', methods=['GET', 'POST'])
+@login_required
+def choose_how_to_send_join_request():
+    return render_choose_how_to_send_join_request()
+
+  
+@app.route('/sendJoinRequestByTid', methods=['GET', 'POST'])
+@login_required
+def send_join_request_by_tid():
+    return render_send_join_team_message(mysql, by_tid=True)
+
+  
+@app.route('/sendJoinRequestByCompanyName', methods=['GET', 'POST'])
+@login_required
+def send_join_request_by_company_name():
+    return render_send_join_team_message(mysql,by_tid=False)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

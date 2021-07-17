@@ -5,33 +5,76 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Login Page.</title>
+    <title>Login</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/homepage/font-awesome.css">
+    <link rel="stylesheet" href="../static/css/homepage/templatemo-softy-pinko.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+
+    <style type="text/css">
+        html, body { margin: 0; padding: 0; height: 100%; width: 100%; background-image: linear-gradient(127deg, #a759d1 0%, #8261ee 91%); }
+    </style>
 </head>
 
 <header>
 </header>
 
 <body>
-    <div id="background" class="title-card">
-        <h1>Epsilon</h1>
-        <h2>Login to get started</h2>
-        <hr>
-    </div>
-    <div class="contents">
-        <form action="" method="post">
-            <br>
-            <input class="auth" type="text" placeholder="Username" name="username" value="{{
-                request.form.course }}">
-            <br>
-            <input class="auth" type="text" placeholder="Password" name="password" value="{{
-                request.form.q1 }}">
-            <br>
-            <br>
-            <input class="btn" type="submit" value="Login">
-        </form>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-6 mx-auto">
+                <div class="jumbotron shadow-lg p-3 mb-5 rounded" style="background-color: #f2f2fe">
+                    <div id="title" class="center-heading">
+                        <h2 class="section-title">Login</h2>
+                        <hr>
+                    </div>
+                    <div class="contents center-text">
+                        <form action="" method="post">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">E-mail</span>
+                                </div>
+                                <input name="E-mail" type="text" class="auth form-control" placeholder="johndoe@example.com" aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3" id="show_hide_password">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Password</span>
+                                </div>
+                                <input id="password" name="password" type="password" class="auth form-control" placeholder="Password" aria-describedby="basic-addon1">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary fa fa-eye-slash" type="button" id="button-addon2" onclick="show_hide_password()"></button>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Remember Me</label>
+                                </div>
+
+                                <label class="switch">
+                                    <input type="checkbox" id="inputGroupSelect01" name="Remember">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <br>
+                            <div>
+                                <button type="submit" id="form-submit" class="btn main-button">Login</button>
+                            </div>
+                        </form>
+                        {% if error %}
+                        <p class="error"><strong>Error:</strong> {{ error }}</p>
+                        {% endif %}
+                        {% if msg %}
+                        <p class="msg"><strong>Message:</strong> {{ msg }}</p>
+                        {% endif %}
+                    </div>
+                    <a href="/"><- Go back to homepage</a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="footer">
         <footer>
@@ -40,6 +83,29 @@
             </p>
         </footer>
     </div>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load our React component. -->
+    <script type='text/javascript' src="{{ url_for('static', filename='js/btn.js') }}"></script>
 </body>
 
 </html>
+
+<script type="text/javascript">
+    function show_hide_password(){
+        let password = document.getElementById("password");
+        let button = document.getElementById("button-addon2");
+        if(password.getAttribute("type") == "text"){
+                password.setAttribute('type', 'password');
+                button.classList.add("fa-eye-slash");
+                button.classList.remove("fa-eye");
+            }else if(password.getAttribute("type") == "password"){
+                password.setAttribute('type', 'text');
+                button.classList.remove( "fa-eye-slash" );
+                button.classList.add( "fa-eye" );
+            }
+    }
+</script>

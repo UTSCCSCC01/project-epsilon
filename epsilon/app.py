@@ -133,19 +133,19 @@ def load_user(id):
     return load_User_O(mysql, int(id))
 
   
-@app.route('/sendJoinRequest', methods=['GET', 'POST'])
+@app.route('/sendJoinRequest/', methods=['GET', 'POST'])
 @login_required
 def choose_how_to_send_join_request():
     return render_choose_how_to_send_join_request()
 
   
-@app.route('/sendJoinRequestByTid', methods=['GET', 'POST'])
+@app.route('/sendJoinRequestByTid/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_tid():
     return render_send_join_team_message(mysql, by_tid=True)
 
   
-@app.route('/sendJoinRequestByCompanyName', methods=['GET', 'POST'])
+@app.route('/sendJoinRequestByCompanyName/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_company_name():
     return render_send_join_team_message(mysql,by_tid=False)

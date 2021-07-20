@@ -13,7 +13,7 @@
 - As a user, I would like to see news dedicated to startups and other entrepreneurs and their sources.
 - As a job seeker, I would like to see my job applications so I can keep track of which job postings I applied for and the status of the application.
 - As a user, I want to be able to filter my searches.
-- As a partner, I want to be able to post the services and resources my company offers.
+- As a partner, I want to be able to post the services and resources I offer.
 - As a partner, I want to be able to see who requested my service.
 - As a partner, I want to be able to view pending and denied service requests.
 - As a site owner, I want to verify resources offered by partners before they get published.

@@ -17,3 +17,4 @@
 - As a partner, I want to be able to see who requested my service.
 - As a partner, I want to be able to view pending and denied service requests.
 - As a site owner, I want to verify resources offered by partners before they get published.
+- As a job seeker, I would like to apply for a job so that I can join the company of my liking.

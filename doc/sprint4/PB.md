@@ -8,7 +8,7 @@
 - As a team administrator, I want to update the status on existing loans/grants.
 - As a team administrator, I want to archive a past loan/grant record so I can focus on current loans/grants.
 - As a startup user, I can contact reliable companies for partner services.
-- As a user, I want to see the team behind the product and a list of contacts in order to receive support and additional information. 
+- As a user, I want to see the team behind the company and a list of contacts in order to receive support and additional information. 
 - As a user, I want to see the cumulative list of services that I can access if I am logged in.
 - As a user, I would like to see news dedicated to startups and other entrepreneurs and their sources.
 - As a job seeker, I would like to see my job applications so I can keep track of which job postings I applied for and the status of the application.
@@ -18,3 +18,4 @@
 - As a partner, I want to be able to view pending and denied service requests.
 - As a site owner, I want to verify resources offered by partners before they get published.
 - As a job seeker, I would like to apply for a job so that I can join the company of my liking.
+- As a team administrator, I want to be able to post job opportunities so that interested applicants can apply.

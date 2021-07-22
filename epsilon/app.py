@@ -109,10 +109,14 @@ def about():
 
 
 # EP-69: Display company profile
-@app.route('/company/', methods=['GET', 'POST'])
+@app.route('/company/0', methods=['GET', 'POST'])
 @login_required
-def display_company():
-    return render_company_profile(mysql)
+def display_your_company():
+    return render_company_profile(mysql, 0)
+
+@app.route('/company/<int:tid>', methods=['GET', 'POST'])
+def display_company(tid):
+    return render_company_profile(mysql, tid)
 
 
 @app.route('/logout/')

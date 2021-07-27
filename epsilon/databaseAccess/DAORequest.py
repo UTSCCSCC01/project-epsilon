@@ -53,19 +53,19 @@ class DAORequest(DAO):
                  RStatus to be populated.
         """
         request_1 = Request(req_id=1, tid=1, uid=3,
-                            sid=RStatus.PENDING.value,
+                            sid=RStatus.OFFER.value,
                             create_date=datetime.now(),
                             last_update=datetime.now()
                             .strftime('%Y-%m-%d %H:%M:%S'),
                             seen=0)
         request_2 = Request(req_id=2, tid=1, uid=4,
-                            sid=RStatus.PENDING.value,
+                            sid=RStatus.OFFER.value,
                             create_date=datetime.now(),
                             last_update=datetime.now()
                             .strftime('%Y-%m-%d %H:%M:%S'),
                             seen=1)
         request_3 = Request(req_id=3, tid=2, uid=5,
-                            sid=RStatus.PENDING.value,
+                            sid=RStatus.OFFER.value,
                             create_date=datetime.now(),
                             last_update=datetime.now()
                             .strftime('%Y-%m-%d %H:%M:%S'),

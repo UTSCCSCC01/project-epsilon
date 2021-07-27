@@ -61,9 +61,9 @@ class DAO:
         """
         Delete all tables in the database.
         """
-        t_names = ["Teams", "request", "Users", "Roles",
+        t_names = ["Teams", "Request", "Users", "Roles",
                    "CompanyTags", "Company", "RStatus",
-                   "Tags", "Industry", "Type"]
+                   "Tags", "Industry", "Type", "JobApplication", "JobPosting"]
         for t_name in t_names:
             self.drop_table(t_name)
 

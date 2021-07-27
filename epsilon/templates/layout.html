@@ -44,9 +44,10 @@ https://templatemo.com/tm-535-softy-pinko
                                 Epsilon</h2>
                         </li>
                         <li><a href="/" class="active">Home</a></li>
+                        {% if current_user.is_authenticated and tid >= 0 %}
                         <li>
                             <div class="dropdown">
-                                <button class="dropbtn"><a href="/company/0">Your Company</a></button>
+                                <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
                                 <div class="dropdown-content">
                                     <a href="/displayteam/">Display Team</a>
                                     <a href="/jointeamrequest/">Pending Requests</a>
@@ -55,6 +56,9 @@ https://templatemo.com/tm-535-softy-pinko
                                 </div>
                             </div>
                         </li>
+                        {% else %}
+                        <li><a href="/registration">Create New Team</a></li>
+                        {% endif %}
                         <li>
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="">Resources</a></button>

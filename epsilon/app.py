@@ -36,7 +36,7 @@ mysql = MySQL(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    return render_home()
+    return render_home(mysql)
 
 
 @app.route("/previousHome/", methods=['GET', 'POST'])
@@ -109,7 +109,7 @@ def about():
 
 
 # EP-69: Display company profile
-@app.route('/company/0', methods=['GET', 'POST'])
+@app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
 def display_your_company():
     return render_company_profile(mysql, 0)

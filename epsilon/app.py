@@ -9,16 +9,12 @@ from reqHandler.reqLogin import render_login
 from reqHandler.reqLogout import render_logout
 from reqHandler.reqDatabaseManage import create_tables, delete_tables
 from reqHandler.reqHome import *
+from reqHandler.reqJobPosting import *
 from flask import Flask, request
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_required
 from flask_cors import CORS
 from databaseAccess.DAOUser import *
-
-import mimetypes
-
-mimetypes.add_type('application/javascript', '.js')
-mimetypes.add_type('application/javascript', '.mjs')
 
 app = Flask(__name__)
 CORS(app)
@@ -149,6 +145,12 @@ def send_join_request_by_tid():
 @login_required
 def send_join_request_by_company_name():
     return render_send_join_team_message(mysql,by_tid=False)
+
+
+@app.route('/JobPostingsMgmt/', methods=['GET', 'POST'])
+@login_required
+def manage_job_postings():
+    pass
 
 
 if __name__ == "__main__":

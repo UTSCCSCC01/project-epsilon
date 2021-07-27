@@ -1,3 +1,5 @@
+from databaseAccess.DAOJobPosting import DAOJobPosting
+from databaseAccess.DAOJobApplication import DAOJobApplication
 from databaseAccess.DAOType import DAOType
 from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAOTeam import DAOTeam
@@ -39,6 +41,8 @@ def create_tables(mysql: MySQL) -> str:
     dao_team = DAOTeam(mysql)
     dao_user = DAOUser(mysql)
     dao_type = DAOType(mysql)
+    dao_job_application = DAOJobApplication(mysql)
+    dao_job_posting = DAOJobPosting(mysql)
 
     # table creation
     dao_company.create_company_table()
@@ -51,14 +55,17 @@ def create_tables(mysql: MySQL) -> str:
     dao_team.create_team_table()
     dao_user.create_user_table()
     dao_type.create_type_table()
+    dao_job_application.create_job_application_table()
+    dao_job_posting.create_job_posting_table()
 
     # foreign keys
     dao_company.add_foreign_key()
     dao_company_tag.add_foreign_key()
-    dao_request.add_foreign_key()
     dao_tag.add_foreign_key()
     dao_team.add_foreign_key()
     dao_user.add_foreign_key()
+    dao_job_application.add_foreign_key()
+    dao_job_posting.add_foreign_key()
 
     # add that does not have foreign key constraint
     dao_role.add_roles()
@@ -79,9 +86,9 @@ def create_tables(mysql: MySQL) -> str:
     companies = dao_company.get_companies()
     types = dao_type.get_types()
 
-    t_names = ["Teams", "Request", "Users", "Roles",
+    t_names = ["Teams", "Users", "Roles",
                "CompanyTags", "Company", "RStatus",
-               "Tags", "Industry", "Type"]
+               "Tags", "Industry", "Type", "JobApplication", "JobPosting"]
 
     output = "The following tables are populated! </br> <ul>"
     for t_name in t_names:

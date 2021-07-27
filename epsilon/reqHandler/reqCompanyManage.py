@@ -4,7 +4,7 @@ from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 
 
-def render_company_profile(mysql: MySQL):
+def render_company_profile(mysql: MySQL, name:str=""):
     """
     Handler for user profile.
     :param mysql: mysql db.
@@ -13,8 +13,19 @@ def render_company_profile(mysql: MySQL):
     """
     message = ""
     try:
-        teams = get_user_teams(mysql, current_user.uid)
-        tid = teams[0].tid
+        user_team = [0, 0, 0]
+        if current_user.is_authenticated:
+            user_teams = get_user_teams(mysql, current_user.uid)
+            user_team = [user_teams[0].tid,
+                         user_teams[0].uid,
+                         user_teams[0].rid]
+
+        if name == "":
+            tid = user_team[0]
+        else:
+            company_details = get_company_profile_by_name(mysql, name)
+            tid = company_details[0]
+
         if request.method == 'POST':
             data = request.get_json
             if data:
@@ -24,6 +35,6 @@ def render_company_profile(mysql: MySQL):
                                          description)
         company_details = get_company_profile(mysql, tid)
         return render_template('company_profile.html', company_details=company_details,
-                               message=message)
+                               message=message, user_team=user_team, tid=tid)
     except Exception as e:
         return render_template('company_profile.html', message=e)

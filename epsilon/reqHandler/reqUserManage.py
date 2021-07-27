@@ -1,3 +1,4 @@
+from epsilonModules.ModTeam import get_user_teams
 from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
@@ -12,6 +13,7 @@ def render_user_profile(mysql: MySQL):
     uid = current_user.uid
     message = ""
     try:
+        tid = -1
         if request.method == 'POST':
             data = request.get_json
             if data:
@@ -21,8 +23,14 @@ def render_user_profile(mysql: MySQL):
                 message = update_user(mysql, uid, name,
                                       description, contact)
         user_details = get_user_profile(mysql, uid)
+        if current_user.is_authenticated:
+            user_teams = get_user_teams(mysql, current_user.uid)
+            tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
-                               message=message)
+                               message=message, tid= tid)
+    except ObjectNotExistsError as e:
+        return render_template('user_profile.html', user_details=user_details,
+                               message=message, tid= tid)
     except Exception as e:
         return render_template('user_profile.html', message=e)
 

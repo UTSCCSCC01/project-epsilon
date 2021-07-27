@@ -112,11 +112,11 @@ def about():
 @app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
 def display_your_company():
-    return render_company_profile(mysql, 0)
+    return render_company_profile(mysql)
 
-@app.route('/company/<int:tid>', methods=['GET', 'POST'])
-def display_company(tid):
-    return render_company_profile(mysql, tid)
+@app.route('/company/<string:name>', methods=['GET', 'POST'])
+def display_company(name):
+    return render_company_profile(mysql, name)
 
 
 @app.route('/logout/')

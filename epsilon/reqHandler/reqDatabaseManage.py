@@ -85,7 +85,7 @@ def create_tables(mysql: MySQL) -> str:
 
     t_names = ["Teams", "Request", "Users", "Roles",
                "CompanyTags", "Company", "RStatus",
-               "Tags", "Industry", "Type"]
+               "Tags", "Industry", "Type", "TeamCode"]
 
     output = "The following tables are populated! </br> <ul>"
     for t_name in t_names:

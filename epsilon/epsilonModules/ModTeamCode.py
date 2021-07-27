@@ -61,12 +61,12 @@ def generateTeamCode(mysql:MySQL, tid:int) -> str:
     :param mysql: database used
     """
     dao_teamCode = DAOTeamCode(mysql)
-    if(codeActive(tid)):
-        removeTeamCode(tid)
+    if(codeActive(mysql, tid)):
+        removeTeamCode(mysql, tid)
     code = None
     while(code == None or checkCode(mysql,code)):
         # create an 8 char code
-        code = ''.join(random.choices(string.ascii_uppercase +
+        code = ''.join(random.choice(string.ascii_uppercase +
                                     string.ascii_lowercase +
                                     string.digits) for _ in range(8))
     teamCode = TeamCode(tid,code)

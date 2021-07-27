@@ -1,6 +1,6 @@
-from epsilon.epsilonModules.ModTeamCode import generateTeamCode, getTeamCode, removeTeamCode
 import json
 from epsilonModules.ModTeam import *
+from epsilonModules.ModTeamCode import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 from classes.Type import Type
@@ -98,9 +98,9 @@ def render_team_mgmt_combined(mysql: MySQL):
         cur_role = teams[0].rid
         data, company_name = get_join_requests(mysql, tid)
         user_details = get_members(mysql, tid)
-        teamCode = getTeamCode(tid)
+        teamCode = getTeamCode(mysql,tid)
         if (teamCode != None):
-            code = teamCode.code()
+            code = teamCode.code
             if len(data) == 0:
                 return render_template("team_management_combined.html",
                                     message="No pending requests!", tid=tid,

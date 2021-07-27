@@ -25,7 +25,7 @@
                             <h2 class="section-title">Manage Join Team Requests</h2>
                         </a>
                     </li>
-                    {% if cur_role = 1 %}
+                    {% if cur_role != 3 %}
                     <li class="nav-item" id="linkBtn">
                         <a class="nav-link" href="#Team-Link">
                             <h2 class="section-title">Manage Team Join Code</h2>
@@ -109,14 +109,14 @@
             </div>
         </div>
         {% endif %}
-        {% if cur_role = 1 %}
+        {% if cur_role != 3 %}
         <hr>
         <div class="container" id="Team-Link">
             <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Invite Team Members</h3>
             <div class="align-items-center h-100">
                 <table>
                     <tr>
-                        {% if code $}
+                        {% if code %}
                         <td>
                             <p>Active Code: {{ code }}</p>
                         </td>
@@ -136,14 +136,14 @@
                             <p>No Active Code</p>
                         </td>
                         <td>
-                            <button class="adjacent-btn" onclick="copyLink()" disabled name="action">Copy</button>
+                            <button class="adjacent-btn disabled" onclick="copyLink()" disabled name="action">Copy</button>
                         </td>
                         <form action="" method="POST">
                             <td>
                                 <button class="adjacent-btn" type="submit" value="G_{{tid}}" name="action">Activate</button>
                             </td>
                             <td>
-                                <button class="adjacent-btn" disabled name="action">Deactivate</button>
+                                <button class="adjacent-btn disabled" disabled name="action">Deactivate</button>
                             </td>
                         </form>
                         {% endif %}

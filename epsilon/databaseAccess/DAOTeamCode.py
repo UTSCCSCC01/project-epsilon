@@ -1,4 +1,3 @@
-import string
 from typing import List
 from .DAO import DAO
 from classes.TeamCode import TeamCode
@@ -11,7 +10,7 @@ class DAOTeamCode(DAO):
         super().__init__(db)
     
     def create_teamCode_table(self) -> None:
-        cur = self.db.connnection.cursor()
+        cur = self.db.connection.cursor()
         try:
             cur.execute('''CREATE TABLE IF NOT EXISTS TeamCode (
                             tid int,
@@ -57,8 +56,9 @@ class DAOTeamCode(DAO):
                  None if dne
         """
         teamCode = None
-        data = self.get_data('''SELECT * FROM TeamCode 
-                                WHERE tid = %s''', (tid))
+        tidString = f'{tid}'
+        query = "SELECT * FROM TeamCode WHERE tid = " + tidString
+        data = self.get_data(query, None)
         if data:
             teamCode = data[0]
             teamCode = TeamCode(teamCode[0],

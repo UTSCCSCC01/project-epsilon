@@ -8,6 +8,7 @@ from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAOIndustry import DAOIndustry
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOCompany import DAOCompany
+from databaseAccess.DAOTeamCode import DAOTeamCode
 from databaseAccess.DAO import DAO
 from epsilonModules.ModCompany import add_dummy_companies
 from flask_mysqldb import MySQL
@@ -39,6 +40,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_team = DAOTeam(mysql)
     dao_user = DAOUser(mysql)
     dao_type = DAOType(mysql)
+    dao_teamCode = DAOTeamCode(mysql)
 
     # table creation
     dao_company.create_company_table()
@@ -51,6 +53,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_team.create_team_table()
     dao_user.create_user_table()
     dao_type.create_type_table()
+    dao_teamCode.create_teamCode_table()
 
     # foreign keys
     dao_company.add_foreign_key()
@@ -59,6 +62,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_tag.add_foreign_key()
     dao_team.add_foreign_key()
     dao_user.add_foreign_key()
+    dao_teamCode.add_foreign_key()
 
     # add that does not have foreign key constraint
     dao_role.add_roles()

@@ -1,8 +1,10 @@
+from epsilon.epsilonModules.ModTeamCode import generateTeamCode, getTeamCode, removeTeamCode
 import json
 from epsilonModules.ModTeam import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 from classes.Type import Type
+from classes.TeamCode import TeamCode
 import sys, traceback
 
 def act_on_employee(mysql: MySQL):
@@ -86,20 +88,35 @@ def render_team_mgmt_combined(mysql: MySQL):
             message = promote_admin(mysql, action[2], action[1], action[3])
         elif action[0] == 'R':
             message = remove_from_team(mysql, action[2], action[1], action[3])
+        elif action[0] == 'G':
+            message = generateTeamCode(mysql, action[1])
+        elif action[0] == 'U':
+            message = removeTeamCode(mysql, action[1])
     try:
         teams = get_user_teams(mysql, current_user.uid)
         tid = teams[0].tid
         cur_role = teams[0].rid
         data, company_name = get_join_requests(mysql, tid)
         user_details = get_members(mysql, tid)
+        teamCode = getTeamCode(tid)
+        if (teamCode != None):
+            code = teamCode.code()
+            if len(data) == 0:
+                return render_template("team_management_combined.html",
+                                    message="No pending requests!", tid=tid,
+                                    company_name=company_name, userDetails=
+                                    user_details, cur_role=cur_role, code=code)
+            return render_template("team_management_combined.html", data=data, tid=tid,
+                                message=message, company_name=company_name, 
+                                userDetails=user_details, cur_role=cur_role, code=code)
         if len(data) == 0:
-            return render_template("team_management_combined.html",
-                                   message="No pending requests!", tid=tid,
-                                   company_name=company_name, userDetails=
-                                   user_details, cur_role=cur_role)
+                return render_template("team_management_combined.html",
+                                    message="No pending requests!", tid=tid,
+                                    company_name=company_name, userDetails=
+                                    user_details, cur_role=cur_role)
         return render_template("team_management_combined.html", data=data, tid=tid,
-                               message=message, company_name=company_name, 
-                               userDetails=user_details, cur_role=cur_role)
+                                message=message, company_name=company_name, 
+                                userDetails=user_details, cur_role=cur_role)                        
     except Exception as e:
         return render_template("team_management_combined.html",
                                message=e)

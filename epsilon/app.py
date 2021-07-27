@@ -15,11 +15,6 @@ from flask_login import LoginManager, login_required
 from flask_cors import CORS
 from databaseAccess.DAOUser import *
 
-import mimetypes
-
-mimetypes.add_type('application/javascript', '.js')
-mimetypes.add_type('application/javascript', '.mjs')
-
 app = Flask(__name__)
 CORS(app)
 login_manager = LoginManager(app)

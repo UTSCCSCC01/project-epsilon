@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from datetime import datetime
 
-class JobPosting(UserMixin):
+class JobPosting():
     def __init__(self, jid=0, tid=0, title="default posting",
                  description="default description",
                  create_date=datetime.now().strftime("%m/%d/%Y"), active=True):

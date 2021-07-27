@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from datetime import datetime
 
-class JobApplication(UserMixin):
+class JobApplication():
     def __init__(self, jap_id=0, jid=0, uid=0, sid=1,
                  skills=None, create_date=datetime.now().strftime("%m/%d/%Y")):
         """
@@ -72,7 +72,7 @@ class JobApplication(UserMixin):
 
     def __str__(self):
         """ Overloads str method. """
-        return 'JobApplication(jap_id = ' + str(self.uid) \
+        return 'JobApplication(jap_id = ' + str(self.jap_id) \
             + ', jid = ' + str(self.jid) \
             + ', uid = ' + str(self.uid) \
             + ', sid = ' + str(self.sid) \

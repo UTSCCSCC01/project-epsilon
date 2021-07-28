@@ -64,7 +64,7 @@ class JobApplication():
 
     @property
     def skills(self):
-        return str(self._skills)[1:-1]
+        return str(self._skills)[:]
 
     @skills.setter
     def skills(self, skills):
@@ -76,5 +76,5 @@ class JobApplication():
             + ', jid = ' + str(self.jid) \
             + ', uid = ' + str(self.uid) \
             + ', sid = ' + str(self.sid) \
-            + ', create_date = ' + self.create_date\
+            + ', create_date = ' + str(self.create_date) \
             + ', skills = ' + self.skills + ')'

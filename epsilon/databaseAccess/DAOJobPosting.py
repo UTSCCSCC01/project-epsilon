@@ -47,7 +47,7 @@ class DAOJobPosting(DAO):
         """
         self.modify_data(
             '''INSERT INTO JobPosting (tid, title, description, active)
-            VALUES (%s, %s, %s, %s, %s)''',
+            VALUES (%s, %s, %s, %s)''',
             (posting.tid,
              posting.title,
              posting.description,

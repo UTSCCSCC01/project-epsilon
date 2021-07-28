@@ -67,6 +67,21 @@
                             </form>
                         </div>
                         {% endif %}
+                        <div class="row">
+                            {% if company_owner %}
+                            <form action="" method="POST" id="userForm">
+
+                                <div class="bio-row">
+                                    <p><span>Owner Name </span><input type="text" name="owner-name" id="owner-name"
+                                            value="{{company_owner[0]}}" required readonly> </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Owner Email</span><input type="text" name="owner-contact" id="owner-contact"
+                                            value="{{company_owner[1]}}" required readonly></p>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

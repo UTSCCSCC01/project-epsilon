@@ -34,7 +34,8 @@ def render_company_profile(mysql: MySQL, name:str=""):
                 message = update_company(mysql, tid, name,
                                          description)
         company_details = get_company_profile(mysql, tid)
+        company_owner = get_company_owner_by_tid(mysql, tid)
         return render_template('company_profile.html', company_details=company_details,
-                               message=message, user_team=user_team, tid=tid)
+                               message=message, user_team=user_team, tid=tid, company_owner=company_owner)
     except Exception as e:
         return render_template('company_profile.html', message=e)

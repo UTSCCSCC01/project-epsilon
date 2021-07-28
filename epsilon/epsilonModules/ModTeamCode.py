@@ -26,6 +26,7 @@ def checkCode(mysql:MySQL, code:str) -> bool:
     :return: whether the code is active or not
     """
     dao_teamCode = DAOTeamCode(mysql)
+    dao_teamCode.remove_teamcodes()
     teamCode = dao_teamCode.get_teamCode_by_code(code)
     if(teamCode != None):
         return True

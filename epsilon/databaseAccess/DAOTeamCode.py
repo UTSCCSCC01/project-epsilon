@@ -56,9 +56,7 @@ class DAOTeamCode(DAO):
                  None if dne
         """
         teamCode = None
-        tidString = f'{tid}'
-        query = "SELECT * FROM TeamCode WHERE tid = " + tidString
-        data = self.get_data(query, None)
+        data = self.get_data("SELECT * FROM TeamCode WHERE tid = %s", (tid,))
         if data:
             teamCode = data[0]
             teamCode = TeamCode(teamCode[0],

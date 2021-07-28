@@ -153,5 +153,11 @@ def send_join_request_by_company_name():
     return render_send_join_team_message(mysql,by_tid=False)
 
 
+@app.route('/joinByCode', methods=['GET', 'POST'])
+@login_required
+def join_by_code():
+    return render_join_by_teamCode(mysql)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

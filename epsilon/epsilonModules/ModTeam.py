@@ -249,3 +249,19 @@ def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:in
         return add_join_team_request_by_tid(mysql=mysql, tid=str(company.tid), uid=uid, type_id=type_id)
     else:
         raise ObjectNotExistsError(obj="the company")
+
+def add_to_team(mysql:MySQL, uid:int, tid:int) -> str:
+    """
+    For use by join by code to add cur user to team
+    :param mysql: db used
+    :param uid: uid of user to add
+    :param tid: tid for user to join
+    :return: response message
+    """
+    dao_team = DAOTeam(mysql)
+    team = Team(tid, uid, Role.TEAM_MEMBER.value)
+    try:
+        dao_team.add_team(team)
+        return "Joined Successfully"
+    except Exception as e:
+        return e

@@ -48,10 +48,9 @@ class DAOJobApplication(DAO):
         :param application: The JobApplication object.
         """
         self.modify_data(
-            '''INSERT INTO JobApplication (jap_id, jid, uid, sid, skills)
-            VALUES (%s, %s, %s, %s, %s)''',
-            (application.jap_id,
-             application.jid,
+            '''INSERT INTO JobApplication (jid, uid, sid, skills)
+            VALUES (%s, %s, %s, %s)''',
+            (application.jid,
              application.uid,
              application.sid,
              application.skills))
@@ -101,3 +100,38 @@ class DAOJobApplication(DAO):
                                 sid=d[3], skills=str(d[4]).split(","),
                                 create_date=d[5])
         return res
+
+    def add_dummy_job_applications(self) -> None:
+        """
+        Populate JobApplication table with dummy data.
+        :requires: Job Postings of jid 1, 2 and 3 to be created.
+        """
+        job1 = JobApplication(jap_id=1, jid=1, uid=3, sid=RStatus.APPLIED.value,
+                              skills="HTML,CSS,JavaScript,JQuery,Bootstrap,React, "
+                              + "work in Amazon as a web developer for a year")
+        job2 = JobApplication(jap_id=2, jid=1, uid=4, sid=RStatus.INTERVIEW.value,
+                              skills="web develop,HTML,MySQL,Bootstrap,"
+                              + "React,MongoDB.")
+        job3 = JobApplication(jap_id=3, jid=2, uid=3, sid=RStatus.APPLIED.value,
+                              skills="manage multiple social media accounts,"
+                              + "social media master in SSO.")
+        job4 = JobApplication(jap_id=3, jid=3, uid=5, sid=RStatus.OFFER.value,
+                              skills="Just please hire me, I will show you my awesome "
+                              + "resume if you contact me.")
+
+        jobs_to_add = [job1, job2, job3, job4]
+
+        for job in jobs_to_add:
+            self.add_job_application(job)
+
+    def get_job_postings(self) -> List[JobApplication]:
+        """
+        Gets all job applications in the database.
+        :return: List of JobApplication objects.
+        """
+        job_applications = []
+        data = self.get_data('''SELECT * FROM JobApplication''', None)
+        for job in data:
+            job_applications.append(JobApplication(job[0],job[1],job[2],job[3],
+                                                   str(job[4].split(",")),job[5]))
+        return job_applications

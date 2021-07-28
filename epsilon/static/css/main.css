@@ -19,6 +19,14 @@ button:hover {
     background-color: #ff589e;
 }
 
+button.disabled{
+    background-color: grey;
+}
+
+button.disabled:hover{
+    background-color: grey;
+}
+
 button.positive:hover {
     background-color: #58b5ff;
 }

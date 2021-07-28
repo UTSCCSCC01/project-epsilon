@@ -48,13 +48,13 @@ class DAOJobApplication(DAO):
         :param application: The JobApplication object.
         """
         self.modify_data(
-            '''INSERT INTO JobApplication (jap_id, jid, uid, sid, skills)
-            VALUES (%s, %s, %s, %s, %s)''',
-            (application.jap_id,
-             application.jid,
+            '''INSERT INTO JobApplication (jid, uid, sid, skills)
+            VALUES (%s, %s, %s, %s)''',
+            (application.jid,
              application.uid,
              application.sid,
              application.skills))
+
 
     def update_job_application_status(self, application: JobApplication) -> None:
         """
@@ -79,7 +79,6 @@ class DAOJobApplication(DAO):
                                 WHERE uid = %s
                                 ORDER BY create_date DESC''',
                              (uid,))
-        # column order: jap_id, jid, uid, sid, skills, create_date
         for d in data:
             applications.append(JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
                                                sid=d[3], skills=d[4].split(","),
@@ -101,3 +100,14 @@ class DAOJobApplication(DAO):
                                 sid=d[3], skills=str(d[4]).split(","),
                                 create_date=d[5])
         return res
+
+    def send_job_application(self, jid: int, uid: int, skills: str):
+        """
+        Sends a job application.
+        :param jid: job id.
+        :param uid: user id.
+        :param skills: the skills  the user used to apply to this job.
+        """
+        application = JobApplication(jid=jid, uid=uid,
+                                     sid=RStatus.APPLIED.value, skills=skills)
+        self.add_job_application(application=application)

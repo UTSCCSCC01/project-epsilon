@@ -3,6 +3,7 @@ from .DAO import DAO
 from classes.Team import Team
 from classes.Role import Role
 from classes.User import User
+from classes.Type import Type
 
 
 class DAOTeam(DAO):
@@ -47,7 +48,7 @@ class DAOTeam(DAO):
         Require: Company and User to already create dummy objects,
                  Roles to already be populated.
         """
-        team_1 = Team(tid=1, uid=1, rid=Role.TEAM_OWNER.value)
+        team_1 = Team(tid=1, uid=1, rid=Role.TEAM_ADMIN.value)
         team_2 = Team(tid=2, uid=2, rid=Role.TEAM_OWNER.value)
         teams_to_add = [team_1, team_2]
 
@@ -138,3 +139,16 @@ class DAOTeam(DAO):
         for team in data:
             teams.append(Team(team[0], team[1], team[2]))
         return teams
+
+    def get_tids_by_admin_uid(self, uid: int) -> List[int]:
+        """
+        Gets all tid of companies that user is an admin.
+        :return: List of tid
+        """
+        res = []
+        data = self.get_data('''SELECT tid FROM Teams
+                                WHERE uid = %s AND rid=%s''', (uid, Role.TEAM_ADMIN.value,))
+        if data:
+            for team in data:
+                res.append(team[0])
+        return res

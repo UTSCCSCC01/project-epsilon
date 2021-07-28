@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<div class="pagewrap">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Manage Job Postings</title>
+</head>
+
+
+<body>
+    <div id="background" class="title-card">
+         {% if error == null%}
+        <button id="byIdBtn" class="float-left submit-button" >Post A Job! </button>
+        <script type="text/javascript">
+            document.getElementById("byIdBtn").onclick = function () {
+            location.href = "/postJob";
+            };
+        </script>
+        {% endif %}
+    </div>
+    <div class="contents">
+
+        {% if job_postings %}
+        <div class="contents table table-hover table-responsive-sm container">
+            <div class="align-items-center h-100">
+                <table>
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Create Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    {% for row in job_postings %}
+                    <tr>
+                        <th> {{ row[0] }} </th>
+                        <td> {{ row[1] }} </td>
+                        <td> {{ row[2] }} </td>
+                        <td>
+                            <form action="" method="POST" id="">
+                            <button class="adjacent-btn positive" type="submit" value="R_{{row[4]}}" name="update_posting_action">Dummy</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+
+</div>
+</html>
+{% endblock %}

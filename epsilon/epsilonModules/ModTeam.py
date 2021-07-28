@@ -13,6 +13,7 @@ from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
+from databaseAccess.DAOJobPosting import DAOJobPosting
 from flask_login import current_user
 from classes.Type import Type
 from classes.RStatus import RStatus
@@ -230,7 +231,6 @@ def add_join_team_request_by_tid(mysql: MySQL, tid:str, uid:int, type_id:int) ->
         return message
     else:
         raise AccessDeniedError(functionality="send request to join a company.")
-
 
 def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:int, type_id:int) -> str:
     """

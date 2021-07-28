@@ -73,7 +73,7 @@ class DAOTeamCode(DAO):
         """
         teamCode = None
         data = self.get_data('''SELECT * FROM TeamCode
-                                WHERE code = %s''', (code))
+                                WHERE code = %s''', (code,))
         if data:
             teamCode = data[0]
             teamCode = TeamCode(teamCode[0],

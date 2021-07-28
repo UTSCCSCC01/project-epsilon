@@ -85,5 +85,5 @@ def get_tid_by_code(mysql:MySQL, code:str) -> int:
     tid = -1
     if(checkCode(mysql,code)):
         teamCode = dao_teamCode.get_teamCode_by_code(code)
-        tid = teamCode.tid()
+        tid = teamCode.tid
     return tid

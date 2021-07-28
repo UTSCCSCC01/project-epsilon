@@ -5,7 +5,7 @@ from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 from classes.Type import Type
 from classes.TeamCode import TeamCode
-from reqCompanyManage import render_company_profile
+from reqHandler.reqCompanyManage import render_company_profile
 import sys, traceback
 
 def act_on_employee(mysql: MySQL):
@@ -172,12 +172,20 @@ def render_join_by_teamCode(mysql:MySQL):
     """
     msg = ""
     if request.method == 'POST':
-        code = request.form['code']
-        tid = get_tid_by_code(mysql, code)
-        if tid != -1:
-            msg = add_to_team(mysql, current_user.uid, tid)
-            if msg == "Joined Successfully":
-                render_company_profile(mysql)
-        else: 
-            msg = "Invalid Code"
+        # see if they are already in a team
+        try:
+            team = get_user_teams(mysql, current_user.uid)
+            msg = "Already in a team"
+        # not in a team
+        except:
+            code = request.form['code']
+            tid = get_tid_by_code(mysql, code)
+            # team code exists
+            if tid != -1:
+                msg = add_to_team(mysql, current_user.uid, tid)
+                if msg == "Joined Successfully":
+                    return render_template(mysql, msg=msg)
+            # code doesn't exist
+            else: 
+                msg = "Invalid Code"
     return render_template("join_team_by_code.html", error=msg)

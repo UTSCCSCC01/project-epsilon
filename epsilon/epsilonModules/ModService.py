@@ -1,8 +1,10 @@
 from typing import List
 from flask_mysqldb import MySQL
 
+from classes.Service import Service
 from databaseAccess.DAOService import DAOService
 from databaseAccess.DAOServiceType import DAOServiceType
+from exceptions.FormIncompleteError import FormIncompleteError
 
 
 def get_services(mysql: MySQL) -> List:
@@ -23,3 +25,33 @@ def get_services(mysql: MySQL) -> List:
         service_details.append([service.ser_id, service.uid, ser_type_name, service.title, service.description,
                                 service.price, service.link])
     return service_details
+
+
+def add_service(mysql: MySQL, uid: int, title: str, description: str, price: int,
+                link: str, service_type: int) -> str:
+    """
+    Registers a User into the database
+    :param mysql: mysql db.
+    :param uid: uid of the user posting the service
+    :param title: title of new service.
+    :param description: description of new service.
+    :param price: price of new service.
+    :param link: the link of new service.
+    :param service_type: the service_type id for new service.
+    :return: status message of adding user.
+    """
+    dao_service = DAOService(mysql)
+    # check if any required fields isn't filled
+    if uid < 0 or len(title) == 0 or len(description) == 0 or price == "0" or len(link) == 0 or service_type is None:
+        raise FormIncompleteError()
+    else:
+        try:
+            # create new service
+            service = Service(uid=uid, title=title, description=description, price=price, link=link, ser_type_id=service_type)
+            dao_service.add_service(service)
+            # send success prompt
+            message = "Service successfully created!"
+            return message
+        except Exception as e:
+            # display issue w db
+            raise e

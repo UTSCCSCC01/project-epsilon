@@ -7,7 +7,69 @@
         <hr>
     </div>
 
+    {% if is_service_provider %}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary float-right main-button" data-toggle="modal" data-target="#addModal">
+            + Add Service
+        </button>
+        <br><br><br>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a Service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" id="serviceForm">
+                        <div class="bio-row">
+                            <p><input class="form-control" type="text" name="title" id="title" placeholder="Title" required> </p>
+                        </div>
+                        <br>
+                        <div class="bio-row">
+                            <p><input class="form-control" type="text"  name="description" id="description" placeholder="Description" required></p>
+                        </div>
+                        <br>
+                        <div class="bio-row">
+                            <p><input class="form-control" type="number" name="price" id="price" placeholder="Price" required></p>
+                        </div>
+                        <br>
+                        <div class="bio-row">
+                            <p><input class="form-control" type="text" name="link" id="link" placeholder="Link" required></p>
+                        </div>
+                        <br>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Service Type</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01" name="type">
+                                <option selected>Choose...</option>
+                                <option class="auth" value="1">Product Development</option>
+                                <option class="auth" value="2">Accounting and Bookkeeping</option>
+                                <option class="auth" value="3">Legal</option>
+                                <option class="auth" value="4">Marketing</option>
+                                <option class="auth" value="5">Sales and CRM</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary main-button" data-dismiss="modal">Close</button>
+                            <button type="submit" id="form-submit" class="btn main-button">Add Service</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="contents">
+        {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
         {% for service in service_details %}
             <!--List order: ser_id, uid, ser_type_id, title, description, price, link-->
         <div class="jumbotron">
@@ -15,16 +77,14 @@
           <p class="lead">{{service[4]}}</p>
           <hr class="my-4">
           <p>Price: {{service[5]}}</p>
+          <br>
           <p class="lead">
-            <a class="btn btn-primary btn-lg" href="{{service[6]}}" target=”_blank” role="button">Learn more</a>
+            <a class="btn btn-primary main-button" href="{{service[6]}}" target=”_blank” role="button">Learn more</a>
           </p>
         </div>
         {% endfor %}
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
-        {% if message %}
-        <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
     </div>
 {% endblock %}

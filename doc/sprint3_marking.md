@@ -229,12 +229,10 @@ Tracking on Jira Total Mark: 24 / 24
     - 8 marks = features presented work flawlessly
     - 1 mark removed for each error or missing records on Jira
 
-  Your Mark: __ / 10
+  Your Mark: 10 / 10
   
-  mark pending from demo TA
-
 ---
 
 ## Total Mark
 
-68.5 / 89
+78.5 / 89

@@ -199,7 +199,7 @@ def update_company(mysql: MySQL, tid: int, name: str,
         return "Company info updated."
 
 
-def get_company_owner_by_tid(mysql: MySQL, tid: int) -> List:
+def get_company_owner_by_tid(mysql: MySQL, tid: int) -> User:
     """
     Return the details of the company owner.
     :param mysql: mysql db.

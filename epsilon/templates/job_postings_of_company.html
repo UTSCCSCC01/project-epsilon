@@ -1,12 +1,5 @@
-{% extends "layout.html" %}
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-{% endblock %}
-{% block title %}My Profile{% endblock %}
-{% block content %}
-<br><br><br><br><br><br><br><br><br>
-<div class="pagewrap">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -37,16 +30,12 @@
                         <td> {{ row[1] }} </td>
                         <td> {{ row[2] }} </td>
                         <td>
-                            <form action="" method="POST" id="">
-                                <button id="byIdBtn" class="adjacent-btn positive" type="submit"
-                                        value="{{row[4]}}" name="apply_to_job">Dummy Apply</button>
-                                <script type="text/javascript">
-                                    document.getElementById("byIdBtn").onclick = function () {
-                                    location.href = "/applyToJob/";
-                                    //location.href = "/applyToJob/"+document.getElementById('byIdBtn').value;
+                            <button id="byIdBtn_{{row[4]}}" class="adjacent-btn positive" name="apply_to_job">Apply!</button>
+                            <script type="text/javascript">
+                                    document.getElementById("byIdBtn_"+"{{ row[4] }}").onclick = function () {
+                                    location.href = "/applyToJob/"+"{{ row[4] }}";
                                     };
-                                </script>
-                            </form>
+                            </script>
                         </td>
                     </tr>
                     {% endfor %}
@@ -69,7 +58,6 @@
     </div>
 </body>
 
-
 </div>
 </html>
-{% endblock %}
+

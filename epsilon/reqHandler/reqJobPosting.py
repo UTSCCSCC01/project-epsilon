@@ -1,12 +1,10 @@
 from flask_mysqldb import MySQL
-from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from epsilonModules.ModJob import validate_team_admin, validate_startup_user,\
     reverse_status_of_job_posting, get_job_postings_by_tid,\
     post_job, get_tid_by_admin_uid, apply_to_job
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template
 from flask_login import current_user
-from classes.Type import Type
-import sys, traceback
+import traceback
 
 def render_job_posting_management(mysql: MySQL):
     """
@@ -16,22 +14,28 @@ def render_job_posting_management(mysql: MySQL):
     :param: mysql: mysql db
     :return: template
     """
+    status_to_btn_display = {True: "deactivate", False:"active"}
     try:
         tids_under_curr_user = get_tid_by_admin_uid(mysql=mysql, uid=current_user.uid)
-        if request.method == 'POST':
-            if request.form["update_posting_action"]:   # if one has clicked the button
-                update_posting_action = request.form["update_posting_action"].split("_")
-                if update_posting_action[0] == 'R':
-                    # mysql, jid
-                    reverse_status_of_job_posting(mysql, update_posting_action[1])
+        if len(tids_under_curr_user)>0:
+            if request.method == 'POST':
+                if request.form["update_posting_action"]:   # if one has clicked the button
+                    update_posting_action = request.form["update_posting_action"].split("_")
+                    if update_posting_action[0] == 'R':
+                        # mysql, jid
+                        print("value: ", update_posting_action[1])
+                        reverse_status_of_job_posting(mysql, update_posting_action[1])
 
-        # default to the first company managed by current user
-        postings = get_job_postings_by_tid(mysql, tids_under_curr_user[0])
-        postings_lst = []
-        for p in postings:
-            postings_lst.append((p.title, p.description, p.create_date, p.active, p.jid))
-        return render_template("job_posting_mgmt.html",
-                                job_postings=postings_lst)
+            # default to the first company managed by current user
+            postings = get_job_postings_by_tid(mysql, tids_under_curr_user[0])
+            postings_lst = []
+            for p in postings:
+                postings_lst.append((p.title, p.description, p.create_date, status_to_btn_display[p.active], p.jid))
+
+            return render_template("job_posting_mgmt.html",
+                                    job_postings=postings_lst)
+        else:
+            return render_template("job_posting_mgmt.html", error="the current user is not an admin")
     except Exception as e:
         traceback.print_exc()
         return render_template("job_posting_mgmt.html", error=e)
@@ -46,7 +50,7 @@ def render_job_postings_by_company(mysql: MySQL, company_tid: int):
     """
     try:
         validate_startup_user(current_user.type_id)
-        postings = get_job_postings_by_tid(mysql, company_tid)
+        postings = get_job_postings_by_tid(mysql=mysql, tid=company_tid, active_only=True)
         postings_lst = []
         for p in postings:
             postings_lst.append((p.title, p.description, p.create_date, p.active, str(p.jid)))

@@ -1,10 +1,3 @@
-{% extends "layout.html" %}
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-{% endblock %}
-{% block title %}Join Team Request{% endblock %}
-{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,11 +12,22 @@
 
 </head>
 
+{% if error ==null %}
 <body>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div class="container bootstrap snippets bootdey">
         <div class="row">
             <div class="profile-nav col-md-3">
+
+                <div id="background" class="title-card">
+                    <button id="byIdBtn" class="float-left submit-button" >{{btnName}} </button>
+                    <script type="text/javascript">
+                        document.getElementById("byIdBtn").onclick = function () {
+                        location.href = '{{ btnLk}}';
+                    };
+                    </script>
+                </div>
+
                 <div class="panel">
                     <div class="user-heading round">
                         <a href="#">
@@ -47,8 +51,6 @@
                     <div class="bio-graph-heading">
                         <p>{{company_details[1]}}</p>
                     </div>
-
-
 
                     <div class="panel-body bio-graph-info">
                         <h1>Bio Graph</h1>
@@ -337,6 +339,7 @@
     <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>
 
 </body>
-
+{% else %}
+<h2>{{error}}</h2>
+{% endif %}
 </html>
-{% endblock %}

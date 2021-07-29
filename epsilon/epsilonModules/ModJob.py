@@ -1,26 +1,13 @@
-from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
-from exceptions.ObjectExistsError import ObjectExistsError
 from exceptions.AccessDeniedError import AccessDeniedError
-from exceptions.FormIncompleteError import FormIncompleteError
-from classes.Team import Team
-from classes.Role import Role
-from classes.RStatus import RStatus
-from classes.Request import Request
-from databaseAccess.DAORequest import DAORequest
-from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
-from databaseAccess.DAOCompany import DAOCompany
-from databaseAccess.DAOUser import DAOUser
 from databaseAccess.DAOJobPosting import DAOJobPosting
 from databaseAccess.DAOJobApplication import DAOJobApplication
-
-from flask_login import current_user
 from classes.Type import Type
 from classes.JobPosting import JobPosting
 from classes.Role import Role
-import traceback
+
 
 def validate_team_admin(role_id: int):
     if role_id != Role.TEAM_ADMIN.value:
@@ -43,14 +30,15 @@ def reverse_status_of_job_posting(mysql: MySQL, jid: int):
     else:
         raise ObjectNotExistsError(obj="this job posting")
 
-def get_job_postings_by_tid(mysql: MySQL, tid: int) -> [JobPosting]:
+def get_job_postings_by_tid(mysql: MySQL, tid: int, active_only=False) -> [JobPosting]:
     """
     Returns all job postings of a company.
+    If active_only, then only return active jobs.
     :param tid: team id.
     :Return a list of JobPostings.
     """
     dao_jobposting = DAOJobPosting(mysql)
-    postings = dao_jobposting.get_job_postings_by_tid(tid)
+    postings = dao_jobposting.get_job_postings_by_tid(tid, active_only)
     return postings
 
 def apply_to_job(mysql: MySQL, jid: int, uid: int, skills: str):
@@ -78,7 +66,5 @@ def post_job(mysql: MySQL, tid: int, title: str, description:str):
 def get_tid_by_admin_uid(mysql: MySQL, uid:int) -> [int]:
     dao_team = DAOTeam(mysql)
     tid_list = dao_team.get_tids_by_admin_uid(uid=uid)
-    if len(tid_list) > 0:
-        return tid_list
-    else:
-        raise ObjectNotExistsError(obj="the admin privilege of current user")
+    return tid_list
+

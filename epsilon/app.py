@@ -104,6 +104,8 @@ def about():
 
 
 # EP-69: Display company profile
+# in EP-81, if currently logged in user has role admin then a button to
+# /jobPostingsMgmt is added
 @app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
 def display_your_company():

@@ -1,7 +1,5 @@
-from datetime import datetime
 from typing import List
 from .DAO import DAO
-from classes.RStatus import RStatus
 from classes.JobPosting import JobPosting
 
 
@@ -77,12 +75,18 @@ class DAOJobPosting(DAO):
         else:
             return bool(data[0][0])
 
-    def get_job_postings_by_tid(self, tid: int) -> List[JobPosting]:
+    def get_job_postings_by_tid(self, tid: int, active_only=False) -> List[JobPosting]:
         postings = []
-        job_postings = self.get_data('''SELECT title, description, create_date, active,jid FROM JobPosting
+        if active_only:
+            query = '''SELECT title, description, create_date, active, jid FROM JobPosting
+                                    WHERE tid = %s AND active=1
+                                    ORDER BY create_date DESC'''
+        else:
+            query = '''SELECT title, description, create_date, active, jid FROM JobPosting
                                 WHERE tid = %s
-                                ORDER BY active DESC, create_date DESC''',
-                                     (tid,))
+                                ORDER BY active DESC, create_date DESC'''
+
+        job_postings = self.get_data(query, (tid,))
 
         for posting in job_postings:
             postings.append(JobPosting(title=posting[0], description=posting[1],

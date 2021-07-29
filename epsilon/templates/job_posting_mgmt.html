@@ -1,12 +1,5 @@
-{% extends "layout.html" %}
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-{% endblock %}
-{% block title %}My Profile{% endblock %}
-{% block content %}
-<br><br><br><br><br><br><br><br><br>
-<div class="pagewrap">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -48,7 +41,8 @@
                         <td> {{ row[2] }} </td>
                         <td>
                             <form action="" method="POST" id="">
-                            <button class="adjacent-btn positive" type="submit" value="R_{{row[4]}}" name="update_posting_action">Dummy</button>
+                            <!--send the id which is row[4]-->
+                            <button class="adjacent-btn positive" type="submit" value="R_{{row[4]}}" name="update_posting_action">{{ row[3] }} </button>
                             </form>
                         </td>
                     </tr>
@@ -72,7 +66,5 @@
     </div>
 </body>
 
-
-</div>
 </html>
-{% endblock %}
+

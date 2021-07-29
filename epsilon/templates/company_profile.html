@@ -34,7 +34,7 @@
                         <h1>{{company_details[0]}}</h1>
                         {% endif %}
                     </div>
-                    {% if user_team[0] == tid and user_team[2] < 3 %}
+                    {% if user_team[0] == tid and user_team[2] == 1 %}
                     <button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard
                         Changes</button>
                     <button id="editBtn" type="button" onClick="isEditing()"><i class="fa fa-pencil"

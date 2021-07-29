@@ -108,7 +108,7 @@ def user_login(mysql: MySQL, username: str, password: str) -> User:
     return user
 
 
-def load_User_Object(mysql: MySQL, uid: int) -> User:
+def get_user_by_uid(mysql: MySQL, uid: int) -> User:
     """
     Return a user object.
     :param mysql: mysql db.

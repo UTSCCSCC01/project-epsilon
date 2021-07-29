@@ -201,10 +201,10 @@ def update_company(mysql: MySQL, tid: int, name: str,
 
 def get_company_owner_by_tid(mysql: MySQL, tid: int) -> List:
     """
-    Return the details of a company in a list.
+    Return the details of the company owner.
     :param mysql: mysql db.
     :param tid: tid of the company.
-    :return List of owner details. L[0] is the owner name and L[1] is the owner email.
+    :return User object of the company owner.
     """
     user_details = User()
     dao_team = DAOTeam(mysql)

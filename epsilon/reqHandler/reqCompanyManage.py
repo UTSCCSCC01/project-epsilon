@@ -44,10 +44,11 @@ def render_company_profile(mysql: MySQL, name:str=""):
                                    message=message, user_team=user_team, tid=tid,
                                    btnName="manage job postings", btnLk="/jobPostingsMgmt")
 
-        # if displayJobPostingMgmt=False, only display the job postings w/o management option
+        company_owner = get_company_owner_by_tid(mysql, tid)
         return render_template('company_profile.html', company_details=company_details,
                                message=message, user_team=user_team, tid=tid,
-                               btnName="view job postings", btnLk="/jobPostings/"+str(tid)+"/")
+                               btnName="view job postings", btnLk="/jobPostings/"+str(tid)+"/",
+                               company_owner=company_owner)
     except Exception as e:
         traceback.print_exc()
         return render_template('company_profile.html', error=e)

@@ -173,6 +173,7 @@ def get_company_profile_by_name(mysql: MySQL, name: str) -> List:
     company_details = [company.tid, company.name, company.description]
     return company_details
 
+
 def update_company(mysql: MySQL, tid: int, name: str,
                    description: str) -> str:
     """
@@ -197,3 +198,21 @@ def update_company(mysql: MySQL, tid: int, name: str,
         update_tags_from_team_desc(dao_company, dao_tag, dao_company_tag, description, name)
         return "Company info updated."
 
+
+def get_company_owner_by_tid(mysql: MySQL, tid: int) -> User:
+    """
+    Return the details of the company owner.
+    :param mysql: mysql db.
+    :param tid: tid of the company.
+    :return User object of the company owner.
+    """
+    user_details = User()
+    dao_team = DAOTeam(mysql)
+    team = dao_team.get_users_from_team(tid)
+    if team is None:
+        raise ObjectNotExistsError("The company")
+    else:
+        for user in team:
+            if user.rid == Role.TEAM_OWNER.value:
+                user_details = User(name=user.name, contact=user.contact, rid=user.rid, description=user.description)
+    return user_details

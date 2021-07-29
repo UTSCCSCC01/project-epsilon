@@ -3,7 +3,6 @@ from .DAO import DAO
 from classes.Team import Team
 from classes.Role import Role
 from classes.User import User
-from classes.Type import Type
 
 
 class DAOTeam(DAO):
@@ -147,7 +146,8 @@ class DAOTeam(DAO):
         """
         res = []
         data = self.get_data('''SELECT tid FROM Teams
-                                WHERE uid = %s AND rid=%s''', (uid, Role.TEAM_ADMIN.value,))
+                                WHERE uid = %s AND rid IN (%s, %s)''',
+                             (uid, Role.TEAM_ADMIN.value,Role.TEAM_OWNER.value,))
         if data:
             for team in data:
                 res.append(team[0])

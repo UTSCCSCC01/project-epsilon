@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List
 from .DAO import DAO
 from classes.RStatus import RStatus
@@ -84,6 +83,20 @@ class DAOJobApplication(DAO):
                                                sid=d[3], skills=d[4].split(","),
                                                create_date=d[5]))
         return applications
+
+
+    def check_job_application_exists_by_uid_jid(self, uid: int, jid:int) -> bool:
+        """
+        Check whether uid applied to the job jid before.
+        :param uid: uid id of the user to be retrieved.
+        :param jid: jid of job to check.
+        :return: whether such application exist.
+        """
+        data = self.get_data('''SELECT * FROM JobApplication
+                                WHERE uid = %s AND jid=%s
+                                ORDER BY create_date DESC''',
+                             (uid,jid,))
+        return len(data) > 0
 
     def get_job_application_by_jap_id(self, jap_id: int) -> JobApplication:
         """

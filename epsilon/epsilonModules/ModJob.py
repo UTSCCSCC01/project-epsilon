@@ -1,5 +1,6 @@
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
+from exceptions.ObjectExistsError import ObjectExistsError
 from exceptions.AccessDeniedError import AccessDeniedError
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOJobPosting import DAOJobPosting
@@ -41,6 +42,12 @@ def get_job_postings_by_tid(mysql: MySQL, tid: int, active_only=False) -> [JobPo
     postings = dao_jobposting.get_job_postings_by_tid(tid, active_only)
     return postings
 
+
+def check_existence_of_application(mysql: MySQL, jid: int, uid: int):
+    dao_job_application = DAOJobApplication(mysql)
+    if dao_job_application.check_job_application_exists_by_uid_jid(uid=uid, jid=jid):
+        raise ObjectExistsError("Your application to this job")
+
 def apply_to_job(mysql: MySQL, jid: int, uid: int, skills: str):
     """
     Apply to a job by given jid and user id, skills.
@@ -48,6 +55,7 @@ def apply_to_job(mysql: MySQL, jid: int, uid: int, skills: str):
     :param uid: user id.
     :param skills: skills used to apply.
     """
+    check_existence_of_application(mysql,jid, uid)
     dao_job_application = DAOJobApplication(mysql)
     dao_job_application.send_job_application(jid, uid, skills)
     return "application sent."

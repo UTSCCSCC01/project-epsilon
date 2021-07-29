@@ -39,7 +39,7 @@ def render_company_profile(mysql: MySQL, name:str=""):
                                          description)
         company_details = get_company_profile(mysql, tid)
 
-        if rid == Role.TEAM_ADMIN.value:
+        if rid in [Role.TEAM_ADMIN.value, Role.TEAM_OWNER.value]:
             return render_template('company_profile.html', company_details=company_details,
                                    message=message, user_team=user_team, tid=tid,
                                    btnName="manage job postings", btnLk="/jobPostingsMgmt")

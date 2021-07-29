@@ -1,9 +1,7 @@
-import json
-from epsilonModules.ModJob import apply_to_job
-from flask import request, render_template, redirect, url_for
+from epsilonModules.ModJob import apply_to_job, check_existence_of_application
+from flask import request, render_template
 from flask_login import current_user
-from classes.Type import Type
-import sys, traceback
+import traceback
 
 def render_job_application(mysql: MySQL, jid:int):
     """
@@ -12,13 +10,14 @@ def render_job_application(mysql: MySQL, jid:int):
     :param: mysql: mysql db
     :return: template
     """
-    if request.method == "POST":
-        try:
+    try:
+        if request.method == "POST":
             skills = request.form["skills"]
             message = apply_to_job(mysql=mysql, jid=jid, uid=current_user.uid, skills=skills)
             return render_template("job_application.html", message=message)
-        except Exception as e:
-            traceback.print_exc()
-            return render_template("job_application.html", error=e)
-    else:
-        return render_template("job_application.html")
+        else:
+            return render_template("job_application.html")
+
+    except Exception as e:
+        traceback.print_exc()
+        return render_template("job_application.html", error=e)

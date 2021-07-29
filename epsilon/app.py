@@ -112,7 +112,7 @@ def display_your_company():
 
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
-    return render_company_profile(mysql, name)
+    return render_company_profile(mysql, name.replace("_"," "))
 
 
 @app.route('/logout/')

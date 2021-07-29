@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Manage Job Postings</title>
+</head>
+
+
+<body>
+
+    <div class="contents">
+        {% if job_postings %}
+        <div class="contents table table-hover table-responsive-sm container">
+            <div class="align-items-center h-100">
+                <table>
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Create Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    {% for row in job_postings %}
+                    <tr>
+                        <th> {{ row[0] }} </th>
+                        <td> {{ row[1] }} </td>
+                        <td> {{ row[2] }} </td>
+                        <td>
+                            <button id="byIdBtn_{{row[4]}}" class="adjacent-btn positive" name="apply_to_job">Apply!</button>
+                            <script type="text/javascript">
+                                    document.getElementById("byIdBtn_"+"{{ row[4] }}").onclick = function () {
+                                    location.href = "/applyToJob/"+"{{ row[4] }}";
+                                    };
+                            </script>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p>
+                Epsilon 2021
+            </p>
+        </footer>
+    </div>
+</body>
+
+</div>
+</html>
+

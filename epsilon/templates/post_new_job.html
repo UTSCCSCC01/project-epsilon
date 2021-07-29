@@ -1,30 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>send join team request</title>
+    <title>Fill the details</title>
 </head>
 
-<header>
-</header>
 
 <body>
-    <div id="background" class="title-card">
-        <h1>Epsilon</h1>
-        {% if choice %}
-            <h2>Enter {{choice}} to send join request</h2>
-        {% endif %}
-    </div>
     <div class="contents">
+
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" name="search" value="{{request.form.tid }}">
+            <h2 style="display:inline;">title</h2>
+            <input class="auth" type="text" name="title" required>
+            <br>
+             <br>
+            <h2 style="display:inline;">description</h2>
+            <input class="auth" type="text" name="description" required>
             <br>
             <br>
             <input class="btn" type="submit" value="send">
+
         </form>
 
         {% if error %}
@@ -42,7 +40,8 @@
             </p>
         </footer>
     </div>
-
 </body>
 
+</div>
 </html>
+

@@ -206,7 +206,7 @@ def get_company_owner_by_tid(mysql: MySQL, tid: int) -> List:
     :param tid: tid of the company.
     :return List of owner details. L[0] is the owner name and L[1] is the owner email.
     """
-    user_details = []
+    user_details = User()
     dao_team = DAOTeam(mysql)
     team = dao_team.get_users_from_team(tid)
     if team is None:
@@ -214,5 +214,5 @@ def get_company_owner_by_tid(mysql: MySQL, tid: int) -> List:
     else:
         for user in team:
             if user.rid == Role.TEAM_OWNER.value:
-                user_details = [user.name, user.contact]
+                user_details = User(name=user.name, contact=user.contact, rid=user.rid, description=user.description)
     return user_details

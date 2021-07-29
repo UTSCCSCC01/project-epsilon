@@ -5,7 +5,7 @@ from classes.JobApplication import JobApplication
 class ApplicantDetail(JobApplication):
     def __init__(self, jap_id=0, jid=0, uid=0, sid=0,
                 skills=[], create_date=datetime.now(),
-                user_name="", user_contact="", job_title="", jap_status=""):
+                user_name="", user_contact="", job_title="", jap_status="", user_description=""):
         """
         Child class of JobApplication
         :param jap_id: job application id, unique identifier.
@@ -17,12 +17,14 @@ class ApplicantDetail(JobApplication):
         :param user_name: the name of the user of uid.
         :param user_contact: the contact of the user of uid.
         :param job_title: the job title of the posting of jid.
+        :param user_description: the description of the user of uid.
         """        
         super().__init__(jap_id,jid, uid, sid, skills, create_date)
         self._user_name = user_name
         self._user_contact = user_contact
         self._job_title = job_title
         self._jap_status = jap_status
+        self._user_description = user_description
 
     @property
     def user_name(self):
@@ -55,6 +57,14 @@ class ApplicantDetail(JobApplication):
     @jap_status.setter
     def jap_status(self, jap_status):
         self._jap_status = jap_status
+
+    @property
+    def user_description(self):
+        return self._user_description
+    
+    @user_description.setter
+    def user_description(self, user_description):
+        self._user_descriptions = user_description
     
     def __str__(self):
         """ Overloads str method. """
@@ -67,4 +77,5 @@ class ApplicantDetail(JobApplication):
             + ', user_name = ' + self.user_name \
             + ', user_contact = ' + self.user_contact \
             + ', job_title = ' + self.job_title \
-            + ', jap_status = ' + self.jap_status + ')'
+            + ', jap_status = ' + self.jap_status \
+            + ', user_description = ' + self.user_description + ')'

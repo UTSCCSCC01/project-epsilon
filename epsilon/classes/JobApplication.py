@@ -3,7 +3,7 @@ from datetime import datetime
 
 class JobApplication():
     def __init__(self, jap_id=0, jid=0, uid=0, sid=1,
-                 skills=None, create_date=datetime.now().strftime("%m/%d/%Y")):
+                 skills="", create_date=datetime.now().strftime("%m/%d/%Y")):
         """
         :param jap_id: job application id, unique identifier.
         :param jid: job posting id that this application applied for.
@@ -17,10 +17,7 @@ class JobApplication():
         self._uid = uid
         self._sid = sid
         self._create_date = create_date
-        if not skills:
-            self._skills = []
-        else:
-            self._skills = skills
+        self._skills = skills
 
     @property
     def jap_id(self):
@@ -64,7 +61,7 @@ class JobApplication():
 
     @property
     def skills(self):
-        return str(self._skills)[:]
+        return self._skills
 
     @skills.setter
     def skills(self, skills):

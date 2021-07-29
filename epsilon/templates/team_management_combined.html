@@ -91,7 +91,7 @@
                     </thead>
                     {% for row in applicant_details %}
                     <tr>
-                        <th><a href="/user/{{row.uid}}"> {{ row.user_name }}</a> </th>
+                        <th><a href="/user/{{row.jap_id}}"> {{ row.user_name }}</a> </th>
                         <td> {{ row.user_contact }} </td>
                         <td> {{ row.jid }} - {{ row.job_title }}</td>
                         <td> {{ row.create_date }}</td>
@@ -100,7 +100,7 @@
                             {% if current_user.uid != row.uid %}
                             <form action="" method="POST" id="form_{{row.jap_id}}">
                             {% if row.sid == 1 %}
-                            <button class="adjacent-btn positive" type="submit" value="I_{{row.jap_id}}_{{tid}}" name="action">Select to Interview</button>
+                            <button class="adjacent-btn positive" type="submit" value="I_{{row.jap_id}}_{{tid}}" name="action">Proceed to Interview</button>
                             {% elif row.sid == 2 %}
                             <button class="adjacent-btn positive" type="submit" value="O_{{row.jap_id}}_{{tid}}" name="action">Send Offer</button>
                             {% endif %}

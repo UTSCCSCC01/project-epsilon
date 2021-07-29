@@ -82,7 +82,7 @@ class DAOJobApplication(DAO):
         # column order: jap_id, jid, uid, sid, skills, create_date
         for d in data:
             applications.append(JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
-                                               sid=d[3], skills=d[4].split(","),
+                                               sid=d[3], skills=d[4],
                                                create_date=d[5]))
         return applications
 
@@ -98,7 +98,7 @@ class DAOJobApplication(DAO):
                              FROM JobApplication WHERE jap_id = %s''', (jap_id,))
         if d is not None:
             res=JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
-                                sid=d[3], skills=str(d[4]).split(","),
+                                sid=d[3], skills=d[4],
                                 create_date=d[5])
         return res
 
@@ -134,7 +134,7 @@ class DAOJobApplication(DAO):
         data = self.get_data('''SELECT * FROM JobApplication''', None)
         for job in data:
             job_applications.append(JobApplication(job[0],job[1],job[2],job[3],
-                                                   str(job[4].split(",")),job[5]))
+                                                   job[4],job[5]))
         return job_applications
 
     def get_applicant_details_by_tid(self, tid: int) -> List[ApplicantDetail]:
@@ -152,6 +152,6 @@ class DAOJobApplication(DAO):
                              ORDER BY ja.create_date DESC;''', (tid,))
         for ap in data:
             applicants.append(ApplicantDetail(ap[0],ap[1],ap[2],ap[3],
-                                      str(ap[4].split(",")),ap[5],
+                                      ap[4],ap[5],
                                       ap[6],ap[7],ap[8]))
         return applicants

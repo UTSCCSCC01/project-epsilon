@@ -213,7 +213,6 @@ def get_company_owner_by_tid(mysql: MySQL, tid: int) -> List:
         raise ObjectNotExistsError("The company")
     else:
         for user in team:
-            if user.rid == 1:
+            if user.rid == Role.TEAM_OWNER.value:
                 user_details = [user.name, user.contact]
-    print(user_details)
     return user_details

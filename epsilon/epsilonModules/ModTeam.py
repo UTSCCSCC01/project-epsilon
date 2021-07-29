@@ -1,3 +1,5 @@
+from classes.JobApplication import JobApplication
+from classes.ApplicantDetail import ApplicantDetail
 from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
@@ -13,6 +15,8 @@ from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
+from databaseAccess.DAORStatus import DAORStatus
+from databaseAccess.DAOJobApplication import DAOJobApplication
 from flask_login import current_user
 from classes.Type import Type
 from classes.RStatus import RStatus
@@ -97,7 +101,7 @@ def get_join_requests(mysql: MySQL, tid: int):
     return data, company.name
 
 
-def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, status_choice:[int])->bool:
+def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, status_choice:List[int])->bool:
     """
     Check whether there's at least one request with specified tid, uid and
     status given by status_choice. the tid or uid may not exist.
@@ -249,3 +253,23 @@ def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:in
         return add_join_team_request_by_tid(mysql=mysql, tid=str(company.tid), uid=uid, type_id=type_id)
     else:
         raise ObjectNotExistsError(obj="the company")
+
+def get_applicant_details(mysql: MySQL, tid: int) -> List[ApplicantDetail]:
+    """
+    Get a list of application details of applicants of a company of tid.
+    :param mysql: mysql db.
+    :param tid: the tid of company.
+    :return: list of ApplicationDetails Objects.
+    """
+    dao_company = DAOCompany(mysql)
+    dao_job_application = DAOJobApplication(mysql)
+    dao_rstatus = DAORStatus(mysql)
+    company = dao_company.get_company_by_tid(tid)
+    if not company:
+        raise ObjectNotExistsError("Your company")
+    applicants = dao_job_application.get_applicant_details_by_tid(tid)
+    for applicant in applicants:
+        rstatus = dao_rstatus.get_status_by_sid(applicant.sid)
+        rstatus_name = rstatus.name.title()
+        applicant.jap_status = rstatus_name
+    return applicants

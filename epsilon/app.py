@@ -1,5 +1,6 @@
 from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search, search_frontend_test
+from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqAboutUs import render_about_us
@@ -55,6 +56,7 @@ def delete_all():
 def create():
     return create_tables(mysql)
 
+
 # EP-1: Team management
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -94,6 +96,7 @@ def display_user():
 def srch():
     return render_company_search(mysql)
 
+
 @app.route('/userRegistration/', methods=['GET', 'POST'])
 def user_reg():
     return render_user_registration(mysql)
@@ -110,6 +113,7 @@ def about():
 def display_your_company():
     return render_company_profile(mysql)
 
+
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
     return render_company_profile(mysql, name)
@@ -121,7 +125,7 @@ def logout():
     return render_logout()
 
 
-#E EP-73 
+# E EP-73
 @app.route('/teamManagement/', methods=['GET', 'POST'])
 @login_required
 def teamMgmt():
@@ -132,29 +136,34 @@ def teamMgmt():
 def load_user(id):
     return load_User_O(mysql, int(id))
 
-  
+
 @app.route('/sendJoinRequest/', methods=['GET', 'POST'])
 @login_required
 def choose_how_to_send_join_request():
     return render_choose_how_to_send_join_request()
 
-  
+
 @app.route('/sendJoinRequestByTid/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_tid():
     return render_send_join_team_message(mysql, by_tid=True)
 
-  
+
 @app.route('/sendJoinRequestByCompanyName/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_company_name():
-    return render_send_join_team_message(mysql,by_tid=False)
+    return render_send_join_team_message(mysql, by_tid=False)
 
 
 @app.route('/JobPostingsMgmt/', methods=['GET', 'POST'])
 @login_required
 def manage_job_postings():
     pass
+
+
+@app.route('/services/', methods=['GET', 'POST'])
+def services():
+    return render_services(mysql)
 
 
 if __name__ == "__main__":

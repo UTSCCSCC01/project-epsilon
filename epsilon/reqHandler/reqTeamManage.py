@@ -9,6 +9,7 @@ from classes.TeamCode import TeamCode
 from classes.Role import Role
 import sys, traceback
 
+
 def act_on_employee(mysql: MySQL):
     """
     Handler for delete/promot an employee in team.
@@ -69,7 +70,7 @@ def act_on_employee(mysql: MySQL):
 #         return render_template("join_team_request.html",
 #                                message=e)
 
-      
+
 def render_team_mgmt_combined(mysql: MySQL):
     """
     Handler for page containing both join 
@@ -128,7 +129,7 @@ def render_team_mgmt_combined(mysql: MySQL):
                                message=e)
 
 
-def render_send_join_team_message(mysql: MySQL, by_tid:bool):
+def render_send_join_team_message(mysql: MySQL, by_tid: bool):
     """
     Handler for sending join team request.
     :param mysql: mysql db.
@@ -142,12 +143,12 @@ def render_send_join_team_message(mysql: MySQL, by_tid:bool):
             if by_tid:
                 tid = str(request.form["search"])
                 message = add_join_team_request_by_tid(mysql=mysql, tid=tid,
-                                                    uid=uid, type_id=type_id)
+                                                       uid=uid, type_id=type_id)
 
             else:
                 company_name = request.form["search"]
                 message = add_join_team_request_by_company_name(mysql=mysql,
-                                company_name=company_name, uid=uid, type_id=type_id)
+                                                                company_name=company_name, uid=uid, type_id=type_id)
             return render_template("send_join_request.html",
                                    choice=template_choice_dict[by_tid],
                                    message=message)

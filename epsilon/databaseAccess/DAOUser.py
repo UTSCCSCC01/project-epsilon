@@ -65,8 +65,12 @@ class DAOUser(DAO):
                      name="Water", contact="no@gmail.com",
                      description="Water is good.",
                      password="admin")
+        user6 = User(uid=6, type_id=Type.SERVICE_PROVIDER.value,
+                     name="Rodrigo", contact="yes@gmail.com",
+                     description="Water is great.",
+                     password="admin")
 
-        users_to_add = [user1, user2, user3, user4, user5]
+        users_to_add = [user1, user2, user3, user4, user5, user6]
 
         for user in users_to_add:
             self.add_user(user)

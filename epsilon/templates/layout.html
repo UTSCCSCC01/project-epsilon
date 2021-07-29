@@ -43,7 +43,7 @@ https://templatemo.com/tm-535-softy-pinko
                                 style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
                                 Epsilon</h2></a>
                         </li>
-                        {% if current_user.is_authenticated and tid >= 0 %}
+                        {% if current_user.is_authenticated and tid and tid >= 0 %}
                             <li>
                                 <div class="dropdown">
                                     <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
@@ -63,11 +63,8 @@ https://templatemo.com/tm-535-softy-pinko
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="">Resources</a></button>
                                 <div class="dropdown-content">
-                                    <a href="">Product Development</a>
-                                    <a href="">Accounting and Bookkeeping</a>
-                                    <a href="">Legal</a>
-                                    <a href="">Marketing</a>
-                                    <a href="">Sales and CRM</a>
+                                    <a href="">Our Resources</a>
+                                    <a href="/services">External Services</a>
                                 </div>
                             </div> -->
                          <!--Resource currently same as Startup Market, if we have a page for templates, fundraising stuff then we can add this back-->

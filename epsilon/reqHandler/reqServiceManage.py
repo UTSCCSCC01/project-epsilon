@@ -11,7 +11,7 @@ def render_services(mysql: MySQL):
     """
     Handler for the services page.
     :param mysql: mysql db.
-    :return template for the services page.
+    :return: template for the services page.
     """
     # Check if authenticated user is a service provider to add a service
     uid = -1

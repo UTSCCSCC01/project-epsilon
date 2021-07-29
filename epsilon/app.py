@@ -125,7 +125,7 @@ def logout():
     return render_logout()
 
 
-# E EP-73
+# EP-73
 @app.route('/teamManagement/', methods=['GET', 'POST'])
 @login_required
 def teamMgmt():

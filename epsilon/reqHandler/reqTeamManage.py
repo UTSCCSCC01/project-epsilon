@@ -35,7 +35,7 @@ def render_display_team(mysql: MySQL):
         teams = get_user_teams(mysql, current_user.uid)
         tid = teams[0].tid
         user_details = get_members(mysql, tid)
-        return render_template('display_team.html', userDetails=user_details)
+        return render_template('display_team.html', userDetails=user_details, tid=tid)
     except Exception as e:
         return render_template('display_team.html', message=e)
 

@@ -9,7 +9,8 @@ function render_data() {
         for (var i = 0; i < company_data[key].length; i++) {
             var title = company_data[key][i].name;
             var desc = company_data[key][i].description;
-            var link = "http://127.0.0.1:5000/company/";
+            var tid = company_data[key][i].tid;
+            var link = "http://127.0.0.1:5000/company/" + title;
             var badge = document.createElement('div');
             badge.className = 'search-result-box card-box';
             badge.innerHTML =

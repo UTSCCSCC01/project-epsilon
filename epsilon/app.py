@@ -9,16 +9,12 @@ from reqHandler.reqLogin import render_login
 from reqHandler.reqLogout import render_logout
 from reqHandler.reqDatabaseManage import create_tables, delete_tables
 from reqHandler.reqHome import *
+from reqHandler.reqJobPosting import *
 from flask import Flask, request
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_required
 from flask_cors import CORS
 from databaseAccess.DAOUser import *
-
-import mimetypes
-
-mimetypes.add_type('application/javascript', '.js')
-mimetypes.add_type('application/javascript', '.mjs')
 
 app = Flask(__name__)
 CORS(app)
@@ -36,7 +32,7 @@ mysql = MySQL(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    return render_home()
+    return render_home(mysql)
 
 
 @app.route("/previousHome/", methods=['GET', 'POST'])
@@ -111,10 +107,14 @@ def about():
 
 
 # EP-69: Display company profile
-@app.route('/company/', methods=['GET', 'POST'])
+@app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
-def display_company():
+def display_your_company():
     return render_company_profile(mysql)
+
+@app.route('/company/<string:name>', methods=['GET', 'POST'])
+def display_company(name):
+    return render_company_profile(mysql, name)
 
 
 @app.route('/logout/')
@@ -157,6 +157,12 @@ def send_join_request_by_company_name():
 @login_required
 def join_by_code():
     return render_join_by_teamCode(mysql)
+
+
+@app.route('/JobPostingsMgmt/', methods=['GET', 'POST'])
+@login_required
+def manage_job_postings():
+    pass
 
 
 if __name__ == "__main__":

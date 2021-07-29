@@ -127,7 +127,7 @@ def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, statu
 
 def team_request_accept(mysql: MySQL, req_id: int) -> str:
     """
-    Updates request of id req_id to accpet and add the user to team as member.
+    Updates request of id req_id to accept and add the user to team as member.
     :param mysql: mysql db.
     :param req_id: request id of request.
     :return status message of accept.
@@ -176,7 +176,7 @@ def team_request_update(dao_request: DAORequest, req_id: int, status: int):
     else:
         return "Status is not pending!"
 
-def get_user_teams(mysql: MySQL, uid: int) -> [Team]:
+def get_user_teams(mysql: MySQL, uid: int) -> List[Team]:
     """
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.

@@ -54,7 +54,7 @@ https://templatemo.com/tm-535-softy-pinko
                                 </div>
                             </div>
                         </li>
-                        {% else %}
+                        {% elif current_user.type_id == 1 %}
                         <li><a href="/registration">Create New Team</a></li>
                         {% endif %}
                         <li>

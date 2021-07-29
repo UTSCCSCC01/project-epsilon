@@ -63,7 +63,7 @@ class DAOJobApplication(DAO):
         jap_id and sid cannot be None.
         """
         self.modify_data(
-            '''UPDATE JobApplication Set sid = %s, seen = false WHERE jap_id = %s''',
+            '''UPDATE JobApplication Set sid = %s WHERE jap_id = %s''',
             (application.sid, application.jap_id))
 
     def get_job_application_by_uid(self, uid: int) -> List[JobApplication]:
@@ -97,9 +97,10 @@ class DAOJobApplication(DAO):
         d = self.get_data('''SELECT *
                              FROM JobApplication WHERE jap_id = %s''', (jap_id,))
         if d is not None:
-            res=JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
-                                sid=d[3], skills=d[4],
-                                create_date=d[5])
+            d = d[0]
+            print(d)
+            res=JobApplication(jap_id=d[0], 
+                               jid=d[1], uid=d[2],sid=d[3], skills=d[4],create_date=d[5])
         return res
 
     def add_dummy_job_applications(self) -> None:

@@ -12,8 +12,13 @@ def filter_services(service_details: list, fltr: str):
     ret_value = []
     if fltr == "All":
         return service_details
+    filters = {"Product Development":1,
+               "Accounting and Bookkeeping":2,
+               "Legal":3,
+               "Marketing":4,
+               "Sales and CRM":5}
     for item in service_details:
-        if item[2].lower() == fltr.lower():
+        if item.ser_type_id == filters[fltr]:
             ret_value.append(item)
     return ret_value
 
@@ -59,6 +64,8 @@ def render_services(mysql: MySQL):
         flt = request.args.get("filter")
         service_details = get_services(mysql)
         filtered_service_details = service_details
+        for a in filtered_service_details:
+            print(a)
         if flt:
             filtered_service_details = filter_services(service_details, flt)
         else:

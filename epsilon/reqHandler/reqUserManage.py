@@ -33,15 +33,16 @@ def render_user_profile(mysql: MySQL):
 
         user_details = get_user_by_uid(mysql, uid)
         job_applications = get_job_applications_by_uid(mysql, uid)
+        user_type = Type(user_details.type_id).name.replace('_',' ').title()
 
         if current_user.is_authenticated:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details, job_applications=job_applications,
-                               message=message, tid=tid)
+                               message=message, tid=tid, user_type = user_type)
     except ObjectNotExistsError as e:
         return render_template('user_profile.html', user_details=user_details, job_applications=job_applications,
-                               message=message, tid=tid)
+                               message=message, tid=tid, user_type = user_type)
     except Exception as e:
         return render_template('user_profile.html', message=e)
 

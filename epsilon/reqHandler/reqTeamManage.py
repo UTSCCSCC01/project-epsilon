@@ -11,23 +11,6 @@ from classes.Role import Role
 import sys, traceback
 
 
-
-# def act_on_employee(mysql: MySQL):
-#     """
-#     Handler for delete/promot an employee in team.
-#     :param mysql: mysql db.
-#     :return redirect to display_team
-#     """
-#     if request.method == 'POST':
-#         # id2 is either tid or rid
-#         op, uid, tid, rid = request.form['submit'].split(".")
-#         if op == 'r':
-#             remove_from_team(mysql, tid, uid, rid)
-#         elif op == 'p':
-#             promote_admin(mysql, tid, uid, rid)
-#     return redirect(url_for('displayteam', tid=tid))
-
-
 def render_team_mgmt_combined(mysql: MySQL):
     """
     Handler for page containing both join 

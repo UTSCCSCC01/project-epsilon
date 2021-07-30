@@ -98,13 +98,13 @@
         {% for service in filtered_service_details %}
             <!--List order: ser_id, uid, ser_type_id, title, description, price, link-->
             <div class="jumbotron">
-                <h1 class="display-4">{{ service[3] }}</h1>
-                <p class="lead">{{ service[4] }}</p>
+                <h1 class="display-4">{{ service.title }}</h1>
+                <p class="lead">{{ service.description }}</p>
                 <hr class="my-4">
-                <p>Price: {{ service[5] }}</p>
+                <p>Price: {{ service.price }}</p>
                 <br>
                 <p class="lead">
-                    <a class="btn btn-primary main-button" href="{{ service[6] }}" target=”_blank” role="button">Learn
+                    <a class="btn btn-primary main-button" href="{{ service.link }}" target=”_blank” role="button">Learn
                         more</a>
                 </p>
             </div>

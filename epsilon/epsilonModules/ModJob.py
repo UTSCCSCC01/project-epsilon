@@ -6,6 +6,7 @@ from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.ObjectExistsError import ObjectExistsError
 from exceptions.AccessDeniedError import AccessDeniedError
 from databaseAccess.DAOTeam import DAOTeam
+from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOJobPosting import DAOJobPosting
 from databaseAccess.DAOJobApplication import DAOJobApplication
 from classes.Type import Type
@@ -112,3 +113,14 @@ def get_job_applications_by_uid(mysql: MySQL, uid: int):
         applications_info.append([job_posting.title, application_status, job_posting_link])
 
     return applications_info
+
+
+def get_all_companies_with_job_posting(mysql: MySQL) -> [[int, str]]:
+    dao_team = DAOTeam(mysql)
+    res = []
+    lst = dao_team.get_all_company_id_with_job_posting()
+    dao_company = DAOCompany(mysql)
+    for id in lst:
+        company_name = dao_company.get_company_name_by_tid(id)
+        res.append([id, company_name[0]])
+    return res

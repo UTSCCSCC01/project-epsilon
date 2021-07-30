@@ -1,3 +1,5 @@
+from classes.JobApplication import JobApplication
+from classes.ApplicantDetail import ApplicantDetail
 from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
@@ -12,6 +14,9 @@ from databaseAccess.DAORole import DAORole
 from databaseAccess.DAOTeam import DAOTeam
 from databaseAccess.DAOCompany import DAOCompany
 from databaseAccess.DAOUser import DAOUser
+from databaseAccess.DAORStatus import DAORStatus
+from databaseAccess.DAOJobApplication import DAOJobApplication
+from flask_login import current_user
 from classes.Type import Type
 from classes.RStatus import RStatus
 
@@ -72,29 +77,7 @@ def get_members(mysql: MySQL, tid: int) -> List:
     return user_details
 
 
-def get_join_requests(mysql: MySQL, tid: int):
-    """
-    Return a list of request details and the company name.
-    :param mysql: mysql db.
-    :param tid: tid of company.
-    :return list of request details and the company name.
-    """
-    dao_request = DAORequest(mysql)
-    dao_company = DAOCompany(mysql)
-    dao_user = DAOUser(mysql)
-
-    requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
-    company = dao_company.get_company_by_tid(tid)
-    if not company:
-        raise ObjectNotExistsError("Your team")
-    data = []
-    for req in requests:
-        user = dao_user.get_user_by_uid(req.uid)
-        data.append([user.name, user.contact, req.create_date, req.req_id, user.uid])
-    return data, company.name
-
-
-def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, status_choice:[int])->bool:
+def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, status_choice:List[int])->bool:
     """
     Check whether there's at least one request with specified tid, uid and
     status given by status_choice. the tid or uid may not exist.
@@ -122,56 +105,6 @@ def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid:int, statu
             return True
     return False
 
-def team_request_accept(mysql: MySQL, req_id: int) -> str:
-    """
-    Updates request of id req_id to accept and add the user to team as member.
-    :param mysql: mysql db.
-    :param req_id: request id of request.
-    :return status message of accept.
-    """
-    # Update Request and Teams to reflect on accept action
-    dao_request = DAORequest(mysql)
-    dao_team = DAOTeam(mysql)
-    message = team_request_update(dao_request, req_id, RStatus.ACCEPTED.value)
-
-    if message is None:
-        request = dao_request.get_request_by_req_id(req_id)
-        team = Team(request.tid, request.uid, Role.TEAM_MEMBER.value)
-        dao_team.add_team(team)
-        message = "Accept Successful!"
-    return message
-
-
-def team_request_decline(mysql: MySQL, req_id: int) -> str:
-    """
-    Updates request of id req_id to decline.
-    :param mysql: mysql db.
-    :param req_id: request id of request.
-    :return status message of decline.
-    """
-    # Update Request to reflect on decline action
-    dao_request = DAORequest(mysql)
-    message = team_request_update(dao_request, req_id, RStatus.REJECTED.value)
-    if message is None:
-        message = "Decline Successful!"
-    return message
-
-
-def team_request_update(dao_request: DAORequest, req_id: int, status: int):
-    """
-    Updates request of id req_id to status.
-    :param dao_company: The DAO object for Request class
-    :param req_id: request id of request.
-    :param status: sid to update to.
-    :return None if successful, error message if sid is not pending.
-    """
-    request = dao_request.get_request_by_req_id(req_id)
-    if request.sid == RStatus.PENDING.value:
-        request.sid = status
-        dao_request.update_request(request)
-        return None
-    else:
-        return "Status is not pending!"
 
 def get_user_teams(mysql: MySQL, uid: int) -> List[Team]:
     """
@@ -245,3 +178,62 @@ def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:in
         return add_join_team_request_by_tid(mysql=mysql, tid=str(company.tid), uid=uid, type_id=type_id)
     else:
         raise ObjectNotExistsError(obj="the company")
+
+def add_to_team(mysql:MySQL, uid:int, tid:int) -> str:
+    """
+    For use by join by code to add cur user to team
+    :param mysql: db used
+    :param uid: uid of user to add
+    :param tid: tid for user to join
+    :return: response message
+    """
+    dao_team = DAOTeam(mysql)
+    team = Team(tid, uid, Role.TEAM_MEMBER.value)
+    try:
+        dao_team.add_team(team)
+        return "Joined Successfully"
+    except Exception as e:
+        return e
+
+        
+def get_applicant_details(mysql: MySQL, tid: int) -> List[ApplicantDetail]:
+    """
+    Get a list of application details of applicants of a company of tid.
+    :param mysql: mysql db.
+    :param tid: the tid of company.
+    :return: list of ApplicationDetails Objects.
+    """
+    dao_company = DAOCompany(mysql)
+    dao_job_application = DAOJobApplication(mysql)
+    dao_rstatus = DAORStatus(mysql)
+    company = dao_company.get_company_by_tid(tid)
+    if not company:
+        raise ObjectNotExistsError("Your company")
+    applicants = dao_job_application.get_applicant_details_by_tid(tid)
+    for applicant in applicants:
+        rstatus = dao_rstatus.get_status_by_sid(applicant.sid)
+        rstatus_name = rstatus.name.title()
+        applicant.jap_status = rstatus_name
+    return applicants
+
+
+def update_jap_to_rstatus(mysql: MySQL, jap_id: int, status: RStatus):
+    """
+    Updates job application of id jap_id to status.
+    :param mysql: The MySQL db.
+    :param req_id: request id of request.
+    :param status: sid to update to.
+    :return successful message.
+    """
+    dao_job_application = DAOJobApplication(mysql)
+    job_app = dao_job_application.get_job_application_by_jap_id(jap_id)
+    if (job_app.sid == RStatus.APPLIED.value and status == RStatus.INTERVIEW) or\
+       (job_app.sid == RStatus.INTERVIEW.value and status == RStatus.OFFER) or\
+       (job_app.sid == RStatus.OFFER.value and status == RStatus.ACCEPTED) or\
+       (job_app.sid == RStatus.OFFER.value and status == RStatus.DECLINED) or\
+       status == RStatus.REJECTED:
+        job_app.sid = status.value
+        dao_job_application.update_job_application_status(job_app)
+        return "Updated the status of the job application to " + status.name.title() + "!"
+    else:
+        return "An error occured when updating the status of the job application!"

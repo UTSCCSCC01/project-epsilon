@@ -51,7 +51,38 @@ class DAOJobPosting(DAO):
              posting.description,
              posting.active))
 
-    def post_new_job(self, tid: int, title: str, description: str):
+    def add_dummy_job_postings(self) -> None:
+        """
+        Populate JobPosting table with dummy data.
+        :requires: Companies of tid 1 and 2 to be created.
+        """
+        job1 = JobPosting(jid=1, tid=1, title="Web developer",
+                          description="We want to create our own website! If you are young in heart like us "
+                          + "and have at least 5 years of web development experience, please join us!")
+        job2 = JobPosting(jid=2, tid=1, title="Marketer",
+                          description="We want someone experienced to assist in bringing our startup to the public light! "
+                          + "If you are proficient in CRM and knows the perks to be heard, apply to Epsilon!")
+        job3 = JobPosting(jid=3, tid=2, title="Financial Officer",
+                          description="In this position, you will be doing: work closely with the team to "
+                          + "ensure everyone's success, manage the company's financial assests")
+
+        jobs_to_add = [job1, job2, job3]
+
+        for job in jobs_to_add:
+            self.add_job_posting(job)
+
+    def get_job_postings(self) -> List[JobPosting]:
+        """
+        Gets all job postings in the database.
+        :return: List of JobPosting objects.
+        """
+        job_postings = []
+        data = self.get_data('''SELECT * FROM JobPosting''', None)
+        for job in data:
+            job_postings.append(JobPosting(job[0],job[1],job[2],job[3],job[4],job[5]))
+        return job_postings
+
+    def post_new_job(self,  tid: int, title: str, description: str):
         posting = JobPosting(tid=tid, title=title, description=description, active=True)
         self.add_job_posting(posting=posting)
 

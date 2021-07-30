@@ -78,27 +78,6 @@ def get_members(mysql: MySQL, tid: int) -> List[User]:
     return user_details
 
 
-def get_join_requests(mysql: MySQL, tid: int):
-    """
-    Return a list of request details and the company name.
-    :param mysql: mysql db.
-    :param tid: tid of company.
-    :return list of request details and the company name.
-    """
-    dao_request = DAORequest(mysql)
-    dao_company = DAOCompany(mysql)
-    dao_user = DAOUser(mysql)
-
-    requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
-    company = dao_company.get_company_by_tid(tid)
-    if not company:
-        raise ObjectNotExistsError("Your team")
-    data = []
-    for req in requests:
-        user = dao_user.get_user_by_uid(req.uid)
-        data.append([user, req])
-    return data, company.name
-
 
 def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid: int, status_choice: List[int]) -> bool:
     """
@@ -170,7 +149,7 @@ def add_join_team_request_by_tid(mysql: MySQL, tid: str, uid: int, type_id: int)
         mysql=mysql, tid=tid,
         uid=uid,
         status_choice=[
-            RStatus.PENDING.value,
+            RStatus.OFFER.value,
             RStatus.ACCEPTED.value])
     # only create request if this user hasn't created the join request to the
     # company before or it's been declined
@@ -179,7 +158,7 @@ def add_join_team_request_by_tid(mysql: MySQL, tid: str, uid: int, type_id: int)
     if type_id == Type.STARTUP_USER.value:
         message = "the request was sent successfully."
         dao_req = DAORequest(mysql)
-        req = Request(tid=tid, uid=uid, sid=RStatus.PENDING.value)
+        req = Request(tid=tid, uid=uid, sid=RStatus.OFFER.value)
         dao_req.add_request(req)
         return message
     else:

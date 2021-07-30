@@ -1,3 +1,4 @@
+from epsilonModules.ModJob import get_job_applications_by_uid
 from epsilonModules.ModTeam import get_user_teams
 from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
@@ -22,17 +23,21 @@ def render_user_profile(mysql: MySQL):
                 contact = request.form["contact"]
                 message = update_user(mysql, uid, name,
                                       description, contact)
+
         user_details = get_user_profile(mysql, uid)
+        job_applications = get_job_applications_by_uid(mysql, uid)
+
         if current_user.is_authenticated:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
-        return render_template('user_profile.html', user_details=user_details,
+        return render_template('user_profile.html', user_details=user_details, job_applications=job_applications,
                                message=message, tid=tid)
     except ObjectNotExistsError as e:
-        return render_template('user_profile.html', user_details=user_details,
+        return render_template('user_profile.html', user_details=user_details, job_applications=job_applications,
                                message=message, tid=tid)
     except Exception as e:
         return render_template('user_profile.html', message=e)
+
 
 def load_User_O(mysql: MySQL, uid: int):
     """

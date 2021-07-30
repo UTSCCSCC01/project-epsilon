@@ -54,7 +54,6 @@ class DAOJobApplication(DAO):
              application.sid,
              application.skills))
 
-
     def update_job_application_status(self, application: JobApplication) -> None:
         """
         Updates the status an existing job application.
@@ -65,7 +64,7 @@ class DAOJobApplication(DAO):
             '''UPDATE JobApplication Set sid = %s, seen = false WHERE jap_id = %s''',
             (application.sid, application.jap_id))
 
-    def get_job_application_by_uid(self, uid: int) -> List[JobApplication]:
+    def get_job_applications_by_uid(self, uid: int) -> List[JobApplication]:
         """
         Gets all job applications for user with <uid>, latest comes
         first.
@@ -84,8 +83,7 @@ class DAOJobApplication(DAO):
                                                create_date=d[5]))
         return applications
 
-
-    def check_job_application_exists_by_uid_jid(self, uid: int, jid:int) -> bool:
+    def check_job_application_exists_by_uid_jid(self, uid: int, jid: int) -> bool:
         """
         Check whether uid applied to the job jid before.
         :param uid: uid id of the user to be retrieved.
@@ -95,7 +93,7 @@ class DAOJobApplication(DAO):
         data = self.get_data('''SELECT * FROM JobApplication
                                 WHERE uid = %s AND jid=%s
                                 ORDER BY create_date DESC''',
-                             (uid,jid,))
+                             (uid, jid,))
         return len(data) > 0
 
     def get_job_application_by_jap_id(self, jap_id: int) -> JobApplication:
@@ -109,9 +107,9 @@ class DAOJobApplication(DAO):
         d = self.get_data('''SELECT *
                              FROM JobApplication WHERE jap_id = %s''', (jap_id,))
         if d is not None:
-            res=JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
-                                sid=d[3], skills=str(d[4]).split(","),
-                                create_date=d[5])
+            res = JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
+                                 sid=d[3], skills=str(d[4]).split(","),
+                                 create_date=d[5])
         return res
 
     def send_job_application(self, jid: int, uid: int, skills: str):

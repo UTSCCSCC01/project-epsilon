@@ -37,9 +37,11 @@
   </div>
   <div class="profile-info col-md-9">
       <div class="panel">
+          {% if user_details %}
           <div class="bio-graph-heading">
               <p>{{user_details[1]}}</p>
           </div>
+          {% endif %}
 
           <div class="panel-body bio-graph-info">
               <h1>Bio Graph</h1>
@@ -61,7 +63,7 @@
                       </div>
                   </form>
               </div>
-              {% endif %}
+          {% endif %}
           </div>
       </div>
       <div class="panel">
@@ -77,7 +79,7 @@
                       <tr>
                           <td><p>Application Status: {{ application[1] }}</p></td>
                           <td>
-                              <a class="btn btn-primary main-button" href="{{ application[2] }}" role="button">Link to job posting</a>
+                              <a class="btn btn-primary main-button" href="{{ application[2] }}" role="button" target="_blank">Link to job posting</a>
                           </td>
                       </tr>
                   </table>

@@ -51,7 +51,7 @@ class DAOJobPosting(DAO):
              posting.description,
              posting.active))
 
-    def post_new_job(self,  tid: int, title: str, description:str):
+    def post_new_job(self, tid: int, title: str, description: str):
         posting = JobPosting(tid=tid, title=title, description=description, active=True)
         self.add_job_posting(posting=posting)
 
@@ -92,3 +92,18 @@ class DAOJobPosting(DAO):
             postings.append(JobPosting(title=posting[0], description=posting[1],
                                        create_date=posting[2], active=posting[3], jid=posting[4]))
         return postings
+
+    def get_job_posting_by_jid(self, jid: int) -> JobPosting:
+        """
+        Return a job posting corresponding to the given jid.
+        :param jid: Job ID of the job posting.
+        :return: JobPosting object corresponding to the jid.
+        """
+        job_posting = None
+        data = self.get_data('''SELECT * FROM JobPosting WHERE jid = %s''', (jid,))
+
+        if data:
+            job_posting = data[0]
+            job_posting = JobPosting(jid=job_posting[0], tid=job_posting[1], title=job_posting[2],
+                                     description=job_posting[3], create_date=job_posting[4], active=job_posting[5])
+        return job_posting

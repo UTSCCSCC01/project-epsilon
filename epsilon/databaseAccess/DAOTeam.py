@@ -164,3 +164,14 @@ class DAOTeam(DAO):
             for team in data:
                 res.append(team[0])
         return res
+
+
+    def get_tid_by_uid(self, uid: int) -> int:
+
+        data = self.get_data('''SELECT tid FROM Teams
+                                WHERE uid = %s''',
+                             (uid,))
+        if data:
+            for team in data:
+                return (team[0])
+        return -1

@@ -6,6 +6,7 @@ from flask import request, render_template
 from flask_login import current_user
 import traceback
 import json
+from databaseAccess.DAOTeam import DAOTeam
 
 def render_job_posting_management(mysql: MySQL):
     """
@@ -113,6 +114,8 @@ def render_job_seeking(mysql: MySQL):
     :return: template
     """
     try:
+        dao_team = DAOTeam(mysql)
+        curr_tid = dao_team.get_tid_by_uid(uid=current_user.uid)
         validate_startup_user(current_user.type_id)
         company_info = get_all_companies_with_job_posting(mysql=mysql)
         postings_map = {}
@@ -130,8 +133,9 @@ def render_job_seeking(mysql: MySQL):
                 curr_info.append(curr_posting)
             postings_map[info[1]] = curr_info
         # print(postings_map)
-        return render_template("job_postings_of_all_companies.html", data=json.dumps(postings_map), tid=-1)
+        print(curr_tid)
+        return render_template("job_postings_of_all_companies.html", data=json.dumps(postings_map), tid=curr_tid)
 
     except Exception as e:
         traceback.print_exc()
-        return render_template("job_postings_of_all_companies.html", error=e, tid=-1)
+        return render_template("job_postings_of_all_companies.html", error=e, tid=curr_tid)

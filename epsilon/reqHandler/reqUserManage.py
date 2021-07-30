@@ -22,43 +22,21 @@ def render_user_profile(mysql: MySQL):
         tid = -1
         if request.method == 'POST':
             data = request.get_json
-            if "action" in request.form:
-                action = request.form["action"].split("_")
-                if action[0] == "E":
-                    sid=action[1]
-                    stid=action[2]
-                    if "type" in request.form:
-                        stid=request.form['type']
-                    title = request.form['title']
-                    description = request.form['description']
-                    price = request.form['price']
-                    link = request.form['link']
-                    service = Service(sid,uid,stid,title,description,price,link)
-                    message = edit_service(mysql,service)
-                elif action[0] == "R":
-                    message = remove_service(mysql,action[1])
-                elif action[0] =="A":
-                    title = request.form['title']
-                    description = request.form['description']
-                    price = request.form['price']
-                    link = request.form['link']
-                    service_type = None
-                    if "type" in request.form:
-                        service_type = request.form["type"]
-                    message = add_service (mysql, uid, title, description, price, link, service_type)
-            elif data:
+            if data:
                 name = request.form["name"]
                 description = request.form["description"]
                 contact = request.form["contact"]
                 message = update_user(mysql, uid, name,
                                       description, contact)
                 if 'pfpi' in request.files:
+                    print(request.files)
                     f = request.files['pfpi']
-                    file = f.stream.read()
-                    if get_pic(mysql,uid) is not None:
-                        edit_pic(mysql,uid,file)
-                    else:
-                        add_pic(mysql,uid,file)
+                    if f.filename != '':
+                        file = f.stream.read()
+                        if get_pic(mysql,uid) is not None:
+                            edit_pic(mysql,uid,file)
+                        else:
+                            add_pic(mysql,uid,file)
         pfp = get_pic(mysql, uid)
         if pfp:
             if os.path.exists("./static/pfp.png"):
@@ -67,13 +45,13 @@ def render_user_profile(mysql: MySQL):
                 wf.write(pfp)
         user_details = get_user_profile(mysql, uid)
         services = get_services_by_uid(mysql,uid)
-        user_type = current_user.type_id
+
         if current_user.is_authenticated and current_user.type_id == 1:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
-                               message=message, tid=tid, services=services,
-                               pic=pfp, user_type=user_type)
+                               message=message, tid=tid,
+                               pic=pfp)
     except ObjectNotExistsError as e:
         return render_template('user_profile.html', user_details=None,
                                message=message, tid= tid)

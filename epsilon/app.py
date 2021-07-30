@@ -104,7 +104,7 @@ def user_reg():
 
 @app.route('/aboutUs/', methods=['GET', 'POST'])
 def about():
-    return render_about_us()
+    return render_about_us(mysql)
 
 
 # EP-69: Display company profile

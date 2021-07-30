@@ -1,3 +1,4 @@
+from reqHandler.reqUserManage import user_services
 from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search
 from reqHandler.reqServiceManage import render_services
@@ -172,6 +173,7 @@ def display_job_postings(tid):
 def post_new_job():
     return render_post_new_job(mysql)
 
+
 @app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
 @login_required
 def apply_to_job(jid):
@@ -181,6 +183,12 @@ def apply_to_job(jid):
 @app.route('/services/', methods=['GET', 'POST'])
 def services():
     return render_services(mysql)
+
+
+@app.route('/myservices/', methods=["GET","POST"])
+@login_required
+def get_services():
+    return user_services(mysql)
 
 
 if __name__ == "__main__":

@@ -61,3 +61,54 @@ def load_User_O(mysql: MySQL, uid: int):
     """
     user = get_user_by_uid(mysql, uid)
     return user
+
+
+def user_services(mysql:MySQL):
+    """
+    Renders the template for services provided by the user
+    """
+    uid = current_user.uid
+    message = ""
+    try:
+        print(1)
+        tid = -1
+        if request.method == 'POST':
+            print(request.form)
+            action = request.form["action"].split("_")
+            print(3)
+            if action[0] == "E":
+                print(4)
+                sid=action[1]
+                stid=action[2]
+                print(5)
+                if "type" in request.form:
+                    print(6)
+                    stid=request.form['type']
+                title = request.form['title']
+                description = request.form['description']
+                price = request.form['price']
+                link = request.form['link']
+                service = Service(sid,uid,stid,title,description,price,link)
+                print(7)
+                message = edit_service(mysql,service)
+                print(8)
+            elif action[0] == "R":
+                print(9)
+                message = remove_service(mysql,action[1])
+                print(10)
+            elif action[0] =="A":
+                print(11)
+                title = request.form['title']
+                description = request.form['description']
+                price = request.form['price']
+                link = request.form['link']
+                service_type = None
+                if "type" in request.form:
+                    service_type = request.form["type"]
+                message = add_service (mysql, uid, title, description, price, link, service_type)
+                print(12)
+        services = get_services_by_uid(mysql, uid)
+        print(13)
+        return render_template("user_services.html", message=message, tid=tid, services=services)
+    except Exception as e:
+        return render_template("user_services.html", message=e, tid=-1)

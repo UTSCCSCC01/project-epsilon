@@ -16,10 +16,12 @@ def render_job_posting_management(mysql: MySQL):
     :param: mysql: mysql db
     :return: template
     """
+    curr_tid=-1
     status_to_btn_display = {True: "deactivate", False:"active"}
     try:
         tids_under_curr_user = get_tid_by_admin_uid(mysql=mysql, uid=current_user.uid)
-        if len(tids_under_curr_user)>0:
+        if len(tids_under_curr_user) > 0:
+            curr_tid = tids_under_curr_user[0]
             if request.method == 'POST':
                 if request.form["update_posting_action"]:   # if one has clicked the button
                     update_posting_action = request.form["update_posting_action"].split("_")
@@ -29,18 +31,18 @@ def render_job_posting_management(mysql: MySQL):
                         reverse_status_of_job_posting(mysql, update_posting_action[1])
 
             # default to the first company managed by current user
-            postings = get_job_postings_by_tid(mysql, tids_under_curr_user[0])
+            postings = get_job_postings_by_tid(mysql, curr_tid)
             postings_lst = []
             for p in postings:
                 postings_lst.append((p.title, p.description, p.create_date, status_to_btn_display[p.active], p.jid))
 
             return render_template("job_posting_mgmt.html",
-                                    job_postings=postings_lst)
+                                    job_postings=postings_lst, tid=curr_tid)
         else:
-            return render_template("job_posting_mgmt.html", error="the current user is not an admin")
+            return render_template("job_posting_mgmt.html", error="the current user is not an admin", tid=curr_tid)
     except Exception as e:
         traceback.print_exc()
-        return render_template("job_posting_mgmt.html", error=e)
+        return render_template("job_posting_mgmt.html", error=e, tid=curr_tid)
 
 
 def render_job_postings_by_company(mysql: MySQL, company_tid: int):

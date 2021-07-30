@@ -25,7 +25,7 @@
           <div class="user-heading round">
                 <a href="#">
                     {% if pic %}
-                    <img id="pfp" src="../pfp.jpg" alt="profile picture">
+                    <img id="pfp" src="{{ url_for('static', filename='pfp.png') }}" alt="profile picture">
                     {% else %}
                     <img id="pfp" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
                     {% endif %}
@@ -66,7 +66,7 @@
                     </div>
                     <div class="bio-row" id="des-row-2" style="flex-direction: row; justify-content: left; align-items: center">
                         <p><span>Change Picture</span></p>
-                        <input type="file" name="pfpi" id="pfpi" accept=".jpg">
+                        <input type="file" name="pfpi" id="pfpi" accept=".png">
                     </div>
                 </form>
               </div>

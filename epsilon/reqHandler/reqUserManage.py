@@ -63,10 +63,10 @@ def render_user_profile(mysql: MySQL):
         pfp = get_pic(mysql, uid)
         print(2)
         if pfp:
-            if os.path.exists("pfp.jpg"):
+            if os.path.exists("./static/pfp.png"):
                 print(3)
-                os.remove("pfp.jpg")
-            with open('pfp.jpg', 'wb') as wf:
+                os.remove("./static/pfp.png")
+            with open('./static/pfp.png', 'wb') as wf:
                 print(4)
                 wf.write(pfp)
         user_details = get_user_profile(mysql, uid)

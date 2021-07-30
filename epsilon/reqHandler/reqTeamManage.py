@@ -78,16 +78,12 @@ def render_team_mgmt_combined(mysql: MySQL):
     message = ""
     if request.method == 'POST':
         action = request.form["action"].split("_")
-        # action -> (request wanted, req id, tid)
-        if action[0] == 'A':
-            message = team_request_accept(mysql, action[1])
-        elif action[0] == 'D':
-            message = team_request_decline(mysql, action[1])
         # action -> (request wanted, uid, tid, rid)
-        elif action[0] == 'P':
+        if action[0] == 'P':
             message = promote_admin(mysql, action[2], action[1], action[3])
         elif action[0] == 'R':
             message = remove_from_team(mysql, action[2], action[1], action[3])
+        # action -> (request wanted, tid)
         elif action[0] == 'G':
             message = generateTeamCode(mysql, action[1])
         elif action[0] == 'U':
@@ -97,35 +93,15 @@ def render_team_mgmt_combined(mysql: MySQL):
         tid = teams[0].tid
         print(tid)
         cur_role = teams[0].rid
-        #data, company_name = get_join_requests(mysql, tid)
-        print(7)
         user_details = get_members(mysql, tid)
-        print(9)
         teamCode = getTeamCode(mysql,tid)
-        print(8)
         if (teamCode != None):
             code = teamCode.code
-            print(2)
-            if False:#len(data) == 0:
-                return render_template("team_management_combined.html",
-                                    message="No pending requests!", tid=tid,
-                                    company_name=company_name, userDetails=
-                                    user_details, cur_role=cur_role, code=code)
-            print(3)
             return render_template("team_management_combined.html", tid=tid,
                                 message=message, userDetails=user_details, cur_role=cur_role, code=code)
-        
-        if False:
-            print(4)
-            return render_template("team_management_combined.html",
-                                message="No pending requests!", tid=tid,
-                                company_name=company_name, userDetails=
-                                user_details, cur_role=cur_role)
-        print(5)
         return render_template("team_management_combined.html", tid=tid,
                                message=message, userDetails=user_details, cur_role=cur_role)
     except Exception as e:
-        print(6)
         return render_template("team_management_combined.html",
                                message=e)
 

@@ -117,3 +117,16 @@ class DAOCompany(DAO):
                     company[3],
                     company[4])
         return company
+
+    def get_company_name_by_tid(self, tid: int) -> str:
+        """
+        Gets a company name from the database.
+        :param tid: Team id of the company to be retrieved.
+        :return: name
+        """
+        company = None
+        data = self.get_data('''SELECT name FROM Company
+                                WHERE tid = %s''', (tid,))
+        if data:
+            company = data[0]
+        return company

@@ -49,27 +49,32 @@ https://templatemo.com/tm-535-softy-pinko
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
                                 <div class="dropdown-content">
-                                    <a href="/displayteam/">Display Team</a>
-                                    <a href="/jointeamrequest/">Pending Requests</a>
                                     <a href="/teamManagement/">Team Management</a>
-                                    <a href="/registration">Create New Team</a>
+                                    <!-- Let's not have a user create a team if they are in a team <a href="/registration">Create New Team</a> -->
                                 </div>
                             </div>
                         </li>
-                        {% else %}
-                        <li><a href="/registration">Create New Team</a></li>
+                        {% elif current_user.type_id == 1 %}
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn" disabled><a>Create/Join Team</a></button>
+                                <div class="dropdown-content">
+                                    <a href="/registration">Create New Team</a>
+                                    <a href="/joinByCode/">Join by Invite Code</a>
+                                </div>
+                            </div>
                         {% endif %}
                         <li>
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="">Resources</a></button>
                                 <div class="dropdown-content">
-                                    <a href="">Our Resources</a>
+                                    <a href="/">Our Resources</a>
                                     <a href="/services">External Services</a>
                                 </div>
                             </div>
                         </li> <!--Resource currently same as Startup Market, if we have a page for templates, fundraising stuff then we can add this back-->
                         <li><a href="/search">Startup Market</a></li>
-                        <li><a href="/">Job Seeking</a></li>
+                        <li><a href="/jobSeeking">Job Seeking</a></li>
                         <li><a href="/aboutUs">About Us</a></li>
                         {% if current_user.is_anonymous %}
                         <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>

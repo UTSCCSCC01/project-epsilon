@@ -1,8 +1,12 @@
-
-{% extends "layout.html" %} <!-- read more on layout.html-->
+{% extends "layout.html" %}
+<!-- read more on layout.html-->
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
+
 {% endblock %}
 {% block title %}Join Team Request{% endblock %}
 {% block content %}
@@ -34,9 +38,12 @@
                         <th> {{ row[0] }} </th>
                         <td> {{ row[1] }} </td>
                         <td> {{ row[2] }} </td>
-                        <td><form action="" method="POST" id="form_{{row[3]}}">
-                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
-                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                        <td>
+                            <form action="" method="POST" id="form_{{row[3]}}">
+                                <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}"
+                                    name="action">Accept</button>
+                                <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}"
+                                    name="action">Decline</button>
                             </form>
                         </td>
                     </tr>
@@ -47,13 +54,13 @@
         {% endif %}
         <div class="container">
             <div class="align-items-center h-100" style="margin-bottom: 3%;">
-            {% if error %}
-            <p class="error"><strong>Error:</strong> {{ error }}</p>
-            {% endif %}
-            {% if message %}
-            <p class="message"><strong>Message:</strong> {{ message }}</p>
-            {% endif %}
-        </div>
+                {% if error %}
+                <p class="error"><strong>Error:</strong> {{ error }}</p>
+                {% endif %}
+                {% if message %}
+                <p class="message"><strong>Message:</strong> {{ message }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

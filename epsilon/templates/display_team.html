@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
+{% endblock %}
+{% block title %}Display Team{% endblock %}
+{% block content %}
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,12 +42,14 @@
                 <!--add remove and promote button-->
                 <td>
                     <form action="/testbtn/" method="post">
-                        <button name='submit' type="submit" value="r.{{user[3]}}.{{user[4]}}.{{user[5]}}">Remove</button>
+                        <button name='submit' type="submit"
+                            value="r.{{user[3]}}.{{user[4]}}.{{user[5]}}">Remove</button>
                     </form>
                 </td>
                 <td>
                     <form action="/testbtn/" method="post">
-                        <button name='submit' type="submit" value="p.{{user[3]}}.{{user[4]}}.{{user[5]}}">Set admin</button>
+                        <button name='submit' type="submit" value="p.{{user[3]}}.{{user[4]}}.{{user[5]}}">Set
+                            admin</button>
                     </form>
                 </td>
 
@@ -68,4 +81,6 @@ function myFunction() {
 }
 </script>
 -->
+{% endblock %}
+
 </html>

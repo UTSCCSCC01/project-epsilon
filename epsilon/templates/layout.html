@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <!-- for more info, please read: https://flask.palletsprojects.com/en/2.0.x/patterns/templateinheritance/-->
-  <head>
+
+<head>
     {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,51 +25,44 @@ https://templatemo.com/tm-535-softy-pinko
 
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
-  </head>
+</head>
 <header class="header-area header-sticky" id="navMenu">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
-                   
+
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- ***** Logo Start ***** -->
-                         <li><a href="/" class="logo">
-                            <img src="../static/images/epsilon logo.jpg" alt="Epsilon" /> </a></li>
-                         <!-- ***** Logo End ***** -->
+                        <li><a href="/" class="logo">
+                                <img src="../static/images/epsilon logo.jpg" alt="Epsilon" /> </a></li>
+                        <!-- ***** Logo End ***** -->
 
                         <li>
-                            <a href="/"><h2
-                                style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                                Epsilon</h2></a>
+                            <a href="/">
+                                <h2
+                                    style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                                    Epsilon</h2>
+                            </a>
                         </li>
                         {% if current_user.is_authenticated and tid and tid >= 0 %}
-                            <li>
-                                <div class="dropdown">
-                                    <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
-                                    <div class="dropdown-content">
-                                        <a href="/displayteam/">Display Team</a>
-                                        <a href="/jointeamrequest/">Pending Requests</a>
-                                        <a href="/teamManagement/">Team Management</a>
-                                        <a href="/registration">Create New Team</a>
-                                    </div>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
+                                <div class="dropdown-content">
+                                    <a href="/displayteam/">Display Team</a>
+                                    <a href="/jointeamrequest/">Pending Requests</a>
+                                    <a href="/teamManagement/">Team Management</a>
+                                    <a href="/registration">Create New Team</a>
                                 </div>
-                            </li>
+                            </div>
+                        </li>
                         {% else %}
-                            <li><a href="/registration">Create New Team</a></li>
+                        <li><a href="/registration">Create New Team</a></li>
                         {% endif %}
                         <li><a href="/">Resources</a></li>
-                        <!--<li>
-                            <div class="dropdown">
-                                <button class="dropbtn"><a href="">Resources</a></button>
-                                <div class="dropdown-content">
-                                    <a href="">Our Resources</a>
-                                    <a href="/services">External Services</a>
-                                </div>
-                            </div> -->
-                         <!--Resource currently same as Startup Market, if we have a page for templates, fundraising stuff then we can add this back-->
-                        <li><a href="/">Services</a></li>
+                        <li><a href="/services">Services</a></li>
                         <li><a href="/">Job Seeking</a></li>
                         <li><a href="/aboutUs">About Us</a></li>
                         <li><a href="/search">Search</a></li>
@@ -88,45 +82,47 @@ https://templatemo.com/tm-535-softy-pinko
         </div>
     </div>
 </header>
-  <body>
+
+<body>
     <div id="content">{% block content %}{% endblock %}</div>
     <footer>
         {% block footer %}
         <div class="container" style="margin: auto;">
-                <p class="copyright">Epsilon 2021</p>
+            <p class="copyright">Epsilon 2021</p>
         </div>
         {% endblock %}
     </footer>
     {% block more_imports %}
-           <!-- jQuery -->
-           <script src="../static/js/homepage/jquery-2.1.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="../static/js/homepage/jquery-2.1.0.min.js"></script>
 
-           <!-- Bootstrap -->
-           <script src="../static/js/homepage/popper.js"></script>
-           <script src="../static/js/homepage/bootstrap.min.js"></script>
-    
-           <!-- Plugins -->
-           <script src="../static/js/homepage/scrollreveal.min.js"></script>
-           <script src="../static/js/homepage/waypoints.min.js"></script>
-           <script src="../static/js/homepage/jquery.counterup.min.js"></script>
-           <script src="../static/js/homepage/imgfix.min.js"></script>
-       
-           <!-- Global Init -->
-           <script src="../static/js/homepage/custom.js"></script>
-       
-           <!--just to test if we can embed react script-->
-           {% block app_content %}
-           <!-- We will put our React component inside this div. -->
-           <div id="nav_menu_container"></div>
-       
-           <!-- Load React. -->
-           <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-           <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-           <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-       
-           <!-- Load our React component. -->
-           <script src="{{ url_for('static', filename='js/homepage/nav_menu.js') }}"></script>
-           {% endblock %}
+    <!-- Bootstrap -->
+    <script src="../static/js/homepage/popper.js"></script>
+    <script src="../static/js/homepage/bootstrap.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="../static/js/homepage/scrollreveal.min.js"></script>
+    <script src="../static/js/homepage/waypoints.min.js"></script>
+    <script src="../static/js/homepage/jquery.counterup.min.js"></script>
+    <script src="../static/js/homepage/imgfix.min.js"></script>
+
+    <!-- Global Init -->
+    <script src="../static/js/homepage/custom.js"></script>
+
+    <!--just to test if we can embed react script-->
+    {% block app_content %}
+    <!-- We will put our React component inside this div. -->
+    <div id="nav_menu_container"></div>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load our React component. -->
+    <script src="{{ url_for('static', filename='js/homepage/nav_menu.js') }}"></script>
     {% endblock %}
-  </body>
+    {% endblock %}
+</body>
+
 </html>

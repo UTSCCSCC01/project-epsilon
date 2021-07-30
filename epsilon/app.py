@@ -1,5 +1,5 @@
 from reqHandler.reqCompanyManage import render_company_profile
-from reqHandler.reqSearch import render_company_search, search_frontend_test
+from reqHandler.reqSearch import render_company_search
 from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
@@ -118,7 +118,7 @@ def display_your_company():
 
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
-    return render_company_profile(mysql, name.replace("_"," "))
+    return render_company_profile(mysql, name.replace("_", " "))
 
 
 @app.route('/logout/')
@@ -162,15 +162,18 @@ def send_join_request_by_company_name():
 def manage_job_postings():
     return render_job_posting_management(mysql)
 
-@app.route('/jobPostings/<tid>/', methods=['GET','POST'])
+
+@app.route('/jobPostings/<tid>/', methods=['GET', 'POST'])
 @login_required
 def display_job_postings(tid):
     return render_job_postings_by_company(mysql, tid)
+
 
 @app.route('/postJob/', methods=['GET', 'POST'])
 @login_required
 def post_new_job():
     return render_post_new_job(mysql)
+
 
 @app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
 @login_required

@@ -1,7 +1,8 @@
+from epsilonModules.ModTeam import get_user_teams
 from flask import request, render_template
 from flask_mysqldb import MySQL
 from flask_login import current_user
-
+from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from classes.Type import Type
 from epsilonModules.ModService import *
 from epsilonModules.ModUser import get_user_by_uid
@@ -25,6 +26,7 @@ def render_services(mysql: MySQL):
     """
     # Check if authenticated user is a service provider to add a service
     uid = -1
+    tid = -1
     is_service_provider = False
     message = ""
 
@@ -33,6 +35,12 @@ def render_services(mysql: MySQL):
         user = get_user_by_uid(mysql, uid)
         if user.type_id == Type.SERVICE_PROVIDER.value:
             is_service_provider = True
+        elif user.type_id == Type.STARTUP_USER.value:
+            try:
+                user_teams = get_user_teams(mysql, current_user.uid)
+                tid = user_teams[0].tid
+            except ObjectNotExistsError as oe:
+                pass
 
     if request.method == "POST":
         try:
@@ -45,7 +53,7 @@ def render_services(mysql: MySQL):
                 service_type = request.form['type']
             message = add_service(mysql, uid, title, description, price, link, service_type)
         except Exception as e:
-            return render_template('services.html', error=e)
+            return render_template('services.html', error=e, tid=tid)
 
     try:
         flt = request.args.get("filter")
@@ -58,6 +66,6 @@ def render_services(mysql: MySQL):
 
         return render_template('services.html', service_details=service_details,
                                is_service_provider=is_service_provider, message=message,
-                               filtered_service_details=filtered_service_details, flt=flt)
+                               filtered_service_details=filtered_service_details, flt=flt, tid=tid)
     except Exception as e:
-        return render_template('services.html', error=e)
+        return render_template('services.html', error=e, tid=tid)

@@ -23,7 +23,7 @@
 
     </head>
 
-    <body scroll="no" style="overflow: hidden">
+    <body>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <div class="container bootstrap snippets bootdey">
             <div class="row">
@@ -47,7 +47,9 @@
                 <div class="profile-info col-md-9">
                     <div class="panel">
                         <div class="bio-graph-heading">
+                            {% if user_details %}
                             <p>{{user_details[1]}}</p>
+                            {% endif %}
                         </div>
 
                         <div class="panel-body bio-graph-info">
@@ -55,7 +57,6 @@
                             <div class="row">
                                 {% if user_details %}
                                 <form action="" method="POST" id="userForm">
-
                                     <div class="bio-row" id="des-row-1">
                                         <p><span>Name </span><input type="text" name="name" id="name"
                                                 value="{{user_details[0]}}" required readonly> </p>
@@ -84,15 +85,34 @@
                             <div class="job-application">
                                 <table>
                                     <tr>
-                                        <td><h3>{{ application[0] }}</h3></td>
+                                        <td><h3>{{ application[0].title }}</h3></td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td><p>Application Status: {{ application[1] }}</p></td>
+                                        <td><p>Application Status: {{ application[2] }}</p></td>
                                         <td>
-                                            <a class="btn btn-primary main-button" href="{{ application[2] }}" role="button" target="_blank">Link to job posting</a>
+                                            <a class="btn btn-primary main-button" href="{{ application[3] }}" role="button" target="_blank">See job posting</a>
                                         </td>
                                     </tr>
+                                    {%  if application[2] == "Offer" %}
+                                    <tr>
+                                        <td>
+                                            Would you like to accept this offer?
+                                        </td>
+                                        <td>
+                                            <form action="" method="POST" id="acceptForm">
+                                                <button class="btn main-button" name="accept_job" value="{{ application[1].jap_id }}">
+                                                    Accept
+                                                </button>
+                                            </form>
+                                            <form action="" method="POST" id="declineForm">
+                                                <button class="btn main-button" name="decline_job" value="{{ application[1].jap_id }}">
+                                                    Decline
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
                                 </table>
                             </div>
                           {% endfor %}

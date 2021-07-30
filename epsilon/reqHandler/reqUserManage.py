@@ -1,5 +1,6 @@
+from classes.RStatus import RStatus
 from epsilonModules.ModJob import get_job_applications_by_uid
-from epsilonModules.ModTeam import get_user_teams
+from epsilonModules.ModTeam import get_user_teams, update_jap_to_rstatus
 from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
@@ -16,13 +17,20 @@ def render_user_profile(mysql: MySQL):
     try:
         tid = -1
         if request.method == 'POST':
-            data = request.get_json
-            if data:
-                name = request.form["name"]
-                description = request.form["description"]
-                contact = request.form["contact"]
-                message = update_user(mysql, uid, name,
-                                      description, contact)
+            if "accept_job" in request.form:
+                message = update_jap_to_rstatus(mysql, int(request.form["accept_job"]), RStatus.ACCEPTED)
+                print(message)
+            elif "decline_job" in request.form:
+                message = update_jap_to_rstatus(mysql, int(request.form["decline_job"]), RStatus.DECLINED)
+                print(message)
+            else:
+                data = request.get_json
+                if data:
+                    name = request.form["name"]
+                    description = request.form["description"]
+                    contact = request.form["contact"]
+                    message = update_user(mysql, uid, name,
+                                          description, contact)
 
         user_details = get_user_profile(mysql, uid)
         job_applications = get_job_applications_by_uid(mysql, uid)

@@ -92,8 +92,8 @@ def get_job_applications_by_uid(mysql: MySQL, uid: int):
     Returns all job postings of a company.
     If active_only, then only return active jobs.
     :param uid: user id.
-    :Return a list of lists with JobApplication information: [[JobPosting.title, JobApplication status,
-    JobPosting link]]. They will be ordered in descending order of create_date.
+    :Return a list of lists with JobApplication information: [[JobPosting, JobApplication,
+    stylized JobApplication status, JobPosting link]]. They will be ordered in descending order of create_date.
     """
     applications_info = []
     dao_job_posting = DAOJobPosting(mysql)
@@ -110,7 +110,7 @@ def get_job_applications_by_uid(mysql: MySQL, uid: int):
         application_status = application_status.name.replace("_", " ").title()
 
         job_posting_link = "/jobPostings/" + str(job_posting.tid)
-        applications_info.append([job_posting.title, application_status, job_posting_link])
+        applications_info.append([job_posting, application, application_status, job_posting_link])
 
     return applications_info
 

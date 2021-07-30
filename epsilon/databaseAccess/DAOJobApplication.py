@@ -1,4 +1,3 @@
-
 from classes.ApplicantDetail import ApplicantDetail
 from datetime import datetime
 from typing import List
@@ -107,13 +106,14 @@ class DAOJobApplication(DAO):
                  None if not found.
         """
         res = None
-        d = self.get_data('''SELECT *
+        data = self.get_data('''SELECT *
                              FROM JobApplication WHERE jap_id = %s''', (jap_id,))
-        if d is not None:
-            d = d[0]
-            print(d)
-            res=JobApplication(jap_id=d[0], 
-                               jid=d[1], uid=d[2],sid=d[3], skills=d[4],create_date=d[5])
+
+        if data is not None:
+            data = data[0]
+            print(data)
+            res = JobApplication(jap_id=data[0],
+                                 jid=data[1], uid=data[2], sid=data[3], skills=data[4], create_date=data[5])
         return res
 
     def add_dummy_job_applications(self) -> None:
@@ -123,16 +123,16 @@ class DAOJobApplication(DAO):
         """
         job1 = JobApplication(jap_id=1, jid=1, uid=3, sid=RStatus.APPLIED.value,
                               skills="HTML,CSS,JavaScript,JQuery,Bootstrap,React, "
-                              + "work in Amazon as a web developer for a year")
+                                     + "work in Amazon as a web developer for a year")
         job2 = JobApplication(jap_id=2, jid=1, uid=4, sid=RStatus.INTERVIEW.value,
                               skills="web develop,HTML,MySQL,Bootstrap,"
-                              + "React,MongoDB.")
+                                     + "React,MongoDB.")
         job3 = JobApplication(jap_id=3, jid=2, uid=3, sid=RStatus.APPLIED.value,
                               skills="manage multiple social media accounts,"
-                              + "social media master in SSO.")
+                                     + "social media master in SSO.")
         job4 = JobApplication(jap_id=3, jid=3, uid=5, sid=RStatus.OFFER.value,
                               skills="Just please hire me, I will show you my awesome "
-                              + "resume if you contact me.")
+                                     + "resume if you contact me.")
 
         jobs_to_add = [job1, job2, job3, job4]
 
@@ -147,8 +147,8 @@ class DAOJobApplication(DAO):
         job_applications = []
         data = self.get_data('''SELECT * FROM JobApplication''', None)
         for job in data:
-            job_applications.append(JobApplication(job[0],job[1],job[2],job[3],
-                                                   job[4],job[5]))
+            job_applications.append(JobApplication(job[0], job[1], job[2], job[3],
+                                                   job[4], job[5]))
         return job_applications
 
     def get_applicant_details_by_tid(self, tid: int) -> List[ApplicantDetail]:
@@ -167,9 +167,9 @@ class DAOJobApplication(DAO):
                              WHERE jb.tid = %s AND ja.sid < 6
                              ORDER BY ja.create_date DESC;''', (tid,))
         for ap in data:
-            applicants.append(ApplicantDetail(ap[0],ap[1],ap[2],ap[3],
-                                      ap[4],ap[5],
-                                      ap[6],ap[7],ap[8],ap[9],ap[10]))
+            applicants.append(ApplicantDetail(ap[0], ap[1], ap[2], ap[3],
+                                              ap[4], ap[5],
+                                              ap[6], ap[7], ap[8], ap[9], ap[10]))
         return applicants
 
     def get_applicant_details_by_jap_id(self, jap_id: int) -> ApplicantDetail:
@@ -187,9 +187,9 @@ class DAOJobApplication(DAO):
                              WHERE ja.jap_id = %s;''', (jap_id,))
         if data:
             ap = data[0]
-            applicant = ApplicantDetail(ap[0],ap[1],ap[2],ap[3],
-                                      ap[4],ap[5],
-                                      ap[6],ap[7],ap[8],ap[9],ap[10])
+            applicant = ApplicantDetail(ap[0], ap[1], ap[2], ap[3],
+                                        ap[4], ap[5],
+                                        ap[6], ap[7], ap[8], ap[9], ap[10])
         return applicant
 
     def send_job_application(self, jid: int, uid: int, skills: str):

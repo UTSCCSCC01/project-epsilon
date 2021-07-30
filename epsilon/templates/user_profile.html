@@ -18,16 +18,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
-<body >
+<body overflow="hidden">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container bootstrap snippets bootdey">
 <div class="row">
   <div class="profile-nav col-md-3">
       <div class="panel">
           <div class="user-heading round">
-              <a href="#">
-                  <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-              </a>
+                <a href="#">
+                    {% if pic %}
+                    <img id="pfp" src="{{ url_for('static', filename='pfp.png') }}" alt="profile picture">
+                    {% else %}
+                    <img id="pfp" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                    {% endif %}
+                </a>
 
               {% if user_details %}
               <h1>{{user_details.name}}</h1>
@@ -40,31 +44,36 @@
   <div class="profile-info col-md-9">
       <div class="panel">
           <div class="bio-graph-heading">
-              <p>{{user_details.description}}</p>
+              {% if user_details %}
+              <p>{{user_details[1]}}</p>
+              {% endif %}
           </div>
 
           <div class="panel-body bio-graph-info">
-              <h1>Bio Graph</h1>
-              <div class="row">
-              {% if user_details %}
-              <form action="" method="POST" id="userForm">
-
-                <div class="bio-row" id="des-row-1">
-                      <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details.name}}" required readonly> </p>
+                <h1>Bio Graph</h1>
+                <div class="row">
+                {% if user_details %}
+                    <form action="" method="POST" id="userForm" enctype="multipart/form-data">
+                        <div class="bio-row" id="des-row-1">
+                            <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> </p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details[2]}}" required readonly></p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span>User Type</span><input type="text" name="user_type" value="{{user_details[3]}}" required readonly></p>
+                        </div>
+                        <div class="bio-row" id="des-row">
+                            <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}"  readonly></p>
+                        </div>
+                        <div class="bio-row" id="des-row-2" style="flex-direction: row; justify-content: left; align-items: center">
+                            <p><span>Change Picture</span></p>
+                            <input type="file" name="pfpi" id="pfpi" accept=".png">
+                        </div>
+                    </form>
+                {% endif %}
                 </div>
-                  <div class="bio-row">
-                      <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details.contact}}" required readonly></p>
-                  </div>
-                  <div class="bio-row">
-                      <p><span>User Type</span><input type="text" name="user_type" value="{{user_type}}" required readonly></p>
-                  </div>
-                    <div class="bio-row" id="des-row">
-                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details.description}}"  readonly></p>
-                    </div>
-                  </form>
-              </div>
-              {% endif %}
-          </div>
+            </div>
       </div>
     {% if current_user.type_id == 1 %}
     <div class="panel">
@@ -111,6 +120,9 @@
 </div>
   </div>
 </div>
+{% if message %}
+    <p class="message"><strong>Message:</strong> {{ message }}</p>
+{% endif %}
 
 <style type="text/css">
 body {

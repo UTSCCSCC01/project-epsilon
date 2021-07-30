@@ -1,3 +1,4 @@
+from reqHandler.reqUserManage import user_services
 from reqHandler.reqJobApplication import render_applicant_profile
 from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search
@@ -18,6 +19,7 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_required
 from flask_cors import CORS
 from databaseAccess.DAOUser import *
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -29,6 +31,7 @@ app.config['MYSQL_USER'] = 'epsilon'
 app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
 app.config['SECRET_KEY'] = 'henlo'
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)),'/static/images')
 
 mysql = MySQL(app)
 
@@ -185,6 +188,10 @@ def joinCode():
 def applicant_profile(jap_id):
     return render_applicant_profile(mysql, jap_id)
 
+@app.route('/myservices/', methods=["GET","POST"])
+@login_required
+def get_services():
+    return user_services(mysql)
 
 @app.route('/jobSeeking/', methods=['GET', 'POST'])
 @login_required

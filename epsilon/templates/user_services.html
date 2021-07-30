@@ -1,0 +1,180 @@
+{% extends "layout.html" %} <!-- read more on layout.html-->
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Team Management{% endblock %}
+{% block content %}
+<div class="pagewrap">
+    <div class="main">
+        <div id="background" class="jumbotron jumbotron-fluid p-3 mb-5 title-card">
+            <div class="container">
+                <h1>My Services</h1>
+            </div>
+        </div>
+        {% if services %}
+        <div class="contents table table-hover table-responsive-sm container">
+            <h3 class="section-title" id="subtitle-h3">Services Offered</h3>
+            <div class="align-items-center h-100">
+                <table>
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Service</th>
+                            <th></th>
+                            <th>Actions</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {% for row in services %}
+                    <tr>
+                        <th>{{row[3]}}</th>
+                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#view{{row[0]}}">View</button></td>
+                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#edit{{row[0]}}">Edit</button></td>
+                        <td>
+                            <form action="" method="POST">
+                                <button class="adjacent-btn" name="action" id="action" type="submit" value="R_{{row[0]}}">Remove</button>
+                            </form>    
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="view{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="view" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ViewTitle">{{row[3]}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="bio-row">
+                                        <p>{{row[4]}}</p>
+                                    </div>
+                                    <br>
+                                    <div class="bio-row">
+                                        <p>Price: {{row[5]}}</p>
+                                    </div>
+                                    <br>
+                                    <div class="bio-row">
+                                        <a href="{{row[6]}}">{{row[6]}}</a>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="adjacent-btn" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="edit{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">{{row[3]}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" method="POST" id="serviceForm">
+                                        <div class="bio-row">
+                                            <p><input class="form-control" type="text" name="title" id="title" value="{{row[3]}}" required> </p>
+                                        </div>
+                                        <br>
+                                        <div class="bio-row">
+                                            <p><input class="form-control" type="text"  name="description" id="description" value="{{row[4]}}" required></p>
+                                        </div>
+                                        <br>
+                                        <div class="bio-row">
+                                            <p><input class="form-control" type="number" name="price" id="price" value="{{row[5]}}" required></p>
+                                        </div>
+                                        <br>
+                                        <div class="bio-row">
+                                            <p><input class="form-control" type="text" name="link" id="link" value  ="{{row[6]}}" required></p>
+                                        </div>
+                                        <br>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text" for="inputGroupSelect01">Service Type</label>
+                                            </div>
+                                            <select class="custom-select" id="inputGroupSelect01" name="type">
+                                                <option selected>Choose...</option>
+                                                <option class="auth" value="1">Product Development</option>
+                                                <option class="auth" value="2">Accounting and Bookkeeping</option>
+                                                <option class="auth" value="3">Legal</option>
+                                                <option class="auth" value="4">Marketing</option>
+                                                <option class="auth" value="5">Sales and CRM</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="adjacent-btn" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" id="action" name="action" class="adjacent-btn positive" value="E_{{row[0]}}_{{row[2]}}">Accept Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="section-title">No Services Offered</h3>
+        {% endif %}
+        <button type="button" class="adjacent-btn" data-toggle="modal" data-target="#addModal" style="display:block; margin:auto;">
+            + Add Service
+        </button>
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add a Service</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" id="serviceForm">
+                            <div class="bio-row">
+                                <p><input class="form-control" type="text" name="title" id="title" placeholder="Title" required> </p>
+                            </div>
+                            <br>
+                            <div class="bio-row">
+                                <p><input class="form-control" type="text"  name="description" id="description" placeholder="Description" required></p>
+                            </div>
+                            <br>
+                            <div class="bio-row">
+                                <p><input class="form-control" type="number" name="price" id="price" placeholder="Price" required></p>
+                            </div>
+                            <br>
+                            <div class="bio-row">
+                                <p><input class="form-control" type="text" name="link" id="link" placeholder="Link" required></p>
+                            </div>
+                            <br>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Service Type</label>
+                                </div>
+                                <select class="custom-select" id="inputGroupSelect01" name="type">
+                                    <option selected>Choose...</option>
+                                    <option class="auth" value="1">Product Development</option>
+                                    <option class="auth" value="2">Accounting and Bookkeeping</option>
+                                    <option class="auth" value="3">Legal</option>
+                                    <option class="auth" value="4">Marketing</option>
+                                    <option class="auth" value="5">Sales and CRM</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary main-button" data-dismiss="modal">Close</button>
+                                <button type="submit" name="action" id="action" class="btn main-button" value="A">Add Service</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

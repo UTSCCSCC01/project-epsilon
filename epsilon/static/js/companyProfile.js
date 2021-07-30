@@ -30,6 +30,11 @@
 //     );
 
 var is_editing = false
+document.getElementById('des-row').style.display =  "none";
+document.getElementById('des-row-1').style.display =  "none";
+var prevName="";
+var prevDes="";
+
 function isEditing() {
     //toggle edit/save button
     const valid = document.getElementById("companyForm").checkValidity();
@@ -37,7 +42,6 @@ function isEditing() {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
     } else {
         is_editing = !is_editing;
-
         if (!is_editing) {
             document.getElementById("companyForm").submit();
         }
@@ -49,6 +53,8 @@ function isEditing() {
 
 function disableEdit() {
     is_editing = false;
+    document.getElementById('name').value=prevName
+    document.getElementById('description').value=prevDes
     updateEditDisplay();
 }
 
@@ -69,5 +75,13 @@ function updateEditDisplay() {
 
     document.getElementById('name').readOnly = !is_editing;
     document.getElementById('description').readOnly = !is_editing;
+
+    if (display_name==="Save"){
+        document.getElementById('des-row').style.display =  "block";
+        document.getElementById('des-row-1').style.display =  "block";
+    } else{
+        document.getElementById('des-row').style.display =  "none";
+        document.getElementById('des-row-1').style.display =  "none";
+    }
 }
 

@@ -4,8 +4,9 @@ from classes.JobApplication import JobApplication
 
 class ApplicantDetail(JobApplication):
     def __init__(self, jap_id=0, jid=0, uid=0, sid=0,
-                skills=[], create_date=datetime.now(),
-                user_name="", user_contact="", job_title="", jap_status="", user_description=""):
+                skills="", create_date=datetime.now(),
+                user_name="", user_contact="",  user_description="", 
+                job_title="", job_description="", jap_status="",):
         """
         Child class of JobApplication
         :param jap_id: job application id, unique identifier.
@@ -22,9 +23,10 @@ class ApplicantDetail(JobApplication):
         super().__init__(jap_id,jid, uid, sid, skills, create_date)
         self._user_name = user_name
         self._user_contact = user_contact
-        self._job_title = job_title
-        self._jap_status = jap_status
         self._user_description = user_description
+        self._job_title = job_title
+        self._job_description = job_description
+        self._jap_status = jap_status
 
     @property
     def user_name(self):
@@ -49,6 +51,14 @@ class ApplicantDetail(JobApplication):
     @job_title.setter
     def job_title(self, job_title):
         self._job_title = job_title
+    
+    @property
+    def job_description(self):
+        return self._job_description
+    
+    @job_description.setter
+    def job_description(self, job_description):
+        self._job_descriptions = job_description
 
     @property
     def jap_status(self):

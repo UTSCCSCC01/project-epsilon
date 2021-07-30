@@ -140,12 +140,14 @@ class DAOJobApplication(DAO):
 
     def get_applicant_details_by_tid(self, tid: int) -> List[ApplicantDetail]:
         """
-        Gets job applications along with applicant's name, contact details, job posting title.
+        Gets job applications along with applicant's name, contact details, description,
+        job posting title and description.
         :return: List of ApplicantDetails objects.
         """
         applicants = []
         data = self.get_data('''SELECT ja.jap_id, ja.jid, ja.uid, ja.sid, 
-                             ja.skills, ja.create_date, Users.name, Users.contact, jb.title 
+                             ja.skills, ja.create_date, Users.name, Users.contact, 
+                             Users.description, jb.title, jb.description 
                              FROM JobApplication AS ja
                              JOIN JobPosting jb ON ja.jid = jb.jid
                              JOIN Users ON ja.uid = Users.uid
@@ -154,5 +156,25 @@ class DAOJobApplication(DAO):
         for ap in data:
             applicants.append(ApplicantDetail(ap[0],ap[1],ap[2],ap[3],
                                       ap[4],ap[5],
-                                      ap[6],ap[7],ap[8]))
+                                      ap[6],ap[7],ap[8],ap[9],ap[10]))
         return applicants
+
+    def get_applicant_details_by_jap_id(self, jap_id: int) -> ApplicantDetail:
+        """
+        Gets job application along with applicant's name, contact details, job posting title.
+        :return: an ApplicantDetails objects.
+        """
+        applicant = None
+        data = self.get_data('''SELECT ja.jap_id, ja.jid, ja.uid, ja.sid, 
+                             ja.skills, ja.create_date, Users.name, Users.contact, 
+                             Users.description, jb.title, jb.description 
+                             FROM JobApplication AS ja
+                             JOIN JobPosting jb ON ja.jid = jb.jid
+                             JOIN Users ON ja.uid = Users.uid
+                             WHERE ja.jap_id = %s;''', (jap_id,))
+        if data:
+            ap = data[0]
+            applicant = ApplicantDetail(ap[0],ap[1],ap[2],ap[3],
+                                      ap[4],ap[5],
+                                      ap[6],ap[7],ap[8],ap[9],ap[10])
+        return applicant

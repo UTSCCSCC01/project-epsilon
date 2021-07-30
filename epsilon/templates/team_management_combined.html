@@ -91,7 +91,7 @@
                     </thead>
                     {% for row in applicant_details %}
                     <tr>
-                        <th><a href="/user/{{row.jap_id}}"> {{ row.user_name }}</a> </th>
+                        <th><a href="/applicant/{{row.jap_id}}"> {{ row.user_name }}</a> </th>
                         <td> {{ row.user_contact }} </td>
                         <td> {{ row.jid }} - {{ row.job_title }}</td>
                         <td> {{ row.create_date }}</td>

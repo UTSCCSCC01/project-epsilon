@@ -184,6 +184,7 @@ def services():
 
 
 @app.route('/jobSeeking/', methods=['GET', 'POST'])
+@login_required
 def jobSeeking():
     return render_job_seeking(mysql)
 

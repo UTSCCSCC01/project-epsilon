@@ -38,13 +38,13 @@ def render_company_profile(mysql: MySQL, name:str=""):
                 message = update_company(mysql, tid, name,
                                          description)
         company_details = get_company_profile(mysql, tid)
-
+        company_owner = get_company_owner_by_tid(mysql, tid)
         if rid in [Role.TEAM_ADMIN.value, Role.TEAM_OWNER.value]:
             return render_template('company_profile.html', company_details=company_details,
                                    message=message, user_team=user_team, tid=tid,
-                                   btnName="manage job postings", btnLk="/jobPostingsMgmt")
+                                   btnName="manage job postings", btnLk="/jobPostingsMgmt",
+                                   company_owner=company_owner)
 
-        company_owner = get_company_owner_by_tid(mysql, tid)
         return render_template('company_profile.html', company_details=company_details,
                                message=message, user_team=user_team, tid=tid,
                                btnName="view job postings", btnLk="/jobPostings/"+str(tid)+"/",

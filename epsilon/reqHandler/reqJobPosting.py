@@ -128,13 +128,13 @@ def render_job_seeking(mysql: MySQL):
                 curr_posting = {}
                 curr_posting["title"] = p.title
                 curr_posting["description"] = p.description
+
                 # curr_posting["create_date"] = str(p.create_date)
                 # curr_posting["jid"] = p.jid
                 curr_info.append(curr_posting)
             postings_map[info[1]] = curr_info
-        # print(postings_map)
-        print(curr_tid)
-        return render_template("job_postings_of_all_companies.html", data=json.dumps(postings_map), tid=curr_tid)
+        data = json.dumps(postings_map).replace("'", "\\'")
+        return render_template("job_postings_of_all_companies.html", data=data, tid=curr_tid)
 
     except Exception as e:
         traceback.print_exc()

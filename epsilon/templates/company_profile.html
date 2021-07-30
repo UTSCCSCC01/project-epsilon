@@ -41,7 +41,7 @@
                         </a>
 
                         {% if company_details %}
-                        <h1>{{company_details[0]}}</h1>
+                        <h1>{{company_details.name}}</h1>
                         {% endif %}
                     </div>
                     {% if user_team[0] == tid and (user_team[2] == 1 or user_team[2] == 2) %}

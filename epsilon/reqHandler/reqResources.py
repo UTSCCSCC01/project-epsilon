@@ -9,10 +9,10 @@ from epsilonModules.ModService import *
 from epsilonModules.ModUser import get_user_by_uid
 
 
-def render_about_us(mysql: MySQL):
+def render_resources(mysql: MySQL):
     """
-    Render the About Us page.
-    :return: the template for About Us.
+    Render the Resources page.
+    :return: the template for Resources.
     """
     try:
         global baseUrl
@@ -25,7 +25,7 @@ def render_about_us(mysql: MySQL):
             user = get_user_by_uid(mysql, uid)
             if user.type_id == Type.SERVICE_PROVIDER.value or user.type_id == Type.ADMIN.value:
                 tid = -1
-        return render_template('about_us.html', current_user=current_user, tid=tid)
+        return render_template('resources.html', current_user=current_user, tid=tid)
     except Exception as e:
         tid = 0
-        return render_template('about_us.html',  current_user=current_user, tid=tid)
+        return render_template('resources.html',  current_user=current_user, tid=tid)

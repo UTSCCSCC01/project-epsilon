@@ -1,7 +1,7 @@
 from werkzeug.utils import secure_filename
 from classes.RStatus import RStatus
 from epsilonModules.ModJob import get_job_applications_by_uid
-from epsilonModules.ModTeam import get_user_teams, update_jap_to_rstatus
+from epsilonModules.ModTeam import *
 from epsilonModules.ModUser import *
 from classes.Type import Type
 from flask import request, render_template, redirect, url_for
@@ -50,9 +50,11 @@ def render_user_profile(mysql: MySQL):
         services = get_services_by_uid(mysql,uid)
         job_applications = get_job_applications_by_uid(mysql, uid)
         user_type = Type(current_user.type_id).name.replace("_"," ").title()
-        if current_user.is_authenticated and current_user.type_id == 1:
+
+        if current_user.is_authenticated and in_user_teams(mysql, current_user.uid):
             user_teams = get_user_teams(mysql, current_user.uid)
-            tid = user_teams[0].tid
+            if user_teams:
+                tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
                                message=message, tid=tid, job_applications=job_applications,
                                pic=pfp, user_type=user_type)

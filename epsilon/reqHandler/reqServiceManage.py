@@ -56,8 +56,6 @@ def render_services(mysql: MySQL):
         flt = request.args.get("filter")
         service_details = get_services(mysql)
         filtered_service_details = service_details
-        for a in filtered_service_details:
-            print(a)
         if flt:
             filtered_service_details = filter_services(service_details, flt)
         else:

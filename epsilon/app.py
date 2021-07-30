@@ -17,6 +17,7 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_required
 from flask_cors import CORS
 from databaseAccess.DAOUser import *
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -28,6 +29,7 @@ app.config['MYSQL_USER'] = 'epsilon'
 app.config['MYSQL_PASSWORD'] = '12345'
 app.config['MYSQL_DB'] = 'epsilon_db'
 app.config['SECRET_KEY'] = 'henlo'
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)),'/static/images')
 
 mysql = MySQL(app)
 

@@ -91,7 +91,7 @@ class DAOService(DAO):
                                     service[3], service[4], service[5], service[6]))
         return services
 
-    def get_services(self, uid:int) -> List[Service]:        
+    def get_services_by_uid(self, uid:int) -> List[Service]:        
         """
         Gets all services for given uid.
         :param uid: user id

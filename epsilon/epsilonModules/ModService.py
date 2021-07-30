@@ -38,7 +38,7 @@ def get_services_by_uid(mysql:MySQL, uid:int) -> List:
     """
     dao_service = DAOService(mysql)
     dao_service_type = DAOServiceType(mysql)
-    services = dao_service.get_services(uid)
+    services = dao_service.get_services_by_uid(uid)
 
     service_details = []
     for service in services:

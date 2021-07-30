@@ -62,7 +62,7 @@ class DAO:
         Delete all tables in the database.
         """
         t_names = ["JobApplication", "JobPosting",
-                   "Teams", "Request", "Users", "Roles",
+                   "Teams", "Request", "ProfilePics", "Users", "Roles",
                    "CompanyTags", "Company", "RStatus",
                    "Tags", "Industry", "Type", "Services", "ServiceTypes"]
         for t_name in t_names:

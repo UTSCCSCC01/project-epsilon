@@ -1,9 +1,13 @@
+from werkzeug.utils import secure_filename
 from epsilonModules.ModTeam import get_user_teams
 from epsilonModules.ModUser import *
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 from classes.Service import *
 from epsilonModules.ModService import *
+import os
+from epsilonModules.ModPic import *
+
 
 
 def render_user_profile(mysql: MySQL):
@@ -30,22 +34,49 @@ def render_user_profile(mysql: MySQL):
                     price = request.form['price']
                     link = request.form['link']
                     service = Service(sid,uid,stid,title,description,price,link)
-                    message = edit_service(mysql,Service)
+                    message = edit_service(mysql,service)
                 elif action[0] == "R":
                     message = remove_service(mysql,action[1])
+                elif action[0] =="A":
+                    title = request.form['title']
+                    description = request.form['description']
+                    price = request.form['price']
+                    link = request.form['link']
+                    service_type = None
+                    if "type" in request.form:
+                        service_type = request.form["type"]
+                    message = add_service (mysql, uid, title, description, price, link, service_type)
             elif data:
                 name = request.form["name"]
                 description = request.form["description"]
                 contact = request.form["contact"]
                 message = update_user(mysql, uid, name,
                                       description, contact)
+                if 'pfpi' in request.files:
+                    f = request.files['pfpi']
+                    file = f.stream.read()
+                    if get_pic(mysql,uid) is not None:
+                        edit_pic(mysql,uid,file)
+                    else:
+                        add_pic(mysql,uid,file)
+        print(1)
+        pfp = get_pic(mysql, uid)
+        print(2)
+        if pfp:
+            if os.path.exists("pfp.jpg"):
+                print(3)
+                os.remove("pfp.jpg")
+            with open('pfp.jpg', 'wb') as wf:
+                print(4)
+                wf.write(pfp)
         user_details = get_user_profile(mysql, uid)
         services = get_services_by_uid(mysql,uid)
-        if current_user.is_authenticated:
+        if current_user.is_authenticated and current_user.type_id == 1:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
-                               message=message, tid=tid, services=services)
+                               message=message, tid=tid, services=services,
+                               pic=pfp)
     except ObjectNotExistsError as e:
         return render_template('user_profile.html', user_details=None,
                                message=message, tid= tid)
@@ -70,34 +101,23 @@ def user_services(mysql:MySQL):
     uid = current_user.uid
     message = ""
     try:
-        print(1)
         tid = -1
         if request.method == 'POST':
-            print(request.form)
             action = request.form["action"].split("_")
-            print(3)
             if action[0] == "E":
-                print(4)
                 sid=action[1]
                 stid=action[2]
-                print(5)
                 if "type" in request.form:
-                    print(6)
                     stid=request.form['type']
                 title = request.form['title']
                 description = request.form['description']
                 price = request.form['price']
                 link = request.form['link']
                 service = Service(sid,uid,stid,title,description,price,link)
-                print(7)
                 message = edit_service(mysql,service)
-                print(8)
             elif action[0] == "R":
-                print(9)
                 message = remove_service(mysql,action[1])
-                print(10)
             elif action[0] =="A":
-                print(11)
                 title = request.form['title']
                 description = request.form['description']
                 price = request.form['price']
@@ -106,9 +126,7 @@ def user_services(mysql:MySQL):
                 if "type" in request.form:
                     service_type = request.form["type"]
                 message = add_service (mysql, uid, title, description, price, link, service_type)
-                print(12)
         services = get_services_by_uid(mysql, uid)
-        print(13)
         return render_template("user_services.html", message=message, tid=tid, services=services)
     except Exception as e:
         return render_template("user_services.html", message=e, tid=-1)

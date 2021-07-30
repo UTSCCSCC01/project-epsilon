@@ -8,6 +8,7 @@ from flask_login import current_user
 from classes.Type import Type
 from classes.TeamCode import TeamCode
 from classes.Role import Role
+from reqHandler.reqCompanyManage import render_company_profile
 import sys, traceback
 
 
@@ -33,6 +34,7 @@ def render_team_mgmt_combined(mysql: MySQL):
             message = promote_admin(mysql, action[2], action[1], action[3])
         elif action[0] == 'R':
             message = remove_from_team(mysql, action[2], action[1], action[3])
+        # action -> (request wanted, tid)
         elif action[0] == 'G':
             message = generateTeamCode(mysql, action[1])
         elif action[0] == 'U':
@@ -40,6 +42,7 @@ def render_team_mgmt_combined(mysql: MySQL):
     try:
         teams = get_user_teams(mysql, current_user.uid)
         tid = teams[0].tid
+        print(tid)
         cur_role = teams[0].rid
         # data, company_name = get_join_requests(mysql, tid)
         company_name = get_company_profile(mysql, tid)[0]
@@ -111,3 +114,30 @@ def render_choose_how_to_send_join_request():
     Handler for choose how to send join team request.
     """
     return render_template("choose_how_to_send_join_request.html")
+
+
+def render_join_by_teamCode(mysql:MySQL):
+    """
+    Handler for join team by entering code
+    :param mysql: database to be used
+    :return: rendered template of code form
+    """
+    msg = ""
+    if request.method == 'POST':
+        # see if they are already in a team
+        try:
+            team = get_user_teams(mysql, current_user.uid)
+            msg = "Already in a team"
+        # not in a team
+        except:
+            code = request.form['code']
+            tid = get_tid_by_code(mysql, code)
+            # team code exists
+            if tid != -1:
+                msg = add_to_team(mysql, current_user.uid, tid)
+                if msg == "Joined Successfully":
+                    return render_template("join_team_by_code.html", msg=msg)
+            # code doesn't exist
+            else: 
+                msg = "Invalid Code"
+    return render_template("join_team_by_code.html", error=msg)

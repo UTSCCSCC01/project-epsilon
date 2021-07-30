@@ -55,7 +55,14 @@ https://templatemo.com/tm-535-softy-pinko
                             </div>
                         </li>
                         {% elif current_user.type_id == 1 %}
-                        <li><a href="/registration">Create New Team</a></li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn" disabled><a>Create/Join Team</a></button>
+                                <div class="dropdown-content">
+                                    <a href="/registration">Create New Team</a>
+                                    <a href="/joinByCode/">Join by Invite Code</a>
+                                </div>
+                            </div>
                         {% endif %}
                         <li>
                             <div class="dropdown">

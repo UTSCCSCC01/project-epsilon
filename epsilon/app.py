@@ -143,15 +143,18 @@ def send_join_request_by_company_name():
 def manage_job_postings():
     return render_job_posting_management(mysql)
 
+
 @app.route('/jobPostings/<tid>/', methods=['GET','POST'])
 @login_required
 def display_job_postings(tid):
     return render_job_postings_by_company(mysql, tid)
 
+
 @app.route('/postJob/', methods=['GET', 'POST'])
 @login_required
 def post_new_job():
     return render_post_new_job(mysql)
+
 
 @app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
 @login_required
@@ -162,6 +165,13 @@ def apply_to_job(jid):
 @app.route('/services/', methods=['GET', 'POST'])
 def services():
     return render_services(mysql)
+
+
+@app.route('/joinByCode/', methods=['GET', 'POST'])
+@login_required
+def joinCode():
+    return render_join_by_teamCode(mysql)
+
 
 # EP-17: Display Job Applicant Profile
 @app.route('/applicant/<int:jap_id>/', methods=['GET'])

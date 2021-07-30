@@ -10,6 +10,7 @@ from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAOIndustry import DAOIndustry
 from databaseAccess.DAOCompanyTag import DAOCompanyTag
 from databaseAccess.DAOCompany import DAOCompany
+from databaseAccess.DAOTeamCode import DAOTeamCode
 from databaseAccess.DAOService import DAOService
 from databaseAccess.DAOServiceType import DAOServiceType
 from databaseAccess.DAOProfilePic import DAOProfilePic
@@ -46,6 +47,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_type = DAOType(mysql)
     dao_job_application = DAOJobApplication(mysql)
     dao_job_posting = DAOJobPosting(mysql)
+    dao_teamCode = DAOTeamCode(mysql)
     dao_service = DAOService(mysql)
     dao_service_type = DAOServiceType(mysql)
     dao_profile_pic = DAOProfilePic(mysql)
@@ -63,6 +65,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_type.create_type_table()
     dao_job_application.create_job_application_table()
     dao_job_posting.create_job_posting_table()
+    dao_teamCode.create_teamCode_table()
     dao_service.create_services_table()
     dao_service_type.create_service_types_table()
     dao_profile_pic.create_pic_table()
@@ -75,6 +78,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_user.add_foreign_key()
     dao_job_application.add_foreign_key()
     dao_job_posting.add_foreign_key()
+    dao_teamCode.add_foreign_key()
     dao_service.add_foreign_keys()
     dao_profile_pic.add_foreign_key()
 
@@ -91,6 +95,8 @@ def create_tables(mysql: MySQL) -> str:
     dao_user.add_dummy_users()
     dao_team.add_dummy_team_members()
     dao_request.add_dummy_requests()
+    dao_job_posting.add_dummy_job_postings()
+    dao_job_application.add_dummy_job_applications()
     dao_service.add_dummy_services()
 
     users = dao_user.get_users()
@@ -98,13 +104,16 @@ def create_tables(mysql: MySQL) -> str:
     roles = dao_role.get_roles()
     companies = dao_company.get_companies()
     types = dao_type.get_types()
+    job_postings = dao_job_posting.get_job_postings()
+    job_applications = dao_job_application.get_job_postings()
+
     services = dao_service.get_services()
     service_types = dao_service_type.get_service_types()
 
     t_names = ["Teams", "Users", "Roles",
                "CompanyTags", "Company", "RStatus",
                "Tags", "Industry", "Type", "JobApplication", "JobPosting",
-               "Services", "ServiceTypes", "ProfilePics"]
+               "Services", "ServiceTypes", "TeamCode",  "ProfilePics"]
 
     output = "The following tables are populated! </br> <ul>"
     for t_name in t_names:
@@ -125,6 +134,12 @@ def create_tables(mysql: MySQL) -> str:
     output += "Also three types:</br>"
     for type in types:
         output += str(type.name) + "</br>"
+    output += "Also three job postings:</br>"
+    for job_p in job_postings:
+        output += str(job_p) + "</br>"
+    output += "Also four job applications:</br>"
+    for job_a in job_applications:
+        output += str(job_a) + "</br>"
     output += "Also two services:</br>"
     for service in services:
         output += str(service.title) + "</br>"

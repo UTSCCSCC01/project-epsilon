@@ -49,21 +49,19 @@ https://templatemo.com/tm-535-softy-pinko
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="/yourcompany/">Your Company</a></button>
                                 <div class="dropdown-content">
-                                    <a href="/displayteam/">Display Team</a>
-                                    <a href="/jointeamrequest/">Pending Requests</a>
                                     <a href="/teamManagement/">Team Management</a>
-                                    <a href="/registration">Create New Team</a>
+                                    <!-- Let's not have a user create a team if they are in a team <a href="/registration">Create New Team</a> -->
                                 </div>
                             </div>
                         </li>
-                        {% else %}
+                        {% elif current_user.type_id == 1 %}
                         <li><a href="/registration">Create New Team</a></li>
                         {% endif %}
                         <li>
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="">Resources</a></button>
                                 <div class="dropdown-content">
-                                    <a href="">Our Resources</a>
+                                    <a href="/">Our Resources</a>
                                     <a href="/services">External Services</a>
                                 </div>
                             </div>

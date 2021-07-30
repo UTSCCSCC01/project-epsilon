@@ -166,11 +166,25 @@ def apply_to_job(jid):
 def services():
     return render_services(mysql)
 
+
+@app.route('/joinByCode/', methods=['GET', 'POST'])
+@login_required
+def joinCode():
+    return render_join_by_teamCode(mysql)
+
+
 # EP-17: Display Job Applicant Profile
 @app.route('/applicant/<int:jap_id>/', methods=['GET'])
 @login_required
 def applicant_profile(jap_id):
     return render_applicant_profile(mysql, jap_id)
+
+
+@app.route('/jobSeeking/', methods=['GET', 'POST'])
+@login_required
+def jobSeeking():
+    return render_job_seeking(mysql)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

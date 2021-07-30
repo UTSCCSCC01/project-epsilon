@@ -26,6 +26,7 @@ def checkCode(mysql:MySQL, code:str) -> bool:
     :return: whether the code is active or not
     """
     dao_teamCode = DAOTeamCode(mysql)
+    dao_teamCode.remove_teamcodes()
     teamCode = dao_teamCode.get_teamCode_by_code(code)
     if(teamCode != None):
         return True
@@ -84,5 +85,5 @@ def get_tid_by_code(mysql:MySQL, code:str) -> int:
     tid = -1
     if(checkCode(mysql,code)):
         teamCode = dao_teamCode.get_teamCode_by_code(code)
-        tid = teamCode.tid()
+        tid = teamCode.tid
     return tid

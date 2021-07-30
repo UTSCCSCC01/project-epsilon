@@ -45,7 +45,7 @@ def render_team_mgmt_combined(mysql: MySQL):
         print(tid)
         cur_role = teams[0].rid
         # data, company_name = get_join_requests(mysql, tid)
-        company_name = get_company_profile(mysql, tid)[0]
+        company_name = get_company_profile(mysql, tid).name
         user_details = get_members(mysql, tid)
         applicant_details = get_applicant_details(mysql, tid)
         teamCode = getTeamCode(mysql,tid)
@@ -59,16 +59,16 @@ def render_team_mgmt_combined(mysql: MySQL):
                                     message=message)
             return render_template("team_management_combined.html", applicant_details = applicant_details,
                                 tid=tid, message=message, company_name=company_name, 
-                                userDetails=user_details, cur_role=cur_role, code=code)
+                                userDetails=user_details, cur_role=cur_role, code=code, roles=Role)
         if len(applicant_details) == 0:
                 return render_template("team_management_combined.html",
                                     applicant_message="No applicants!", tid=tid,
                                     company_name=company_name, userDetails=
                                     user_details, cur_role=cur_role,
-                                    message=message)
+                                    message=message, roles=Role)
         return render_template("team_management_combined.html", applicant_details=applicant_details,
                                 tid=tid, message=message, company_name=company_name, 
-                                userDetails=user_details, cur_role=cur_role)                        
+                                userDetails=user_details, cur_role=cur_role, roles=Role)                        
     except Exception as e:
         return render_template("team_management_combined.html",
                                message=e)

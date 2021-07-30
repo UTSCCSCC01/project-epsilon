@@ -56,7 +56,7 @@
                       <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details.contact}}" required readonly></p>
                   </div>
                   <div class="bio-row">
-                      <p><span>User Type</span><input type="text" name="user_type" value="{{types(user_details.type_id).name}}" required readonly></p>
+                      <p><span>User Type</span><input type="text" name="user_type" value="{{types(user_details.type_id).name.replace("_"," ").title()}}" required readonly></p>
                   </div>
                     <div class="bio-row" id="des-row">
                         <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details.description}}"  readonly></p>

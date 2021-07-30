@@ -110,7 +110,7 @@ def about():
 
 @app.route('/resources/', methods=['GET', 'POST'])
 def resources():
-    return render_resources()
+    return render_resources(mysql)
 
 
 # EP-69: Display company profile

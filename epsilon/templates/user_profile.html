@@ -56,7 +56,7 @@
                       <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details.contact}}" required readonly></p>
                   </div>
                   <div class="bio-row">
-                      <p><span>User Type</span><input type="text" name="user_type" value="{{types(user_details.type_id).name.replace("_"," ").title()}}" required readonly></p>
+                      <p><span>User Type</span><input type="text" name="user_type" value="{{user_type}}" required readonly></p>
                   </div>
                     <div class="bio-row" id="des-row">
                         <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details.description}}"  readonly></p>
@@ -65,8 +65,50 @@
               </div>
               {% endif %}
           </div>
-          </div>
       </div>
+    {% if current_user.type_id == 1 %}
+    <div class="panel">
+        <div class="panel-body bio-graph-info">
+            <h1>Job Applications</h1>
+            {% for application in job_applications %}
+            <div class="job-application">
+                <table>
+                    <tr>
+                        <td><h3>{{ application[0].title }}</h3></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><p>Application Status: {{ application[2] }}</p></td>
+                        <td>
+                            <a class="btn btn-primary main-button" href="{{ application[3] }}" role="button" target="_blank">See job posting</a>
+                        </td>
+                    </tr>
+                    {%  if application[2] == "Offer" %}
+                    <tr>
+                        <td>
+                            Would you like to accept this offer?
+                        </td>
+                        <td>
+                            <form action="" method="POST" id="acceptForm">
+                                <button class="btn main-button" name="accept_job" value="{{ application[1].jap_id }}">
+                                    Accept
+                                </button>
+                            </form>
+                            <form action="" method="POST" id="declineForm">
+                                <button class="btn main-button" name="decline_job" value="{{ application[1].jap_id }}">
+                                    Decline
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
   </div>
 </div>
 
@@ -81,6 +123,16 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
+}
+
+.job-application {
+    padding: 1rem;
+    background-color: #eeeeee;
+    margin-bottom: 2rem;
+}
+
+table {
+    border: none;
 }
 
 .profile-nav, .profile-info{

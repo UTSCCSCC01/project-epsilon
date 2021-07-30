@@ -53,12 +53,12 @@
                     </thead>
                     {% for user in userDetails %}
                     <tr>
-                        <th> {{ user.name }} </th>
-                        <td> {{ user.contact }} </td>
-                        <td> {{ roles(user.rid).name }} </td>
+                        <th> {{ user[0] }} </th>
+                        <td> {{ user[2] }} </td>
+                        <td> {{ user[1] }} </td>
                         {% if cur_role != 3 %} <!--current user not member => admin or owner-->
                         <td>
-                            {% if current_user.uid != user.uid and roles(user.rid).name != "Team Owner" %} <!-- current user not themselves or owner-->
+                            {% if current_user.uid != user[3] and user[5] != 1 %} <!-- current user not themselves or owner-->
                             <form action="" method="POST">
                                 <button class="adjacent-btn positive" type="submit" value="P_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Set Admin</button>
                                 <button class="adjacent-btn" type="submit" value="R_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Remove</button>

@@ -59,15 +59,11 @@ def render_user_profile(mysql: MySQL):
                         edit_pic(mysql,uid,file)
                     else:
                         add_pic(mysql,uid,file)
-        print(1)
         pfp = get_pic(mysql, uid)
-        print(2)
         if pfp:
             if os.path.exists("./static/pfp.png"):
-                print(3)
                 os.remove("./static/pfp.png")
             with open('./static/pfp.png', 'wb') as wf:
-                print(4)
                 wf.write(pfp)
         user_details = get_user_profile(mysql, uid)
         services = get_services_by_uid(mysql,uid)

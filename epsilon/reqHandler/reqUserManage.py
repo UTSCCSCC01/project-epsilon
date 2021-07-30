@@ -19,10 +19,8 @@ def render_user_profile(mysql: MySQL):
         if request.method == 'POST':
             if "accept_job" in request.form:
                 message = update_jap_to_rstatus(mysql, int(request.form["accept_job"]), RStatus.ACCEPTED)
-                print(message)
             elif "decline_job" in request.form:
                 message = update_jap_to_rstatus(mysql, int(request.form["decline_job"]), RStatus.DECLINED)
-                print(message)
             else:
                 data = request.get_json
                 if data:

@@ -12,8 +12,8 @@ class AccessDeniedError(Exception):
     """
 
     def __init__(self, functionality=" this page.", role=""):
-        if len(role) != 0:
-            self.role = role
+
+        self.role = role
         if current_user:
             self.curr_user_type = current_user.type_id
         else:

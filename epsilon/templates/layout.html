@@ -57,23 +57,30 @@ https://templatemo.com/tm-535-softy-pinko
                             </div>
                         </li>
                         {% elif current_user.type_id == 1 %}
+
                         <li><a href="/registration">Create New Team</a></li>
                         {% endif %}
-<!-- <<<<<<< HEAD -->
+
                         <li><a href="/resources">Resources</a></li>
                         <li><a href="/services">Services</a></li>
 
-<!--                         <li>
+
+                        <li>
                             <div class="dropdown">
-                                <button class="dropbtn"><a href="">Resources</a></button>
-                                <div class="dropdown-content">
-                                    <a href="/resources">Our Resources</a>
-                                    <a href="/services">External Services</a>
-                                </div>
+                                <button class="dropbtn" disabled><a>Create/Join Team</a></button>
+
                             </div>
-                        </li>  -->
+                        </li> 
                         <!--Resource currently same as Startup Market, if we have a page for templates, fundraising stuff then we can add this back-->
                         <li><a href="/search">Startup Market</a></li>
+                                    <a href="/registration">Create New Team</a>
+                                    <a href="/joinByCode/">Join by Invite Code</a>
+                                </div>
+                            </div>
+                            {% endif %}
+<!--                         <li><a href="/">Resources</a></li>
+                        <li><a href="/services">Services</a></li> -->
+
                         <li><a href="/">Job Seeking</a></li>
                         <li><a href="/aboutUs">About Us</a></li>
                         <li><a href="/search">Search</a></li>

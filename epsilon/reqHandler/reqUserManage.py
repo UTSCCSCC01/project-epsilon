@@ -31,7 +31,7 @@ def render_user_profile(mysql: MySQL):
                     message = update_user(mysql, uid, name,
                                           description, contact)
 
-        user_details = get_user_by_uid(mysql, uid)(mysql, uid)
+        user_details = get_user_by_uid(mysql, uid)
         job_applications = get_job_applications_by_uid(mysql, uid)
 
         if current_user.is_authenticated:

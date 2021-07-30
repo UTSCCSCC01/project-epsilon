@@ -107,6 +107,18 @@ def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid: int, stat
             return True
     return False
 
+def in_user_teams(mysql:MySQL, uid:int) -> bool:
+    """ 
+    Returns if the user is in a team
+    :param mysql: db
+    :param uid: user
+    :return: true if in team false otherwise
+    """
+    dao_team = DAOTeam(mysql)
+    team = dao_team.get_teams_by_uid(uid)
+    if team:
+        return True
+    return False
 
 def get_user_teams(mysql: MySQL, uid: int) -> List[Team]:
     """

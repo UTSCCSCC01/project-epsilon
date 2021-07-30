@@ -14,14 +14,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>Manage Job Postings</title>
 </head>
-
-
 <body>
 
     <div class="contents">
         {% if job_postings %}
         <div class="contents table table-hover table-responsive-sm container">
             <div class="align-items-center h-100">
+
                 <table>
                     <thead class="thead-light">
                         <tr>
@@ -55,9 +54,7 @@
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
     </div>
-
 </body>
-
 </div>
 </html>
 {% endblock %}

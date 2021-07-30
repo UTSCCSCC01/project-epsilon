@@ -183,5 +183,9 @@ def services():
     return render_services(mysql)
 
 
+@app.route('/jobSeeking/', methods=['GET', 'POST'])
+def jobSeeking():
+    return render_job_seeking(mysql)
+
 if __name__ == "__main__":
     app.run(debug=True)

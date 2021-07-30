@@ -81,3 +81,20 @@ class DAO:
         except BaseException as be:
             print(be)
             pass
+
+
+    def get_data_no_arg(self, sql_q: str) -> List[tuple]:
+        """
+        Get a list of data with sql_q.
+        :param sql_q: the sql query string
+        :param data: a tuple containing strings to include in query.
+        """
+        try:
+            cur = self.db.connection.cursor()
+            cur.execute(sql_q)
+            data = cur.fetchall()
+            cur.close()
+            return data
+        except BaseException as be:
+            print(be)
+            pass

@@ -1,5 +1,5 @@
 from reqHandler.reqCompanyManage import render_company_profile
-from reqHandler.reqSearch import render_company_search, search_frontend_test
+from reqHandler.reqSearch import render_company_search
 from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration

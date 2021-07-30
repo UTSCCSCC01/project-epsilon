@@ -1,3 +1,4 @@
+from reqHandler.reqJobApplication import render_applicant_profile
 from reqHandler.reqCompanyManage import render_company_profile
 from reqHandler.reqSearch import render_company_search
 from reqHandler.reqServiceManage import render_services
@@ -62,26 +63,6 @@ def create():
 @login_required
 def reg():
     return render_team_registration(mysql)
-
-
-# EP-2/4/5
-@app.route('/testbtn/', methods=['POST'])
-@login_required
-def testbtn():
-    return act_on_employee(mysql)
-
-
-@app.route("/displayteam/", methods=['GET'])
-@login_required
-def displayteam():
-    return render_display_team(mysql)
-
-
-# EP-3: Accept and Decline pending requests
-@app.route('/jointeamrequest/', methods=['GET', 'POST'])
-@login_required
-def show_team_request():
-    return render_join_team_request(mysql)
 
 
 # EP-20: Display user profile
@@ -182,6 +163,11 @@ def apply_to_job(jid):
 def services():
     return render_services(mysql)
 
+# EP-17: Display Job Applicant Profile
+@app.route('/applicant/<int:jap_id>/', methods=['GET'])
+@login_required
+def applicant_profile(jap_id):
+    return render_applicant_profile(mysql, jap_id)
 
 if __name__ == "__main__":
     app.run(debug=True)

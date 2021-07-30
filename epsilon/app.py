@@ -169,5 +169,10 @@ def services():
 def applicant_profile(jap_id):
     return render_applicant_profile(mysql, jap_id)
 
+@app.route('/jobSeeking/', methods=['GET', 'POST'])
+@login_required
+def jobSeeking():
+    return render_job_seeking(mysql)
+
 if __name__ == "__main__":
     app.run(debug=True)

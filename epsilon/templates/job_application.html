@@ -1,29 +1,63 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Apply To Job{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
+<div class="pagewrap">
 <head>
+
+            <style>
+h1 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}
+
+        input[type="text"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+
+        textarea[type="text"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+
+         button[type="submit"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+}
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>Apply To Job</title>
 </head>
 
-<header>
-</header>
 
 <body>
-    <div id="background" class="title-card">
-        <h1>Enter your skills</h1>
-        <h4>Employers will be able to see your profile after submitting this form</h4>
-    </div>
 
     <div class="contents">
+                <h1>Enter your skills</h1>
+        <h4>Note: Employers will be able to see your profile after submitting this form</h4>
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" name="skills" required>
+
+            <textarea class="auth" rows="10" cols="40" type="text" name="skills" required></textarea>
             <br>
             <br>
-            <input class="btn" type="submit" value="apply">
+
+
+            <button  type="submit" value="apply">Apply</button>
+<!--            <input class="btn" type="submit" value="apply">-->
         </form>
 
         {% if error %}
@@ -33,15 +67,7 @@
         <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
     </div>
-
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
-    </div>
-
 </body>
-
+</div>
 </html>
+{% endblock %}

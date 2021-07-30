@@ -1,6 +1,47 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Post A Job{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
 <!DOCTYPE html>
 <html lang="en">
+<div class="pagewrap">
 <head>
+        <style>
+        input[type="text"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+
+        textarea[type="text"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+
+         button[type="submit"] {
+             position: relative;
+             display: block;
+             margin : 0 auto;
+        }
+
+<!--.center {-->
+<!--  margin: 0;-->
+<!--  position: relative;-->
+<!--  top: 50%;-->
+<!--  left: 45%;-->
+<!--  -ms-transform: translate(-50%, -50%);-->
+<!--  transform: translate(-50%, -50%);-->
+<!--}-->
+
+
+}
+    </style>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -13,17 +54,29 @@
 
         <form action="" method="post">
             <br>
-            <h2 style="display:inline;">title</h2>
-            <input class="auth" type="text" name="title" required>
+            <h2 style="text-align:center">title</h2>
+                <input  class="auth" type="text" name="title" required>
             <br>
              <br>
-            <h2 style="display:inline;">description</h2>
-            <input class="auth" type="text" name="description" required>
+            <h2 style="text-align:center">description</h2>
+            <textarea class="auth" rows="10" cols="40" name="description" type="text" required></textarea>
+
+<!--            <input  style="height:200px;font-size:14pt;" class="auth" type="text" name="description" required>-->
             <br>
             <br>
-            <input class="btn" type="submit" value="send">
+<!--                      <div class="center">-->
+                          <button  type="submit">Post!</button>
+<!--                    </div>-->
+
 
         </form>
+
+
+
+
+
+<!--                    <input class="btn" type="submit" value="Post!">-->
+
 
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
@@ -33,15 +86,9 @@
         {% endif %}
     </div>
 
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
-    </div>
 </body>
 
 </div>
 </html>
 
+{% endblock %}

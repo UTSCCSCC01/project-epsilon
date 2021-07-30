@@ -1,22 +1,27 @@
 {% extends "layout.html" %}
-{% block title %}Epsilon{% endblock %}
-
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/services.js') }}"></script>
+{% endblock %}
+{% block title %}External Services{% endblock %}
 {% block content %}
-    <div id="background" class="title-card" style="margin-top: 9em">
+    <div style="margin-top: 9em">
         <h1>External Services</h1>
         <hr>
     </div>
-
     {% if is_service_provider %}
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary float-right main-button" data-toggle="modal" data-target="#addModal">
+        <button type="button" class="btn btn-primary float-right main-button" data-toggle="modal"
+                data-target="#addModal">
             + Add Service
         </button>
         <br><br><br>
     {% endif %}
 
     <!-- Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,19 +33,23 @@
                 <div class="modal-body">
                     <form action="" method="POST" id="serviceForm">
                         <div class="bio-row">
-                            <p><input class="form-control" type="text" name="title" id="title" placeholder="Title" required> </p>
+                            <p><input class="form-control" type="text" name="title" id="title" placeholder="Title"
+                                      required></p>
                         </div>
                         <br>
                         <div class="bio-row">
-                            <p><input class="form-control" type="text"  name="description" id="description" placeholder="Description" required></p>
+                            <p><input class="form-control" type="text" name="description" id="description"
+                                      placeholder="Description" required></p>
                         </div>
                         <br>
                         <div class="bio-row">
-                            <p><input class="form-control" type="number" name="price" id="price" placeholder="Price" required></p>
+                            <p><input class="form-control" type="number" name="price" id="price" placeholder="Price"
+                                      required></p>
                         </div>
                         <br>
                         <div class="bio-row">
-                            <p><input class="form-control" type="text" name="link" id="link" placeholder="Link" required></p>
+                            <p><input class="form-control" type="text" name="link" id="link" placeholder="Link"
+                                      required></p>
                         </div>
                         <br>
                         <div class="input-group mb-3">
@@ -57,7 +66,8 @@
                             </select>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary main-button" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary main-button" data-dismiss="modal">Close
+                            </button>
                             <button type="submit" id="form-submit" class="btn main-button">Add Service</button>
                         </div>
                     </form>
@@ -70,45 +80,60 @@
         {% if message %}
             <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
-        {% for service in service_details %}
+        <form action="" method="GET">
+            <select name="filter" id="filter" onchange="this.form.submit()">
+                <option value="" selected disabled hidden>{{ flt }}</option>
+                <option value="All">All</option>
+                <option value="Product Development">Product Development</option>
+                <option value="Accounting and Bookkeeping">Accounting and Bookkeeping</option>
+                <option value="Legal">Legal</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales and CRM">Sales and CRM</option>
+            </select>
+        </form>
+        <br>
+        <h2 id="pick"></h2>
+        <br>
+        {% for service in filtered_service_details %}
             <!--List order: ser_id, uid, ser_type_id, title, description, price, link-->
-        <div class="jumbotron">
-          <h1 class="display-4">{{service[3]}}</h1>
-          <p class="lead">{{service[4]}}</p>
-          <hr class="my-4">
-          <p>Price: {{service[5]}}</p>
-          <br>
-          <p class="lead">
-            <a class="btn btn-primary main-button" href="{{service[6]}}" target=”_blank” role="button">Learn more</a>
-          </p>
-        </div>
+            <div class="jumbotron">
+                <h1 class="display-4">{{ service[3] }}</h1>
+                <p class="lead">{{ service[4] }}</p>
+                <hr class="my-4">
+                <p>Price: {{ service[5] }}</p>
+                <br>
+                <p class="lead">
+                    <a class="btn btn-primary main-button" href="{{ service[6] }}" target=”_blank” role="button">Learn
+                        more</a>
+                </p>
+            </div>
         {% endfor %}
         {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
     </div>
 {% endblock %}
 
- {% block footer %}
+{% block footer %}
     {{ super() }}
     <!-- ***** Footer Start ***** -->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <ul class="social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <ul class="social">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                </ul>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
+            </div>
+        </div>
+    </div>
     <!-- ***** Footer End ***** -->
- {% endblock %}
+{% endblock %}

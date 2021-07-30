@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
-<body scroll="no" style="overflow: hidden">
+<body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container bootstrap snippets bootdey">
 <div class="row">
@@ -47,23 +47,45 @@
               {% if user_details %}
               <form action="" method="POST" id="userForm">
 
-                <div class="bio-row" id="des-row-1">
+                  <div class="bio-row" id="des-row-1">
                       <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> </p>
-                </div>
+                  </div>
                   <div class="bio-row">
                       <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details[2]}}" required readonly></p>
                   </div>
                   <div class="bio-row">
                       <p><span>User Type</span><input type="text" name="user_type" value="{{user_details[3]}}" required readonly></p>
                   </div>
-                    <div class="bio-row" id="des-row">
-                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}"  readonly></p>
-                    </div>
+                      <div class="bio-row" id="des-row">
+                          <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}"  readonly></p>
+                      </div>
                   </form>
               </div>
               {% endif %}
           </div>
+      </div>
+      <div class="panel">
+          <div class="panel-body bio-graph-info">
+              <h1>Job Applications</h1>
+              {% for application in job_applications %}
+              <div class="job-application">
+                  <table>
+                      <tr>
+                          <td><h3>{{ application[0] }}</h3></td>
+                          <td></td>
+                      </tr>
+                      <tr>
+                          <td><p>Application Status: {{ application[1] }}</p></td>
+                          <td>
+                              <a class="btn btn-primary main-button" href="{{ application[2] }}" role="button">Link to job posting</a>
+                          </td>
+                      </tr>
+                  </table>
+              </div>
+              {% endfor %}
           </div>
+      </div>
+      </div>
       </div>
   </div>
 </div>
@@ -79,6 +101,16 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
+}
+
+.job-application {
+    padding: 1rem;
+    background-color: #eeeeee;
+    margin-bottom: 2rem;
+}
+
+table {
+    border: none;
 }
 
 .profile-nav, .profile-info{

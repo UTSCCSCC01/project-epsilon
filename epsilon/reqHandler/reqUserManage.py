@@ -27,10 +27,10 @@ def render_user_profile(mysql: MySQL):
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
-                               message=message, tid= tid)
+                               message=message, tid=tid)
     except ObjectNotExistsError as e:
         return render_template('user_profile.html', user_details=user_details,
-                               message=message, tid= tid)
+                               message=message, tid=tid)
     except Exception as e:
         return render_template('user_profile.html', message=e)
 

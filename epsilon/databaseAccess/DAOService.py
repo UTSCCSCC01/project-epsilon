@@ -90,3 +90,23 @@ class DAOService(DAO):
             services.append(Service(service[0], service[1], service[2],
                                     service[3], service[4], service[5], service[6]))
         return services
+
+    def get_services(self, uid:int) -> List[Service]:        
+        """
+        Gets all services for given uid.
+        :param uid: user id
+        :return: List of Service objects.
+        """
+        services = []
+        data = self.get_data('''SELECT * FROM Services WHERE uid = %s''', (uid,))
+        for service in data:
+            services.append(Service(service[0], service[1], service[2],
+                                    service[3], service[4], service[5], service[6]))
+        return services
+
+    def remove_service(self, sid:int) -> None:
+        """
+        removes selected service
+        :param sid: service id
+        """
+        self.modify_data('''DELETE FROM Services WHERE ser_id = %s''',(sid,))

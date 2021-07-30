@@ -1,3 +1,5 @@
+from epsilonModules.ModUser import update_user
+from databaseAccess.DAO import DAO
 from typing import List
 from flask_mysqldb import MySQL
 
@@ -27,6 +29,25 @@ def get_services(mysql: MySQL) -> List:
     return service_details
 
 
+def get_services_by_uid(mysql:MySQL, uid:int) -> List:
+    """
+    Returns all services related to a user
+    :param mysql: db
+    :param uid: user id
+    :return: list of all services
+    """
+    dao_service = DAOService(mysql)
+    dao_service_type = DAOServiceType(mysql)
+    services = dao_service.get_services(uid)
+
+    service_details = []
+    for service in services:
+        ser_type = dao_service_type.get_ser_type_by_id(service.ser_type_id)
+        ser_type_name = ser_type.name.replace("_", " ").title()
+        service_details.append([service.ser_id, service.uid, ser_type_name, service.title, service.description,
+                                service.price, service.link])
+    return service_details
+
 def add_service(mysql: MySQL, uid: int, title: str, description: str, price: int,
                 link: str, service_type: int) -> str:
     """
@@ -55,3 +76,35 @@ def add_service(mysql: MySQL, uid: int, title: str, description: str, price: int
         except Exception as e:
             # display issue w db
             raise e
+
+def edit_service(mysql:MySQL, service:Service) -> str:
+    """
+    Updates the values of a service
+    :param mysql: db
+    :param service: details to update
+    :return: the success or error messasge
+    """
+    dao_service = DAOService(mysql)
+    if service.uid < 0 or len(service.title) == 0 or len(service.description) == 0 or service.price == 0 or len(service.link) == 0 or service.ser_type_id == 0:
+        raise FormIncompleteError()
+    else:
+        try:
+            dao_service.update_service(service)
+            message = "Service details updated!"
+            return message
+        except Exception as e:
+            raise e
+
+def remove_service(mysql:MySQL, sid:int) -> str:
+    """
+    removes service from db
+    :param mysql: db
+    :param sid: service id
+    :return: completion message or error
+    """
+    dao_service = DAOService(mysql)
+    try:
+        dao_service.remove_service(sid)
+        return "Service Removed"
+    except Exception as e:
+        raise e

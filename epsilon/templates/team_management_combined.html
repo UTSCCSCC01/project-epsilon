@@ -46,15 +46,15 @@
                     </thead>
                     {% for user in userDetails %}
                     <tr>
-                        <th> {{ user[0] }} </th>
-                        <td> {{ user[2] }} </td>
-                        <td> {{ user[1] }} </td>
+                        <th> {{ user.name }} </th>
+                        <td> {{ user.contact }} </td>
+                        <td> {{ roles(user.rid).name }} </td>
                         {% if cur_role != 3 %} <!--current user not member => admin or owner-->
                         <td>
-                            {% if current_user.uid != user[3] and user[1] != "Team Owner" %} <!-- current user not themselves or owner-->
+                            {% if current_user.uid != user.uid and roles(user.rid).name != "Team Owner" %} <!-- current user not themselves or owner-->
                             <form action="" method="POST">
-                                <button class="adjacent-btn positive" type="submit" value="P_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Set Admin</button>
-                                <button class="adjacent-btn" type="submit" value="R_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Remove</button>
+                                <button class="adjacent-btn positive" type="submit" value="P_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Set Admin</button>
+                                <button class="adjacent-btn" type="submit" value="R_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Remove</button>
                             </form>
                             {% endif %}
                         </td>
@@ -83,15 +83,15 @@
                     </thead>
                     {% for row in data %}
                     <tr>
-                        <th> {{ row[0] }} </th>
-                        <td> {{ row[1] }} </td>
-                        <td> {{ row[2] }} </td>
+                        <th> {{ row[0].name }} </th>
+                        <td> {{ row[0].contact }} </td>
+                        <td> {{ row[1].create_date }} </td>
                         {% if cur_role != 3 %}
                         <td>
-                            {% if current_user.uid != row[4] %}
-                            <form action="" method="POST" id="form_{{row[3]}}">
-                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
-                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                            {% if current_user.uid != row[0].uid %}
+                            <form action="" method="POST" id="form_{{row[1].req_id}}">
+                            <button class="adjacent-btn positive" type="submit" value="A_{{row[1].req_id}}_{{tid}}" name="action">Accept</button>
+                            <button class="adjacent-btn" type="submit" value="D_{{row[1].req_id}}_{{tid}}" name="action">Decline</button>
                             </form>
                             {% endif %}
                         </td>

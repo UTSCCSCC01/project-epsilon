@@ -1,3 +1,4 @@
+from flask_mysqldb import MySQL
 from epsilonModules.ModJob import apply_to_job, check_existence_of_application
 from flask import request, render_template
 from flask_login import current_user

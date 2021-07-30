@@ -31,12 +31,12 @@
                     </thead>
                     {% for row in data %}
                     <tr>
-                        <th> {{ row[0] }} </th>
-                        <td> {{ row[1] }} </td>
-                        <td> {{ row[2] }} </td>
-                        <td><form action="" method="POST" id="form_{{row[3]}}">
-                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
-                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                        <th> {{ row[0].name }} </th>
+                        <td> {{ row[0].contact }} </td>
+                        <td> {{ row[1].create_date }} </td>
+                        <td><form action="" method="POST" id="form_{{row[2].req_id}}">
+                            <button class="adjacent-btn positive" type="submit" value="A_{{row[2].req_id}}_{{tid}}" name="action">Accept</button>
+                            <button class="adjacent-btn" type="submit" value="D_{{row[2].req_id}}_{{tid}}" name="action">Decline</button>
                             </form>
                         </td>
                     </tr>

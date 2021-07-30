@@ -13,9 +13,13 @@ def render_company_search(mysql: MySQL):
     :return template for search test
     """
     tid = -1
-    if current_user.is_authenticated:
-        user_teams = get_user_teams(mysql, current_user.uid)
-        tid = user_teams[0].tid
+    try:
+        if current_user.is_authenticated:
+            user_teams = get_user_teams(mysql, current_user.uid)
+            tid = user_teams[0].tid
+    except Exception as e:
+        tid = -1
+
     if request.method == 'POST':
         try:
             print("before getting search")

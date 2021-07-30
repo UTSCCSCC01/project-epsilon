@@ -1,3 +1,4 @@
+from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.ObjectExistsError import ObjectExistsError
@@ -31,7 +32,7 @@ def reverse_status_of_job_posting(mysql: MySQL, jid: int):
     else:
         raise ObjectNotExistsError(obj="this job posting")
 
-def get_job_postings_by_tid(mysql: MySQL, tid: int, active_only=False) -> [JobPosting]:
+def get_job_postings_by_tid(mysql: MySQL, tid: int, active_only=False) -> List[JobPosting]:
     """
     Returns all job postings of a company.
     If active_only, then only return active jobs.
@@ -71,7 +72,7 @@ def post_job(mysql: MySQL, tid: int, title: str, description:str):
     dao_job_posting.post_new_job(tid=tid, title=title, description=description)
     return "Job Posted."
 
-def get_tid_by_admin_uid(mysql: MySQL, uid:int) -> [int]:
+def get_tid_by_admin_uid(mysql: MySQL, uid:int) -> List[int]:
     dao_team = DAOTeam(mysql)
     tid_list = dao_team.get_tids_by_admin_uid(uid=uid)
     return tid_list

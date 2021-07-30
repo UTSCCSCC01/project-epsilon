@@ -1,3 +1,4 @@
+from classes.User import User
 from typing import List
 from flask_mysqldb import MySQL
 from exceptions.ObjectNotExistsError import ObjectNotExistsError
@@ -50,26 +51,19 @@ def promote_admin(mysql: MySQL, tid: int, uid: int, rid: int) -> str:
         return "Promote admin successful!"
 
 
-def get_members(mysql: MySQL, tid: int) -> List:
+def get_members(mysql: MySQL, tid: int) -> List[User]:
     """
     Return the users that has are in the team.
     :param mysql: mysql db.
     :param tid: tid of company.
-    :return List of user details of a team.
+    :return List of users of a team.
     """
     dao_team = DAOTeam(mysql)
-    dao_role = DAORole(mysql)
     users = dao_team.get_users_from_team(tid)
     if not users:
         raise ObjectNotExistsError("Your team")
     # there are values in the database
-    user_details = []
-    for user in users:
-        role = dao_role.get_role_by_rid(user.rid)
-        role_name = role.name.replace("_", " ").title()
-        user_details.append([user.name, role_name, user.contact,
-                            user.uid, tid, user.rid])
-    return user_details
+    return users
 
 
 def get_join_requests(mysql: MySQL, tid: int):
@@ -90,7 +84,7 @@ def get_join_requests(mysql: MySQL, tid: int):
     data = []
     for req in requests:
         user = dao_user.get_user_by_uid(req.uid)
-        data.append([user.name, user.contact, req.create_date, req.req_id, user.uid])
+        data.append([user, req])
     return data, company.name
 
 
@@ -178,7 +172,7 @@ def get_user_teams(mysql: MySQL, uid: int) -> List[Team]:
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.
     :param uid: uid of the user.
-    :Return a list of team details.
+    :Return a list of team objects.
     """
     dao_team = DAOTeam(mysql)
     teams = dao_team.get_teams_by_uid(uid)

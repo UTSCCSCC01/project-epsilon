@@ -49,7 +49,7 @@
             <div class="profile-info col-md-9">
                 <div class="panel">
                     <div class="bio-graph-heading">
-                        <p>{{company_details[1]}}</p>
+                        <p>{{company_details.description}}</p>
                     </div>
 
                     <div class="panel-body bio-graph-info">
@@ -60,11 +60,11 @@
 
                                 <div class="bio-row">
                                     <p><span>Name </span><input type="text" name="name" id="name"
-                                            value="{{company_details[0]}}" required readonly> </p>
+                                            value="{{company_details.name}}" required readonly> </p>
                                 </div>
                                 <div class="bio-row">
                                     <p><span>Description</span><input type="text" name="description" id="description"
-                                            value="{{company_details[1]}}" required readonly></p>
+                                            value="{{company_details.description}}" required readonly></p>
                                 </div>
                             </form>
                         </div>

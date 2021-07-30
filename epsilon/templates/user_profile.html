@@ -28,7 +28,7 @@
               </a>
 
               {% if user_details %}
-              <h1>{{user_details[0]}}</h1>
+              <h1>{{user_details.name}}</h1>
               {% endif %}
           </div>
             <button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard Changes</button>
@@ -38,7 +38,7 @@
   <div class="profile-info col-md-9">
       <div class="panel">
           <div class="bio-graph-heading">
-              <p>{{user_details[1]}}</p>
+              <p>{{user_details.description}}</p>
           </div>
 
           <div class="panel-body bio-graph-info">
@@ -48,16 +48,16 @@
               <form action="" method="POST" id="userForm">
 
                 <div class="bio-row" id="des-row-1">
-                      <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details[0]}}" required readonly> </p>
+                      <p><span>Name </span><input type="text" name="name" id="name" value="{{user_details.name}}" required readonly> </p>
                 </div>
                   <div class="bio-row">
-                      <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details[2]}}" required readonly></p>
+                      <p><span>Email </span><input type="text"  name="contact" id="contact" value="{{user_details.contact}}" required readonly></p>
                   </div>
                   <div class="bio-row">
-                      <p><span>User Type</span><input type="text" name="user_type" value="{{user_details[3]}}" required readonly></p>
+                      <p><span>User Type</span><input type="text" name="user_type" value="{{types(user_details.type_id).name}}" required readonly></p>
                   </div>
                     <div class="bio-row" id="des-row">
-                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details[1]}}"  readonly></p>
+                        <p><span>Description</span><input type="text" name="description" id="description" value="{{user_details.description}}"  readonly></p>
                     </div>
                   </form>
               </div>

@@ -25,18 +25,18 @@
             {% for user in userDetails %}
             <tr>
                 <!--temp.name, temp.role, temp.contact, temp.uid, Teams.tid, temp.rid -->
-                <td>{{user[0]}}</td>
-                <td>{{user[1]}}</td>
-                <td>{{user[2]}}</td>
+                <td>{{user.name}}</td>
+                <td>{{roles(user.rid).name}}</td>
+                <td>{{user.contact}}</td>
                 <!--add remove and promote button-->
                 <td>
                     <form action="/testbtn/" method="post">
-                        <button name='submit' type="submit" value="r.{{user[3]}}.{{user[4]}}.{{user[5]}}">Remove</button>
+                        <button name='submit' type="submit" value="r.{{user.uid}}.{{user.tid}}.{{user.rid}}">Remove</button>
                     </form>
                 </td>
                 <td>
                     <form action="/testbtn/" method="post">
-                        <button name='submit' type="submit" value="p.{{user[3]}}.{{user[4]}}.{{user[5]}}">Set admin</button>
+                        <button name='submit' type="submit" value="p.{{user.uid}}.{{user.tid}}.{{user.rid}}">Set admin</button>
                     </form>
                 </td>
 

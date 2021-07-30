@@ -85,7 +85,7 @@ def user_reg():
 
 @app.route('/aboutUs/', methods=['GET', 'POST'])
 def about():
-    return render_about_us()
+    return render_about_us(mysql)
 
 
 # EP-69: Display company profile
@@ -99,7 +99,7 @@ def display_your_company():
 
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
-    return render_company_profile(mysql, name.replace("_"," "))
+    return render_company_profile(mysql, name.replace("_", " "))
 
 
 @app.route('/logout/')
@@ -143,15 +143,18 @@ def send_join_request_by_company_name():
 def manage_job_postings():
     return render_job_posting_management(mysql)
 
-@app.route('/jobPostings/<tid>/', methods=['GET','POST'])
+
+@app.route('/jobPostings/<tid>/', methods=['GET', 'POST'])
 @login_required
 def display_job_postings(tid):
     return render_job_postings_by_company(mysql, tid)
+
 
 @app.route('/postJob/', methods=['GET', 'POST'])
 @login_required
 def post_new_job():
     return render_post_new_job(mysql)
+
 
 @app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
 @login_required

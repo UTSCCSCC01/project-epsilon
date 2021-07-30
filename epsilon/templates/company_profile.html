@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
+{% endblock %}
+{% block title %}Display Team{% endblock %}
+{% block content %}
+
+
 <head>
     <meta charset="utf-8">
     <title>My Profile</title>
@@ -13,6 +25,7 @@
 </head>
 
 {% if error ==null %}
+
 <body>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div class="container bootstrap snippets bootdey">
@@ -20,11 +33,11 @@
             <div class="profile-nav col-md-3">
 
                 <div id="background" class="title-card">
-                    <button id="byIdBtn" class="float-left submit-button" >{{btnName}} </button>
+                    <button id="byIdBtn" class="float-left submit-button">{{btnName}} </button>
                     <script type="text/javascript">
                         document.getElementById("byIdBtn").onclick = function () {
-                        location.href = '{{ btnLk}}';
-                    };
+                            location.href = '{{ btnLk}}';
+                        };
                     </script>
                 </div>
 
@@ -78,8 +91,8 @@
                                             value="{{company_owner.name}}" required readonly> </p>
                                 </div>
                                 <div class="bio-row">
-                                    <p><span>Owner Contact</span><input type="text" name="owner-contact" id="owner-contact"
-                                            value="{{company_owner.contact}}" required readonly></p>
+                                    <p><span>Owner Contact</span><input type="text" name="owner-contact"
+                                            id="owner-contact" value="{{company_owner.contact}}" required readonly></p>
                                 </div>
                             </form>
                         </div>
@@ -346,6 +359,31 @@
         .activity-desk .album a:last-child {
             margin-right: 0px;
         }
+
+        .header-area .main-nav .logo img {
+            -webkit-transition: all 0.3s ease 0s;
+            -moz-transition: all 0.3s ease 0s;
+            -o-transition: all 0.3s ease 0s;
+            transition: all 0.3s ease 0s;
+            max-width: 300%;
+            max-height: 300%;
+            padding-left: 0px;
+            padding-bottom: 25px;
+            padding-right: -10px;
+        }
+
+        .header-area .main-nav .nav li {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        h2 {
+            margin-top: -12px;
+        }
+
+        .header-area .main-nav .nav li:second-child {
+            padding-bottom: 50px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -357,4 +395,6 @@
 {% else %}
 <h2>{{error}}</h2>
 {% endif %}
+{% endblock %}
+
 </html>

@@ -5,6 +5,7 @@ from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqAboutUs import render_about_us
+from reqHandler.reqResources import render_resources
 from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
@@ -86,6 +87,11 @@ def user_reg():
 @app.route('/aboutUs/', methods=['GET', 'POST'])
 def about():
     return render_about_us(mysql)
+
+
+@app.route('/resources/', methods=['GET', 'POST'])
+def resources():
+    return render_resources(mysql)
 
 
 # EP-69: Display company profile

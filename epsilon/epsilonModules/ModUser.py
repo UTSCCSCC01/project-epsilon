@@ -34,21 +34,19 @@ def update_user(mysql: MySQL, uid: int, name: str,
         return "User info updated."
 
 
-def get_user_profile(mysql: MySQL, uid: int) -> List:
+def get_user_by_uid(mysql: MySQL, uid: int) -> User:
     """
     Return the detaisl of a user.
     :param mysql: mysql db.
     :param uid: uid of user.
-    :return List of user details.
+    :return user.
     """
     dao_user = DAOUser(mysql)
     user = dao_user.get_user_by_uid(uid)
     if user is None:
         raise ObjectNotExistsError("The user")
-    user_type = Type(user.type_id)
-    user_type_name = user_type.name.replace("_", " ").title()
-    user_details = [user.name, user.description, user.contact, user_type_name]
-    return user_details
+    
+    return user
 
 
 # EP-23 User Registration
@@ -107,14 +105,3 @@ def user_login(mysql: MySQL, username: str, password: str) -> User:
         raise InputInvalidError("Password does not match.")
     return user
 
-
-def get_user_by_uid(mysql: MySQL, uid: int) -> User:
-    """
-    Return a user object.
-    :param mysql: mysql db.
-    :param uid: uid of user.
-    :return user object.
-    """
-    dao_user = DAOUser(mysql)
-    user = dao_user.get_user_by_uid(uid)
-    return user

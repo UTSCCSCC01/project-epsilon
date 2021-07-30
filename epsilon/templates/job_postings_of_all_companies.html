@@ -29,7 +29,7 @@
 
     <script>
         var el_up = document.getElementById("GFG_UP");
-
+        var s = {{ data | safe}};
         var d = JSON.parse('{{ data | safe}}');
         for (const key of Object.keys(d)) {
             var list = d[key];

@@ -1,3 +1,4 @@
+from classes.User import User
 from classes.JobApplication import JobApplication
 from classes.ApplicantDetail import ApplicantDetail
 from typing import List
@@ -55,12 +56,12 @@ def promote_admin(mysql: MySQL, tid: int, uid: int, rid: int) -> str:
         return "Promote admin successful!"
 
 
-def get_members(mysql: MySQL, tid: int) -> List:
+def get_members(mysql: MySQL, tid: int) -> List[User]:
     """
     Return the users that has are in the team.
     :param mysql: mysql db.
     :param tid: tid of company.
-    :return List of user details of a team.
+    :return List of users of a team.
     """
     dao_team = DAOTeam(mysql)
     dao_role = DAORole(mysql)
@@ -75,6 +76,28 @@ def get_members(mysql: MySQL, tid: int) -> List:
         user_details.append([user.name, role_name, user.contact,
                              user.uid, tid, user.rid])
     return user_details
+
+
+def get_join_requests(mysql: MySQL, tid: int):
+    """
+    Return a list of request details and the company name.
+    :param mysql: mysql db.
+    :param tid: tid of company.
+    :return list of request details and the company name.
+    """
+    dao_request = DAORequest(mysql)
+    dao_company = DAOCompany(mysql)
+    dao_user = DAOUser(mysql)
+
+    requests = dao_request.get_requests_by_tid_sid(tid, RStatus.PENDING.value)
+    company = dao_company.get_company_by_tid(tid)
+    if not company:
+        raise ObjectNotExistsError("Your team")
+    data = []
+    for req in requests:
+        user = dao_user.get_user_by_uid(req.uid)
+        data.append([user, req])
+    return data, company.name
 
 
 def check_join_requests_by_tid_uid_status(mysql: MySQL, tid: int, uid: int, status_choice: List[int]) -> bool:
@@ -111,7 +134,7 @@ def get_user_teams(mysql: MySQL, uid: int) -> List[Team]:
     Returns the data of the teams that user with uid is in
     :param mysql: mysql db.
     :param uid: uid of the user.
-    :Return a list of team details.
+    :Return a list of team objects.
     """
     dao_team = DAOTeam(mysql)
     teams = dao_team.get_teams_by_uid(uid)

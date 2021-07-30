@@ -168,7 +168,7 @@ def render_join_by_teamCode(mysql:MySQL):
             if tid != -1:
                 msg = add_to_team(mysql, current_user.uid, tid)
                 if msg == "Joined Successfully":
-                    return render_template(mysql, msg=msg)
+                    return render_template("join_team_by_code.html", msg=msg)
             # code doesn't exist
             else: 
                 msg = "Invalid Code"

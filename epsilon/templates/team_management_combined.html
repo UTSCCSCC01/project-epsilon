@@ -3,7 +3,7 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
-{% block title %}Join Team Request{% endblock %}
+{% block title %}Team Management{% endblock %}
 {% block content %}
 <div class="pagewrap">
     <div class="main">
@@ -20,11 +20,18 @@
                             <h2 class="section-title">Manage Current Team</h2>
                         </a>
                     </li>
+                    {% if cur_role != 3 %}
                     <li class="nav-item" id="reqBtn">
-                        <a class="nav-link" href="#Team-Request">
-                            <h2 class="section-title">Manage Join Team Requests</h2>
+                        <a class="nav-link" href="#Team-Applicants">
+                            <h2 class="section-title">Manage Applicants</h2>
                         </a>
                     </li>
+                    <li class="nav-item" id="linkBtn">
+                        <a class="nav-link" href="#Team-Link">
+                            <h2 class="section-title">Manage Team Join Code</h2>
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             <hr>
@@ -65,41 +72,101 @@
             </div>
         </div>
         {% endif %}
+        {% if cur_role != 3 %}
+        {% if applicant_details %}
         <hr>
-        {% if data %}
-        <div class="contents table table-hover table-responsive-sm container" id="Team-Request">
-            <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Team Requests</h3>
+        <div class="contents table table-hover table-responsive-sm container" id="Team-Applicants">
+            <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Job Applicants</h3>
             <div class="align-items-center h-100">
                 <table>
                     <thead class="thead-light">
                         <tr>
                             <th>User</th>
                             <th>Contact Info</th>
-                            <th>Request Time</th>
-                            {% if cur_role != 3 %}
+                            <th>Posting</th>
+                            <th>Application Created</th>
+                            <th>Status</th>
                             <th>Action</th>
-                            {% endif %}
                         </tr>
                     </thead>
-                    {% for row in data %}
+                    {% for row in applicant_details %}
                     <tr>
-                        <th> {{ row[0] }} </th>
-                        <td> {{ row[1] }} </td>
-                        <td> {{ row[2] }} </td>
-                        {% if cur_role != 3 %}
+                        <th><a href="/applicant/{{row.jap_id}}"> {{ row.user_name }}</a> </th>
+                        <td> {{ row.user_contact }} </td>
+                        <td> {{ row.jid }} - {{ row.job_title }}</td>
+                        <td> {{ row.create_date }}</td>
+                        <th> {{ row.jap_status }} </th>
                         <td>
-                            {% if current_user.uid != row[4] %}
-                            <form action="" method="POST" id="form_{{row[3]}}">
-                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
-                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                            {% if current_user.uid != row.uid %}
+                            <form action="" method="POST" id="form_{{row.jap_id}}">
+                            {% if row.sid == 1 %}
+                            <button class="adjacent-btn positive" type="submit" value="I_{{row.jap_id}}_{{tid}}" name="action">Proceed to Interview</button>
+                            {% elif row.sid == 2 %}
+                            <button class="adjacent-btn positive" type="submit" value="O_{{row.jap_id}}_{{tid}}" name="action">Send Offer</button>
+                            {% endif %}
+                            {% if row.sid <= 2 %}
+                            <button class="adjacent-btn" type="submit" value="D_{{row.jap_id}}_{{tid}}" name="action">Reject</button>
+                            {% else %}
+                            N/A
+                            {% endif %}
                             </form>
                             {% endif %}
                         </td>
-                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>
             </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="align-items-center h-100" style="margin-bottom: 3%;">
+            {% if applicant_message %}
+            <p class="message"><strong>Message:</strong> {{ applicant_message }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if cur_role != 3 %}
+        <hr>
+        <div class="container" id="Team-Link">
+            <h3 class="section-title" id="subtitle-h3" style="margin-bottom: 1%;">Invite Team Members</h3>
+            <div class="align-items-center h-100">
+                <table>
+                    <tr>
+                        {% if code %}
+                        <td>
+                            <p>Active Code: {{ code }}</p>
+                        </td>
+                        <td>
+                            <button class="adjacent-btn" onclick="copyLink()" name="action">Copy</button>
+                        </td>
+                        <form action="" method="POST">
+                            <td>
+                                <button class="adjacent-btn" type="submit" value="G_{{tid}}" name="action">Regenerate</button>
+                            </td>
+                            <td>
+                                <button class="adjacent-btn" type="submit" value="U_{{tid}}" name="action">Deactivate</button>
+                            </td>
+                        </form>
+                        {% else %}
+                        <td>
+                            <p>No Active Code</p>
+                        </td>
+                        <td>
+                            <button class="adjacent-btn disabled" onclick="copyLink()" disabled name="action">Copy</button>
+                        </td>
+                        <form action="" method="POST">
+                            <td>
+                                <button class="adjacent-btn" type="submit" value="G_{{tid}}" name="action">Activate</button>
+                            </td>
+                            <td>
+                                <button class="adjacent-btn disabled" disabled name="action">Deactivate</button>
+                            </td>
+                        </form>
+                        {% endif %}
+                    </tr>
+                </table>
+            </div>
+            
         </div>
         {% endif %}
         <div class="container">
@@ -114,4 +181,12 @@
     </div>
 </div>
 
+<script>
+    function copyLink() {
+        code.select();
+        code.setSelectionRange(0,99999);
+        document.execCommand("copy");
+        alert("Team Code Copied!");
+    }
+</script>
 {% endblock %}

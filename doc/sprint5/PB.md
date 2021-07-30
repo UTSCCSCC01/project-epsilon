@@ -1,0 +1,12 @@
+# Product Backlog
+- As a team administrator, I would like to receive a notification when a user makes a request to join my team.
+- As a team administrator, I can browse a variety of loan/grant options.
+- As a team administrator, I want to see a list of loans and grants the company has applied for.
+- As a team administrator, I want to create a loan/grant record to keep track of the loans and grants I applied for.
+- As a team administrator, I want to update the status on existing loans/grants.
+- As a team administrator, I want to archive a past loan/grant record so I can focus on current loans/grants.
+- As a user, I would like to see news dedicated to startups and other entrepreneurs and their sources.
+- As a user, I want to be able to filter my searches.
+- As a partner, I want to be able to see who requested my service.
+- As a partner, I want to be able to view pending and denied service requests.
+- As a site owner, I want to verify resources offered by partners before they get published.

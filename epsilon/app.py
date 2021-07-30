@@ -1,5 +1,6 @@
 from reqHandler.reqCompanyManage import render_company_profile
-from reqHandler.reqSearch import render_company_search, search_frontend_test
+from reqHandler.reqSearch import render_company_search
+from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqAboutUs import render_about_us
@@ -107,14 +108,17 @@ def about():
 
 
 # EP-69: Display company profile
+# in EP-81, if currently logged in user has role admin then a button to
+# /jobPostingsMgmt is added
 @app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
 def display_your_company():
     return render_company_profile(mysql)
 
+
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
-    return render_company_profile(mysql, name)
+    return render_company_profile(mysql, name.replace("_"," "))
 
 
 @app.route('/logout/')
@@ -123,7 +127,7 @@ def logout():
     return render_logout()
 
 
-#E EP-73 
+# EP-73
 @app.route('/teamManagement/', methods=['GET', 'POST'])
 @login_required
 def teamMgmt():
@@ -134,35 +138,52 @@ def teamMgmt():
 def load_user(id):
     return load_User_O(mysql, int(id))
 
-  
-@app.route('/sendJoinRequest', methods=['GET', 'POST'])
+
+@app.route('/sendJoinRequest/', methods=['GET', 'POST'])
 @login_required
 def choose_how_to_send_join_request():
     return render_choose_how_to_send_join_request()
 
-  
-@app.route('/sendJoinRequestByTid', methods=['GET', 'POST'])
+
+@app.route('/sendJoinRequestByTid/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_tid():
     return render_send_join_team_message(mysql, by_tid=True)
 
-  
-@app.route('/sendJoinRequestByCompanyName', methods=['GET', 'POST'])
+
+@app.route('/sendJoinRequestByCompanyName/', methods=['GET', 'POST'])
 @login_required
 def send_join_request_by_company_name():
-    return render_send_join_team_message(mysql,by_tid=False)
+    return render_send_join_team_message(mysql, by_tid=False)
 
 
-@app.route('/joinByCode', methods=['GET', 'POST'])
-@login_required
-def join_by_code():
-    return render_join_by_teamCode(mysql)
-
-
-@app.route('/JobPostingsMgmt/', methods=['GET', 'POST'])
+@app.route('/jobPostingsMgmt/', methods=['GET', 'POST'])
 @login_required
 def manage_job_postings():
-    pass
+    return render_job_posting_management(mysql)
+
+
+@app.route('/jobPostings/<tid>/', methods=['GET','POST'])
+@login_required
+def display_job_postings(tid):
+    return render_job_postings_by_company(mysql, tid)
+
+
+@app.route('/postJob/', methods=['GET', 'POST'])
+@login_required
+def post_new_job():
+    return render_post_new_job(mysql)
+
+
+@app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
+@login_required
+def apply_to_job(jid):
+    return render_job_application(mysql, jid)
+
+
+@app.route('/services/', methods=['GET', 'POST'])
+def services():
+    return render_services(mysql)
 
 
 if __name__ == "__main__":

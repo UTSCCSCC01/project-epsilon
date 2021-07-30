@@ -41,5 +41,5 @@ def load_User_O(mysql: MySQL, uid: int):
     :param uid: uid of user
     :return user object.
     """
-    user = load_User_Object(mysql, uid)
+    user = get_user_by_uid(mysql, uid)
     return user

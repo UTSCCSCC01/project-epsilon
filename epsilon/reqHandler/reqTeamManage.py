@@ -1,4 +1,3 @@
-import json
 from epsilonModules.ModTeam import *
 from epsilonModules.ModTeamCode import *
 from flask import request, render_template, redirect, url_for
@@ -68,7 +67,7 @@ def render_join_team_request(mysql: MySQL):
         return render_template("join_team_request.html",
                                message=e)
 
-      
+
 def render_team_mgmt_combined(mysql: MySQL):
     """
     Handler for page containing both join 
@@ -116,14 +115,14 @@ def render_team_mgmt_combined(mysql: MySQL):
                                     company_name=company_name, userDetails=
                                     user_details, cur_role=cur_role)
         return render_template("team_management_combined.html", data=data, tid=tid,
-                                message=message, company_name=company_name, 
-                                userDetails=user_details, cur_role=cur_role)                        
+                               message=message, company_name=company_name,
+                               userDetails=user_details, cur_role=cur_role)
     except Exception as e:
         return render_template("team_management_combined.html",
                                message=e)
 
 
-def render_send_join_team_message(mysql: MySQL, by_tid:bool):
+def render_send_join_team_message(mysql: MySQL, by_tid: bool):
     """
     Handler for sending join team request.
     :param mysql: mysql db.
@@ -137,12 +136,12 @@ def render_send_join_team_message(mysql: MySQL, by_tid:bool):
             if by_tid:
                 tid = str(request.form["search"])
                 message = add_join_team_request_by_tid(mysql=mysql, tid=tid,
-                                                    uid=uid, type_id=type_id)
+                                                       uid=uid, type_id=type_id)
 
             else:
                 company_name = request.form["search"]
                 message = add_join_team_request_by_company_name(mysql=mysql,
-                                company_name=company_name, uid=uid, type_id=type_id)
+                                                                company_name=company_name, uid=uid, type_id=type_id)
             return render_template("send_join_request.html",
                                    choice=template_choice_dict[by_tid],
                                    message=message)
@@ -163,6 +162,7 @@ def render_choose_how_to_send_join_request():
     Handler for choose how to send join team request.
     """
     return render_template("choose_how_to_send_join_request.html")
+
 
 def render_join_by_teamCode(mysql:MySQL):
     """

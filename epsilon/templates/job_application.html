@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>send join team request</title>
+    <title>Apply To Job</title>
 </head>
 
 <header>
@@ -13,18 +13,17 @@
 
 <body>
     <div id="background" class="title-card">
-        <h1>Epsilon</h1>
-        {% if choice %}
-            <h2>Enter {{choice}} to send join request</h2>
-        {% endif %}
+        <h1>Enter your skills</h1>
+        <h4>Employers will be able to see your profile after submitting this form</h4>
     </div>
+
     <div class="contents">
         <form action="" method="post">
             <br>
-            <input class="auth" type="text" name="search" value="{{request.form.tid }}">
+            <input class="auth" type="text" name="skills" required>
             <br>
             <br>
-            <input class="btn" type="submit" value="send">
+            <input class="btn" type="submit" value="apply">
         </form>
 
         {% if error %}

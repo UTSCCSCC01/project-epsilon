@@ -8,7 +8,6 @@ from exceptions.AccessDeniedError import AccessDeniedError
 from exceptions.FormIncompleteError import FormIncompleteError
 from classes.Team import Team
 from classes.Role import Role
-from classes.RStatus import RStatus
 from classes.Request import Request
 from databaseAccess.DAORequest import DAORequest
 from databaseAccess.DAORole import DAORole
@@ -20,7 +19,6 @@ from databaseAccess.DAOJobApplication import DAOJobApplication
 from flask_login import current_user
 from classes.Type import Type
 from classes.RStatus import RStatus
-import traceback
 
 
 def remove_from_team(mysql: MySQL, tid: int,
@@ -162,7 +160,6 @@ def add_join_team_request_by_tid(mysql: MySQL, tid:str, uid:int, type_id:int) ->
         return message
     else:
         raise AccessDeniedError(functionality="send request to join a company.")
-
 
 def add_join_team_request_by_company_name(mysql: MySQL, company_name:str, uid:int, type_id:int) -> str:
     """

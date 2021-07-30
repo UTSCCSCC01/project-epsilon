@@ -89,6 +89,8 @@ def about():
 
 
 # EP-69: Display company profile
+# in EP-81, if currently logged in user has role admin then a button to
+# /jobPostingsMgmt is added
 @app.route('/yourcompany/', methods=['GET', 'POST'])
 @login_required
 def display_your_company():
@@ -136,10 +138,25 @@ def send_join_request_by_company_name():
     return render_send_join_team_message(mysql, by_tid=False)
 
 
-@app.route('/JobPostingsMgmt/', methods=['GET', 'POST'])
+@app.route('/jobPostingsMgmt/', methods=['GET', 'POST'])
 @login_required
 def manage_job_postings():
-    pass
+    return render_job_posting_management(mysql)
+
+@app.route('/jobPostings/<tid>/', methods=['GET','POST'])
+@login_required
+def display_job_postings(tid):
+    return render_job_postings_by_company(mysql, tid)
+
+@app.route('/postJob/', methods=['GET', 'POST'])
+@login_required
+def post_new_job():
+    return render_post_new_job(mysql)
+
+@app.route('/applyToJob/<jid>/', methods=['GET', 'POST'])
+@login_required
+def apply_to_job(jid):
+    return render_job_application(mysql, jid)
 
 
 @app.route('/services/', methods=['GET', 'POST'])

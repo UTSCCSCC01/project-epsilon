@@ -1,3 +1,4 @@
+
 from epsilonModules.ModCompany import get_company_profile
 import json
 from epsilonModules.ModTeam import *
@@ -8,6 +9,7 @@ from classes.Type import Type
 from classes.TeamCode import TeamCode
 from classes.Role import Role
 import sys, traceback
+
 
 
 # def act_on_employee(mysql: MySQL):

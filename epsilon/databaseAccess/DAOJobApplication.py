@@ -1,3 +1,4 @@
+
 from classes.ApplicantDetail import ApplicantDetail
 from datetime import datetime
 from typing import List
@@ -56,6 +57,7 @@ class DAOJobApplication(DAO):
              application.sid,
              application.skills))
 
+
     def update_job_application_status(self, application: JobApplication) -> None:
         """
         Updates the status an existing job application.
@@ -79,12 +81,25 @@ class DAOJobApplication(DAO):
                                 WHERE uid = %s
                                 ORDER BY create_date DESC''',
                              (uid,))
-        # column order: jap_id, jid, uid, sid, skills, create_date
         for d in data:
             applications.append(JobApplication(jap_id=d[0], jid=d[1], uid=d[2],
                                                sid=d[3], skills=d[4],
                                                create_date=d[5]))
         return applications
+
+
+    def check_job_application_exists_by_uid_jid(self, uid: int, jid:int) -> bool:
+        """
+        Check whether uid applied to the job jid before.
+        :param uid: uid id of the user to be retrieved.
+        :param jid: jid of job to check.
+        :return: whether such application exist.
+        """
+        data = self.get_data('''SELECT * FROM JobApplication
+                                WHERE uid = %s AND jid=%s
+                                ORDER BY create_date DESC''',
+                             (uid,jid,))
+        return len(data) > 0
 
     def get_job_application_by_jap_id(self, jap_id: int) -> JobApplication:
         """
@@ -178,3 +193,15 @@ class DAOJobApplication(DAO):
                                       ap[4],ap[5],
                                       ap[6],ap[7],ap[8],ap[9],ap[10])
         return applicant
+
+    def send_job_application(self, jid: int, uid: int, skills: str):
+        """
+        Sends a job application.
+        :param jid: job id.
+        :param uid: user id.
+        :param skills: the skills  the user used to apply to this job.
+        """
+        application = JobApplication(jid=jid, uid=uid,
+                                     sid=RStatus.APPLIED.value, skills=skills)
+        self.add_job_application(application=application)
+

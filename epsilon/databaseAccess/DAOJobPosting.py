@@ -1,7 +1,5 @@
-from datetime import datetime
 from typing import List
 from .DAO import DAO
-from classes.RStatus import RStatus
 from classes.JobPosting import JobPosting
 
 
@@ -83,3 +81,45 @@ class DAOJobPosting(DAO):
         for job in data:
             job_postings.append(JobPosting(job[0],job[1],job[2],job[3],job[4],job[5]))
         return job_postings
+
+    def post_new_job(self,  tid: int, title: str, description:str):
+        posting = JobPosting(tid=tid, title=title, description=description, active=True)
+        self.add_job_posting(posting=posting)
+
+    def update_job_posting_status(self, jid: int, new_status: bool) -> None:
+        """
+        Update the active status of a job posting.
+        :param jid: The id of the posting to reverse.
+        :param new_status: The new status.
+        """
+        self.modify_data(
+            '''UPDATE JobPosting Set active = %s WHERE jid = %s''',
+            (new_status, jid))
+
+    def get_status_of_job_posting(self, jid: int) -> bool:
+
+        data = self.get_data('''SELECT active FROM JobPosting
+                                WHERE jid = %s''',
+                             (jid,))
+        if len(data) == 0:
+            return None
+        else:
+            return bool(data[0][0])
+
+    def get_job_postings_by_tid(self, tid: int, active_only=False) -> List[JobPosting]:
+        postings = []
+        if active_only:
+            query = '''SELECT title, description, create_date, active, jid FROM JobPosting
+                                    WHERE tid = %s AND active=1
+                                    ORDER BY create_date DESC'''
+        else:
+            query = '''SELECT title, description, create_date, active, jid FROM JobPosting
+                                WHERE tid = %s
+                                ORDER BY active DESC, create_date DESC'''
+
+        job_postings = self.get_data(query, (tid,))
+
+        for posting in job_postings:
+            postings.append(JobPosting(title=posting[0], description=posting[1],
+                                       create_date=posting[2], active=posting[3], jid=posting[4]))
+        return postings

@@ -63,6 +63,7 @@ class JobApplication():
     def skills(self):
         return self._skills
 
+
     @skills.setter
     def skills(self, skills):
         self._skills = skills

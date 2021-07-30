@@ -28,8 +28,8 @@
                     {% for row in services %}
                     <tr>
                         <th>{{row[3]}}</th>
-                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#view">View</button></td>
-                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#edit">Edit</button></td>
+                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#view{{row[0]}}">View</button></td>
+                        <td><button class="adjacent-btn" data-toggle="modal" data-target="#edit{{row[0]}}">Edit</button></td>
                         <td>
                             <form action="" method="POST">
                                 <button class="adjacent-btn" name="action" id="action" type="submit" value="R_{{row[0]}}">Remove</button>
@@ -37,6 +37,7 @@
                         </td>
                     </tr>
                     <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="view" aria-hidden="true">
+                    <div class="modal fade" id="view{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="view" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -64,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                    <div class="modal fade" id="edit{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -88,7 +89,7 @@
                                         </div>
                                         <br>
                                         <div class="bio-row">
-                                            <p><input class="form-control" type="text" name="link" id="link" value="{{row[6]}}" required></p>
+                                            <p><input class="form-control" type="text" name="link" id="link" value  ="{{row[6]}}" required></p>
                                         </div>
                                         <br>
                                         <div class="input-group mb-3">

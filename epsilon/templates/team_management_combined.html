@@ -120,7 +120,7 @@
                     <tr>
                         {% if code %}
                         <td>
-                            <p>Active Code: {{ code }}</p>
+                            <p>Active Code: {{ code }}</p><input id="code" value="{{code}}" style="display:none;">
                         </td>
                         <td>
                             <button class="adjacent-btn" onclick="copyLink()" name="action">Copy</button>
@@ -169,10 +169,9 @@
 
 <script>
     function copyLink() {
-        code.select();
-        code.setSelectionRange(0,99999);
-        document.execCommand("copy");
-        alert("Team Code Copied!");
+        var copyText = document.getElementById("code");
+        navigator.clipboard.writeText(copyText.value);
+        alert("Copied Team Invite Code!")
     }
 </script>
 {% endblock %}

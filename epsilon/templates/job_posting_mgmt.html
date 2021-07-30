@@ -1,6 +1,14 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Join Team Request{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
 <!DOCTYPE html>
 <html lang="en">
-
+<div class="pagewrap">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +18,7 @@
 
 
 <body>
-    <div id="background" class="title-card">
+    <div id="background">
          {% if error == null%}
         <button id="byIdBtn" class="float-left submit-button" >Post A Job! </button>
         <script type="text/javascript">
@@ -57,14 +65,7 @@
         {% endif %}
     </div>
 
-    <div class="footer">
-        <footer>
-            <p>
-                Epsilon 2021
-            </p>
-        </footer>
-    </div>
 </body>
-
+</div>
 </html>
-
+{% endblock %}

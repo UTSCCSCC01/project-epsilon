@@ -58,10 +58,10 @@
                         <td> {{ user[1] }} </td>
                         {% if cur_role != 3 %} <!--current user not member => admin or owner-->
                         <td>
-                            {% if current_user.uid != user[3] and user[1] != "Team Owner" %} <!-- current user not themselves or owner-->
+                            {% if current_user.uid != user[3] and user[5] != 1 %} <!-- current user not themselves or owner-->
                             <form action="" method="POST">
-                                <button class="adjacent-btn positive" type="submit" value="P_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Set Admin</button>
-                                <button class="adjacent-btn" type="submit" value="R_{{user[3]}}_{{user[4]}}_{{user[5]}}" name="action">Remove</button>
+                                <button class="adjacent-btn positive" type="submit" value="P_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Set Admin</button>
+                                <button class="adjacent-btn" type="submit" value="R_{{user.uid}}_{{tid}}_{{user.rid}}" name="action">Remove</button>
                             </form>
                             {% endif %}
                         </td>
@@ -134,7 +134,7 @@
                     <tr>
                         {% if code %}
                         <td>
-                            <p>Active Code: {{ code }}</p>
+                            <p>Active Code: {{ code }}</p><input id="code" value="{{code}}" style="display:none;">
                         </td>
                         <td>
                             <button class="adjacent-btn" onclick="copyLink()" name="action">Copy</button>
@@ -183,10 +183,9 @@
 
 <script>
     function copyLink() {
-        code.select();
-        code.setSelectionRange(0,99999);
-        document.execCommand("copy");
-        alert("Team Code Copied!");
+        var copyText = document.getElementById("code");
+        navigator.clipboard.writeText(copyText.value);
+        alert("Copied Team Invite Code!")
     }
 </script>
 {% endblock %}

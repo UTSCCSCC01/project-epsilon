@@ -1,6 +1,9 @@
 from werkzeug.utils import secure_filename
-from epsilonModules.ModTeam import get_user_teams
+from classes.RStatus import RStatus
+from epsilonModules.ModJob import get_job_applications_by_uid
+from epsilonModules.ModTeam import get_user_teams, update_jap_to_rstatus
 from epsilonModules.ModUser import *
+from classes.Type import Type
 from flask import request, render_template, redirect, url_for
 from flask_login import current_user
 from classes.Service import *
@@ -57,6 +60,7 @@ def render_user_profile(mysql: MySQL):
                                message=message, tid= tid)
     except Exception as e:
         return render_template('user_profile.html', message=e)
+
 
 def load_User_O(mysql: MySQL, uid: int):
     """

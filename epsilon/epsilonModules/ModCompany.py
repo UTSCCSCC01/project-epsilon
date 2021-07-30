@@ -144,34 +144,32 @@ def add_dummy_companies(mysql: MySQL) -> None:
                                    company.description, company.name)
 
 
-def get_company_profile(mysql: MySQL, tid: int) -> List:
+def get_company_profile(mysql: MySQL, tid: int) -> Company:
     """
-    Return the details of a company in a list.
+    Return the company object with the same tid.
     :param mysql: mysql db.
     :param tid: tid of the company.
-    :return List of company details. L[0] is the company name and L[1] is the company description.
+    :return a company object with details from company number tid.
     """
     dao_company = DAOCompany(mysql)
     company = dao_company.get_company_by_tid(tid)
     if company is None:
         raise ObjectNotExistsError("The company")
-    company_details = [company.name, company.description, company.ind_id]
-    return company_details
+    return company
 
 
-def get_company_profile_by_name(mysql: MySQL, name: str) -> List:
+def get_company_profile_by_name(mysql: MySQL, name: str) -> Company:
     """
-    Return the details of a company in a list.
+    Return the company object with the same name.
     :param mysql: mysql db.
     :param name: name of the company.
-    :return List of company details. L[0] is the company name and L[1] is the company description.
+    :return return a company object with details from company with name.
     """
     dao_company = DAOCompany(mysql)
     company = dao_company.get_company_by_name(name)
     if company is None:
         raise ObjectNotExistsError("The company")
-    company_details = [company.tid, company.name, company.description]
-    return company_details
+    return company
 
 
 def update_company(mysql: MySQL, tid: int, name: str,

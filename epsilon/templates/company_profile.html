@@ -1,15 +1,21 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}My Company{% endblock %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
-
+<div class="pagewrap">
 <head>
     <meta charset="utf-8">
-    <title>My Profile</title>
+    <title>Company Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
-    <!--    <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>-->
-
 </head>
 
 {% if error ==null %}
@@ -35,7 +41,7 @@
                         </a>
 
                         {% if company_details %}
-                        <h1>{{company_details[0]}}</h1>
+                        <h1>{{company_details.name}}</h1>
                         {% endif %}
                     </div>
                     {% if user_team[0] == tid and (user_team[2] == 1 or user_team[2] == 2) %}
@@ -49,7 +55,7 @@
             <div class="profile-info col-md-9">
                 <div class="panel">
                     <div class="bio-graph-heading">
-                        <p>{{company_details[1]}}</p>
+                        <p>{{company_details.description}}</p>
                     </div>
 
                     <div class="panel-body bio-graph-info">
@@ -60,11 +66,11 @@
 
                                 <div class="bio-row" id="des-row-1">
                                     <p><span>Name </span><input type="text" name="name" id="name"
-                                            value="{{company_details[0]}}" required readonly> </p>
+                                            value="{{company_details.name}}" required readonly> </p>
                                 </div>
                                 <div class="bio-row" id="des-row">
                                     <p><span>Description</span><input type="text" name="description" id="description"
-                                            value="{{company_details[1]}}" required readonly></p>
+                                            value="{{company_details.description}}" required readonly></p>
                                 </div>
                             </form>
                         </div>
@@ -89,7 +95,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
     <style type="text/css">
         body {
@@ -357,4 +363,7 @@
 {% else %}
 <h2>{{error}}</h2>
 {% endif %}
+
+</div>
 </html>
+{% endblock %}

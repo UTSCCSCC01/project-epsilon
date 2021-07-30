@@ -6,6 +6,7 @@ from reqHandler.reqServiceManage import render_services
 from reqHandler.reqUserManage import load_User_O, render_user_profile
 from reqHandler.reqUserRegister import render_user_registration
 from reqHandler.reqAboutUs import render_about_us
+from reqHandler.reqResources import render_resources
 from reqHandler.reqTeamManage import *
 from reqHandler.reqTeamRegister import render_team_registration
 from reqHandler.reqLogin import render_login
@@ -88,7 +89,12 @@ def user_reg():
 
 @app.route('/aboutUs/', methods=['GET', 'POST'])
 def about():
-    return render_about_us()
+    return render_about_us(mysql)
+
+
+@app.route('/resources/', methods=['GET', 'POST'])
+def resources():
+    return render_resources(mysql)
 
 
 # EP-69: Display company profile
@@ -102,7 +108,7 @@ def display_your_company():
 
 @app.route('/company/<string:name>', methods=['GET', 'POST'])
 def display_company(name):
-    return render_company_profile(mysql, name.replace("_"," "))
+    return render_company_profile(mysql, name.replace("_", " "))
 
 
 @app.route('/logout/')
@@ -146,10 +152,12 @@ def send_join_request_by_company_name():
 def manage_job_postings():
     return render_job_posting_management(mysql)
 
-@app.route('/jobPostings/<tid>/', methods=['GET','POST'])
+
+@app.route('/jobPostings/<tid>/', methods=['GET', 'POST'])
 @login_required
 def display_job_postings(tid):
     return render_job_postings_by_company(mysql, tid)
+
 
 @app.route('/postJob/', methods=['GET', 'POST'])
 @login_required
@@ -167,6 +175,13 @@ def apply_to_job(jid):
 def services():
     return render_services(mysql)
 
+
+@app.route('/joinByCode/', methods=['GET', 'POST'])
+@login_required
+def joinCode():
+    return render_join_by_teamCode(mysql)
+
+
 # EP-17: Display Job Applicant Profile
 @app.route('/applicant/<int:jap_id>/', methods=['GET'])
 @login_required
@@ -177,6 +192,11 @@ def applicant_profile(jap_id):
 @login_required
 def get_services():
     return user_services(mysql)
+
+@app.route('/jobSeeking/', methods=['GET', 'POST'])
+@login_required
+def jobSeeking():
+    return render_job_seeking(mysql)
 
 
 if __name__ == "__main__":

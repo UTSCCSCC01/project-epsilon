@@ -47,14 +47,14 @@ class DAORStatus(DAO):
 
     def get_status_by_sid(self, sid: int) -> RStatus:
         """
-        Gets a rstatus from the database.
+        Gets a status from the database.
         :param sid: RStatus id of the status to be retrieved.
         :return: RStatus object representing the sid. None if not found.
         """
-        rstatus = None
+        status = None
         data = self.get_data('''SELECT * FROM RStatus WHERE sid = %s''', (sid,))
         if data is not None:
-            rstatus = data[0]
-            return RStatus(rstatus[0])
+            status = data[0]
+            return RStatus(status[0])
         else:
             return None

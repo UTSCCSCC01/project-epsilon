@@ -67,12 +67,13 @@ def render_user_profile(mysql: MySQL):
                 wf.write(pfp)
         user_details = get_user_profile(mysql, uid)
         services = get_services_by_uid(mysql,uid)
+        user_type = current_user.type_id
         if current_user.is_authenticated and current_user.type_id == 1:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
         return render_template('user_profile.html', user_details=user_details,
                                message=message, tid=tid, services=services,
-                               pic=pfp)
+                               pic=pfp, user_type=user_type)
     except ObjectNotExistsError as e:
         return render_template('user_profile.html', user_details=None,
                                message=message, tid= tid)

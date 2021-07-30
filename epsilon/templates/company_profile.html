@@ -54,24 +54,24 @@
 
                     <div class="panel-body bio-graph-info">
                         <h1>Bio Graph</h1>
+                        {% if company_details %}
                         <div class="row">
-                            {% if company_details %}
-                            <form action="" method="POST" id="userForm">
+                            <form action="" method="POST" id="companyForm">
 
-                                <div class="bio-row">
+                                <div class="bio-row" id="des-row-1">
                                     <p><span>Name </span><input type="text" name="name" id="name"
                                             value="{{company_details[0]}}" required readonly> </p>
                                 </div>
-                                <div class="bio-row">
+                                <div class="bio-row" id="des-row">
                                     <p><span>Description</span><input type="text" name="description" id="description"
                                             value="{{company_details[1]}}" required readonly></p>
                                 </div>
                             </form>
                         </div>
-                        {% endif %}
+                        {% endif %} 
+                        {% if company_owner %}
                         <div class="row">
-                            {% if company_owner %}
-                            <form id="userForm">
+                            <form id="companyForm">
 
                                 <div class="bio-row">
                                     <p><span>Owner Name </span><input type="text" name="owner-name" id="owner-name"
@@ -351,7 +351,7 @@
     <script type="text/javascript">
 
     </script>
-    <script src="{{ url_for('static', filename='js/userProfile.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/companyProfile.js') }}"></script>
 
 </body>
 {% else %}

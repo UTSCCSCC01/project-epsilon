@@ -24,11 +24,11 @@ def render_company_profile(mysql: MySQL, name:str=""):
             user_team = [user_teams[0].tid,
                          user_teams[0].uid,
                          user_teams[0].rid]
-            tid = user_team[0]
-            rid = user_team[2]
+            tid = user_teams[0].tid
+            rid = user_teams[0].rid
         else:   # if name is given or current_user is not logged in
             company_details = get_company_profile_by_name(mysql, name)
-            tid = company_details[0]
+            tid = company_details.tid
 
         if request.method == 'POST':
             data = request.get_json

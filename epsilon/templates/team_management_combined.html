@@ -20,11 +20,13 @@
                             <h2 class="section-title">Manage Current Team</h2>
                         </a>
                     </li>
+                    {% if data %}
                     <li class="nav-item" id="reqBtn">
                         <a class="nav-link" href="#Team-Request">
                             <h2 class="section-title">Manage Join Team Requests</h2>
                         </a>
                     </li>
+                    {% endif %}
                     {% if cur_role != 3 %}
                     <li class="nav-item" id="linkBtn">
                         <a class="nav-link" href="#Team-Link">
@@ -97,8 +99,8 @@
                         <td>
                             {% if current_user.uid != row[4] %}
                             <form action="" method="POST" id="form_{{row[3]}}">
-                            <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
-                            <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
+                                <button class="adjacent-btn positive" type="submit" value="A_{{row[3]}}_{{tid}}" name="action">Accept</button>
+                                <button class="adjacent-btn" type="submit" value="D_{{row[3]}}_{{tid}}" name="action">Decline</button>
                             </form>
                             {% endif %}
                         </td>

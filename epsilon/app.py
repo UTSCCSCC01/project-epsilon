@@ -185,6 +185,10 @@ def apply_to_job(jid):
 def services():
     return render_services(mysql)
 
+@app.route('/joinByCode/', methods=['GET', 'POST'])
+@login_required
+def joinCode():
+    return render_join_by_teamCode(mysql)
 
 if __name__ == "__main__":
     app.run(debug=True)

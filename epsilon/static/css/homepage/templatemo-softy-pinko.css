@@ -397,7 +397,6 @@ header
 
 .header-area .main-nav .logo {
   float: left;
-  margin-top: 35px;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -409,18 +408,18 @@ header
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 120%;
+  max-height: 120%;
   border-radius: 80%;
-  margin-top: -30px;
-  object-fit: contain;
+  margin-top: -35px;
+  margin-right: -25px;
 }
 
 .header-area .main-nav .nav {
   float:right;
-  margin-top: 27px;
+  margin-top: 20px;
   margin-left: 0px;
-  margin-right: 30px;
+  margin-right: 25px;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;

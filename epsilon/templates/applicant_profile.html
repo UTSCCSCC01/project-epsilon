@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}{% if applicant %}{{applicant.user_name}}'s'{% endif %} Applicant Profile{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br>
+<div class="pagewrap">
+    <div class="main">
+        {% if applicant %}
+        <div class="container jumbotron shadow-lg p-3 mb-5 rounded" style="background-color: #f2f2fe;">
+            <div class="row">
+                <div class="profile-nav col-md-3">
+                    <div class="panel">
+                        <div class="user-heading round">
+                            <a href="#">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                            </a>
+                            <h1>{{applicant.user_name}}</h1>
+                        </div>
+                    </div>
+                </div>
+            <div class="profile-info col-md-9">
+                <div class="panel">
+                    <div class="bio-graph-heading">
+                        <p>{{applicant.user_description}}</p>
+                    </div>
+
+                    <div class="panel-body bio-graph-info">
+                        <h1>Job Posting Details</h1>
+                        <hr>
+                        <div class="row">
+                            <form id="jobForm">
+                                <div class="bio-row" id="des-row-1">
+                                    <p><span>Job Title </span><input type="text" name="title" value="{{applicant.jid}}-{{applicant.job_title}}" required readonly> </p>
+                                </div>
+                                <div class="bio-row" style="width: 100%;">
+                                    <p><span>Job Description</span><textarea  name="description"  required readonly>{{applicant.job_description}}</textarea></p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Applied On</span><input type="text" name="create_date" value="{{applicant.create_date}}" required readonly></p>
+                                </div>
+                                <div class="bio-row" id="des-row">
+                                    <p><span>Application Status</span><input type="text" name="jap_status" value="{{applicant.jap_status}}"  readonly></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="panel-body bio-graph-info">
+                        <h1>Bio Graph</h1>
+                        <hr>
+                        <div class="row">
+                            <form id="userForm">
+                                <div class="bio-row" id="des-row-1">
+                                    <p><span>Name </span><input type="text" name="name" id="name" value="{{applicant.user_name}}" required readonly> </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Email</span><input type="text"  name="contact" id="contact" value="{{applicant.user_contact}}" required readonly></p>
+                                </div>
+                                <div class="bio-row" style="width: 100%;">
+                                    <p><span>Skills</span><textarea name="skills" required readonly>{{applicant.skills}}</textarea></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="align-items-center h-100" style="margin-bottom: 3%;">
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+            {% if message %}
+            <p class="message"><strong>Message:</strong> {{ message }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+body {
+    background: linear-gradient(270.59deg, #bbadec80 56.81%,
+     rgba(255, 202, 224, 0.356) 94.19%);
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.profile-nav, .profile-info{
+    margin-top:30px;
+}
+
+.profile-nav .user-heading {
+    background: #b984dc;
+    color: #fff;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-nav .user-heading.round a  {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: 10px solid rgba(255,255,255,0.3);
+    display: inline-block;
+}
+
+.profile-nav .user-heading a img {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+.profile-nav .user-heading h1 {
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 5px;
+}
+
+.profile-nav .user-heading p {
+    font-size: 12px;
+}
+
+.bio-graph-heading {
+    background: #6666d1;
+    color: #fff;
+    text-align: center;
+    font-style: italic;
+    padding: 40px 110px;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.bio-graph-info {
+    margin: 1% 0;
+}
+
+.bio-graph-info h1 {
+    font-size: 22px;
+    font-weight: 400;
+    margin: 2% 0 0;
+}
+
+.bio-row {
+    width: 50%;
+    float: left;
+    margin-bottom: 10px;
+    padding:0 10px;
+}
+
+.bio-row p span {
+    width: 100px;
+    display: inline-block;
+}
+
+.bio-desk h4 {
+    font-size: 15px;
+    font-weight:400;
+}
+
+.profile-activity h5 {
+    font-weight: 300;
+    margin-top: 0;
+    color: #c3c3c3;
+}
+
+textarea {
+    width: 40vw;
+}
+
+p {    
+    margin-block-end: 0.2em;
+    display: inline-block;
+}
+
+.panel-body hr {
+    color: #444444;
+}
+</style>
+{% endblock %}

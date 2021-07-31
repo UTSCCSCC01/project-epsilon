@@ -11,7 +11,9 @@ class AccessDeniedError(Exception):
         denied access from.
     """
 
-    def __init__(self, functionality=" this page."):
+    def __init__(self, functionality=" this page.", role=""):
+
+        self.role = role
         if current_user:
             self.curr_user_type = current_user.type_id
         else:
@@ -25,4 +27,6 @@ class AccessDeniedError(Exception):
         super().__init__(self.functionality)
 
     def __str__(self):
+        if len(self.role) != 0:
+            return self.role + " does not have the access to " + self.functionality
         return self.user_type_val_to_rep[self.curr_user_type] +" does not have the access to " +self.functionality

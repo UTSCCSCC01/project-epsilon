@@ -61,9 +61,10 @@ class DAO:
         """
         Delete all tables in the database.
         """
-        t_names = ["Teams", "request", "Users", "Roles",
+        t_names = ["JobApplication", "JobPosting", "TeamCode",
+                   "Teams", "Request", "Services", "ProfilePics", "Users", "Roles",
                    "CompanyTags", "Company", "RStatus",
-                   "Tags", "Industry", "Type"]
+                   "Tags", "Industry", "Type", "ServiceTypes"]
         for t_name in t_names:
             self.drop_table(t_name)
 
@@ -77,6 +78,23 @@ class DAO:
             cur.execute('''DROP TABLE IF EXISTS ''' + t_name, None)
             self.db.connection.commit()
             cur.close()
+        except BaseException as be:
+            print(be)
+            pass
+
+
+    def get_data_no_arg(self, sql_q: str) -> List[tuple]:
+        """
+        Get a list of data with sql_q.
+        :param sql_q: the sql query string
+        :param data: a tuple containing strings to include in query.
+        """
+        try:
+            cur = self.db.connection.cursor()
+            cur.execute(sql_q)
+            data = cur.fetchall()
+            cur.close()
+            return data
         except BaseException as be:
             print(be)
             pass

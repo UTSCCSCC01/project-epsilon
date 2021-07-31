@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+{% block title %}Job Postings{% endblock %}
+{% block content %}<br><br><br><br><br><br><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<div class="pagewrap">
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <!-- <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+        </script> -->
+    </head> 
+
+<body style = "text-align:center;">  
+      
+    <h1 style = "color:rgb(85, 54, 54);">  
+        All Jobs  
+    </h1>
+
+    <div id="GFG_UP"></div>
+      
+    {% if data %}
+
+    <script>
+        var el_up = document.getElementById("GFG_UP");
+        var s = {{ data | safe}};
+        var d = JSON.parse('{{ data | safe}}');
+        for (const key of Object.keys(d)) {
+            var list = d[key];
+            var cols = [];
+            for (var i = 0; i < list.length; i++) {
+                var ct = 0;
+                for (var k in list[i]) {
+                    if (cols.indexOf(k) === -1) {
+                        // Push all keys to the array
+                        cols.push(k);
+                    }
+                }
+            }
+
+            var table = document.createElement("table");
+            var tr = table.insertRow(-1);
+            for (var i = 0; i < cols.length; i++) {
+                  var theader = document.createElement("th");
+                  theader.innerHTML = cols[i];                    
+                  tr.appendChild(theader);
+              }
+              for (var i = 0; i < list.length; i++) {                  
+                  trow = table.insertRow(-1);
+                  for (var j = 0; j < cols.length; j++) {
+                      var cell = trow.insertCell(-1);
+                      cell.innerHTML = list[i][cols[j]];
+                  }
+              }
+            
+            var para = document.createElement("h2");              
+            para.innerText = key;
+            el_up.appendChild(para);      
+            el_up.appendChild(table);
+        }
+    </script>
+
+    {% endif %}
+    {% if error %}
+    <h2 style = "color:rgb(85, 54, 54);">  
+        {{error}}
+    </h2>
+    {% endif %}
+</body>
+
+</div>
+</html>
+{% endblock %}

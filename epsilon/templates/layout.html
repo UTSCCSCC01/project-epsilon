@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/epsilon_logo.png')}}" type="image/x-icon">
     <!--
 SOFTY PINKO
 https://templatemo.com/tm-535-softy-pinko
@@ -24,6 +24,12 @@ https://templatemo.com/tm-535-softy-pinko
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{% block title %}{% endblock %}</title>
+    <style>
+        nav ul {
+            padding: 0;
+            justify-content: space-between;
+        }
+    </style>
     {% endblock %}
 </head>
 <header class="header-area header-sticky" id="navMenu">
@@ -31,21 +37,16 @@ https://templatemo.com/tm-535-softy-pinko
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
-
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <!-- ***** Logo Start ***** -->
-                        <li><a href="/" class="logo">
-                                <img src="../static/images/epsilon logo.jpg" alt="Epsilon" /> </a></li>
+                    <!-- ***** Logo Start ***** -->
+                        <img src="{{ url_for('static', filename='images/epsilon logo.jpg')}}" style="width: 4%;display: inline; margin: 0.5% 0% 1% 2%;" alt="Epsilon" /> </a></li>
+                        <a href="/">
+                            <h2
+                                style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;display: inline-flex;padding: 1.7% 1% 1%;">
+                                Epsilon</h2>
+                        </a>
                         <!-- ***** Logo End ***** -->
-
-                        <li>
-                            <a href="/">
-                                <h2
-                                    style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                                    Epsilon</h2>
-                            </a>
-                        </li>
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav" style="display: inline-flex">
                         {% if current_user.is_authenticated and tid and tid >= 0 %}
                         <li>
                             <div class="dropdown">

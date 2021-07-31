@@ -24,22 +24,27 @@ def render_user_profile(mysql: MySQL):
     try:
         tid = -1
         if request.method == 'POST':
-            data = request.get_json
-            if data:
-                name = request.form["name"]
-                description = request.form["description"]
-                contact = request.form["contact"]
-                message = update_user(mysql, uid, name,
-                                      description, contact)
-                if 'pfpi' in request.files:
-                    print(request.files)
-                    f = request.files['pfpi']
-                    if f.filename != '':
-                        file = f.stream.read()
-                        if get_pic(mysql,uid) is not None:
-                            edit_pic(mysql,uid,file)
-                        else:
-                            add_pic(mysql,uid,file)
+            if "accept_job" in request.form:
+                message = update_jap_to_rstatus(mysql, int(request.form["accept_job"]), RStatus.ACCEPTED)
+            elif "decline_job" in request.form:
+                message = update_jap_to_rstatus(mysql, int(request.form["decline_job"]), RStatus.DECLINED)
+            else:
+                data = request.get_json
+                if data:
+                    name = request.form["name"]
+                    description = request.form["description"]
+                    contact = request.form["contact"]
+                    message = update_user(mysql, uid, name,
+                                        description, contact)
+                    if 'pfpi' in request.files:
+                        print(request.files)
+                        f = request.files['pfpi']
+                        if f.filename != '':
+                            file = f.stream.read()
+                            if get_pic(mysql,uid) is not None:
+                                edit_pic(mysql,uid,file)
+                            else:
+                                add_pic(mysql,uid,file)
         pfp = get_pic(mysql, uid)
         if pfp:
             if os.path.exists("./static/pfp.png"):

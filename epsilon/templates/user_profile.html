@@ -34,7 +34,7 @@
                 </a>
 
               {% if user_details %}
-              <h1>{{user_details.name}}</h1>
+              <h1>{{user_details[0]}}</h1>
               {% endif %}
           </div>
             <button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard Changes</button>

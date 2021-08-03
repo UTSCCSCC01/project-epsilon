@@ -188,7 +188,8 @@ def joinCode():
 def applicant_profile(jap_id):
     return render_applicant_profile(mysql, jap_id)
 
-@app.route('/myservices/', methods=["GET","POST"])
+
+@app.route('/myservices/', methods=["GET", "POST"])
 @login_required
 def get_services():
     return user_services(mysql)

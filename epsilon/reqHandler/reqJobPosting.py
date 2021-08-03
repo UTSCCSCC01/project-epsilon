@@ -77,14 +77,14 @@ def render_post_new_job(mysql: MySQL):
             title = request.form["title"]
             description = request.form["description"]
             message = post_job(mysql=mysql, tid=team_id, title=title,
-                              description=description)
+                               description=description)
             return render_template("post_new_job.html",
-                                    message=message)
+                                   message=message, tid=team_id)
         else:
-            return render_template("post_new_job.html")
+            return render_template("post_new_job.html", tid=team_id)
 
     except Exception as e:
-        return render_template("post_new_job.html", error=e)
+        return render_template("post_new_job.html", error=e, tid=team_id)
 
 
 def render_job_application(mysql: MySQL, job_id: int):

@@ -1,3 +1,5 @@
+import os
+from epsilonModules.ModPic import get_pic
 from epsilonModules.ModJobApplication import get_applicant_profile
 from flask_mysqldb import MySQL
 from epsilonModules.ModTeam import get_user_teams
@@ -22,12 +24,19 @@ def render_applicant_profile(mysql: MySQL, jap_id: int):
         if current_user.is_authenticated:
             user_teams = get_user_teams(mysql, current_user.uid)
             tid = user_teams[0].tid
+            pfp = get_pic(mysql, applicant.uid)
+            if pfp:
+                if os.path.exists("./static/pfp.png"):
+                    os.remove("./static/pfp.png")
+                with open('./static/pfp.png', 'wb') as wf:
+                    wf.write(pfp)
         return render_template('applicant_profile.html', applicant=applicant,
-                               message=message, tid= tid)
+                               message=message, tid=tid, pic=pfp)
     except Exception as e:
-        return render_template('applicant_profile.html', message=e, tid= tid)
-      
-def render_job_application(mysql: MySQL, jid:int):
+        return render_template('applicant_profile.html', message=e, tid=tid)
+
+
+def render_job_application(mysql: MySQL, jid: int):
     """
     Handler for page where user applies to a specific job.
     This handler assumes current user is eligible to apply for a job.
@@ -37,7 +46,8 @@ def render_job_application(mysql: MySQL, jid:int):
     try:
         if request.method == "POST":
             skills = request.form["skills"]
-            message = apply_to_job(mysql=mysql, jid=jid, uid=current_user.uid, skills=skills)
+            message = apply_to_job(mysql=mysql, jid=jid, uid=current_user.uid,
+                                   skills=skills)
             return render_template("job_application.html", message=message)
         else:
             return render_template("job_application.html")
@@ -45,4 +55,3 @@ def render_job_application(mysql: MySQL, jid:int):
     except Exception as e:
         traceback.print_exc()
         return render_template("job_application.html", error=e)
-

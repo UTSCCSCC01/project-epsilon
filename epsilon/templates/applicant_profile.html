@@ -15,7 +15,11 @@
                     <div class="panel">
                         <div class="user-heading round">
                             <a href="#">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                {% if pic %}
+                                <img id="pfp" src="{{ url_for('static', filename='pfp.png') }}" alt="profile picture">
+                                {% else %}
+                                <img id="pfp" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                {% endif %}
                             </a>
                             <h1>{{applicant.user_name}}</h1>
                         </div>

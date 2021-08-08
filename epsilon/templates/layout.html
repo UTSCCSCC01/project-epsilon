@@ -32,19 +32,65 @@ https://templatemo.com/tm-535-softy-pinko
     </style>
     {% endblock %}
 </head>
+{% if current_user.is_anonymous %}
 <header class="header-area header-sticky" id="navMenu">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                        <img src="{{ url_for('static', filename='images/epsilon logo.jpg')}}" style="width: 4%;display: inline; margin: 0.5% 0% 1% 2%;" alt="Epsilon" /> </a></li>
-                        <a href="/">
-                            <h2
-                                style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;display: inline-flex;padding: 1.7% 1% 1%;">
-                                Epsilon</h2>
-                        </a>
-                        <!-- ***** Logo End ***** -->
+                    <a href="/"><img src="{{ url_for('static', filename='images/epsilon logo.jpg')}}"
+                            style="width: 4%;display: inline; margin: 0.5% 0% 1% 2%;" alt="Epsilon" /> </a></li>
+                    <a href="/">
+                        <h2
+                            style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;display: inline-flex;padding: 1.7% 1% 1%;">
+                            Epsilon</h2>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav" style="display: inline-flex">
+                        <li><a href="/resources">Resources</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/jobSeeking">Job Seeking</a></li>
+                        <li><a href="/aboutUs">About Us</a></li>
+                        <li><a href="/search">Search</a></li>
+                        <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>
+                        <li><a href="/userRegistration" style="color:rebeccapurple;">Sign Up</a></li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<style type="text/css">
+    .header-area .main-nav {
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 40px;
+        min-height: 80px;
+        background: #fff;
+        max-width: 800px;
+        margin-left: 16%;
+    }
+</style>
+
+{% else %}
+<header class="header-area header-sticky" id="navMenu">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="/"><img src="{{ url_for('static', filename='images/epsilon logo.jpg')}}"
+                            style="width: 4%;display: inline; margin: 0.5% 0% 1% 2%;" alt="Epsilon" /> </a></li>
+                    <a href="/">
+                        <h2
+                            style="color:#6610f2; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;display: inline-flex;padding: 1.7% 1% 1%;">
+                            Epsilon</h2>
+                    </a>
+                    <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav" style="display: inline-flex">
                         {% if current_user.is_authenticated and tid and tid >= 0 %}
@@ -72,10 +118,6 @@ https://templatemo.com/tm-535-softy-pinko
                         <li><a href="/jobSeeking">Job Seeking</a></li>
                         <li><a href="/aboutUs">About Us</a></li>
                         <li><a href="/search">Search</a></li>
-                        {% if current_user.is_anonymous %}
-                        <li><a href="/login" style="color:rebeccapurple;">Log In</a></li>
-                        <li><a href="/userRegistration" style="color:rebeccapurple;">Sign Up</a></li>
-                        {% else %}
                         <li>
                             <div class="dropdown">
                                 <button class="dropbtn"><a href="/user/">{{current_user.name}}'s Profile</a></button>
@@ -87,7 +129,6 @@ https://templatemo.com/tm-535-softy-pinko
                             </div>
                         </li>
                         <li><a href="/logout" style="color:rebeccapurple;">Log Out</a></li>
-                        {% endif %}
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -97,6 +138,8 @@ https://templatemo.com/tm-535-softy-pinko
         </div>
     </div>
 </header>
+{% endif %}
+
 
 <body>
     <div id="content">{% block content %}{% endblock %}</div>

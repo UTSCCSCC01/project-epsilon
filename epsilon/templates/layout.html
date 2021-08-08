@@ -29,6 +29,17 @@ https://templatemo.com/tm-535-softy-pinko
             padding: 0;
             justify-content: space-between;
         }
+        
+        .header-area .main-nav .nav li a {
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .header-area .main-nav .nav li .dropdown .dropbtn a:hover {
+            color: #ffdffd;
+        }
     </style>
     {% endblock %}
 </head>
@@ -120,7 +131,7 @@ https://templatemo.com/tm-535-softy-pinko
                         <li><a href="/search">Search</a></li>
                         <li>
                             <div class="dropdown">
-                                <button class="dropbtn"><a href="/user/">{{current_user.name}}'s Profile</a></button>
+                                <button class="dropbtn" style="max-width: 11.2em;max-height: 50px;overflow: visible;"><a href="/user/">{{current_user.name}}'s Profile</a></button>
                                 {% if current_user.type_id == 2 %}
                                 <div class="dropdown-content">
                                     <a href="/myservices">My Services</a>

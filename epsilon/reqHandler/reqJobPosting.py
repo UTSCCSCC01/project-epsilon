@@ -23,7 +23,10 @@ def render_job_posting_management(mysql: MySQL):
         if len(tids_under_curr_user) > 0:
             curr_tid = tids_under_curr_user[0]
             if request.method == 'POST':
-                if request.form["update_posting_action"]:   # if one has clicked the button
+
+                up_action = request.form.get('update_posting_action', None)
+                if up_action is not None:
+                # if request.form["update_posting_action"]:   # if one has clicked the button
                     update_posting_action = request.form["update_posting_action"].split("_")
                     if update_posting_action[0] == 'R':
                         # mysql, jid

@@ -33,8 +33,11 @@ class DAOIndustry(DAO):
         """
         Populate Industry table with dummy data.
         """
-        industry = Industry(name="Other")
-        self.add_industry(industry)
+        Ind_names = ["Ecommerce", "Healthcare Tech", "Delivery Services",
+                     "Financial Technology", "Shared Mobility", "Other"]
+        for name in Ind_names:
+            industry = Industry(name=name)
+            self.add_industry(industry)
 
     def add_industry(self, industry: Industry) -> None:
         """

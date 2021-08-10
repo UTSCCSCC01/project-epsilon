@@ -36,21 +36,21 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Company Name</span>
                                 </div>
-                                <input name="teamname" type="text" class="auth form-control" placeholder="Epsilon" aria-describedby="basic-addon1">
+                                <input name="teamname" type="text" class="auth form-control" placeholder="Epsilon" aria-describedby="basic-addon1" required>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Description</span>
                                 </div>
-                                <textarea id="teamdesc" name="teamdesc" placeholder="The best startup" style="height:200px; width: 388px;"></textarea>
+                                <textarea id="teamdesc" name="teamdesc" placeholder="The best startup" style="height:200px; width: 388px;" required></textarea>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="inputGroupSelect01">Industry</label>
                                 </div>
-                                <select class="custom-select" id="inputGroupSelect01" name="industryselect">
+                                <select class="custom-select" id="inputGroupSelect01" name="industryselect" required>
                                     <option value="" selected>Select Industry</option>
                                     {% for item in industry %}
                                     <option name="inst" value={{item.ind_id}}>{{item.name}}</option>

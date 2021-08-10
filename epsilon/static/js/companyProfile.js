@@ -32,11 +32,21 @@
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
 document.getElementById('des-row-1').style.display =  "none";
+document.getElementById('des-row-2').style.display =  "none";
 var prevName="";
 var prevDes="";
+var prevPic="";
+const img = document.getElementById("pfpi");
+
 
 function isEditing() {
     //toggle edit/save button
+    prevName = document.getElementById('name').value
+    prevDes = document.getElementById('description').value
+    prevPic = document.getElementById('pfp').src
+    console.log(prevName)
+    console.log(prevDes)
+    console.log(prevPic)
     const valid = document.getElementById("companyForm").checkValidity();
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
@@ -55,6 +65,7 @@ function disableEdit() {
     is_editing = false;
     document.getElementById('name').value=prevName
     document.getElementById('description').value=prevDes
+    document.getElementById('pfp'),src=prevPic
     updateEditDisplay();
 }
 
@@ -79,9 +90,11 @@ function updateEditDisplay() {
     if (display_name==="Save"){
         document.getElementById('des-row').style.display =  "block";
         document.getElementById('des-row-1').style.display =  "block";
+        document.getElementById('des-row-2').style.display =  "flex";
     } else{
         document.getElementById('des-row').style.display =  "none";
         document.getElementById('des-row-1').style.display =  "none";
+        document.getElementById('des-row-2').style.display =  "none";
     }
 }
 

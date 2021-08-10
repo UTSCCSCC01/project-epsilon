@@ -40,7 +40,11 @@
                     <div class="panel">
                         <div class="user-heading round">
                             <a href="#">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                {% if pic %}
+                                <img id="pfp" src="{{ url_for('static', filename='cpfp.png') }}" alt="profile picture">
+                                {% else %}
+                                <img id="pfp" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                {% endif %}
                             </a>
 
                             {% if company_details %}
@@ -65,7 +69,7 @@
                             <h1>Bio Graph</h1>
                             {% if company_details %}
                             <div class="row">
-                                <form action="" method="POST" id="companyForm">
+                                <form action="" method="POST" id="companyForm" enctype="multipart/form-data">
 
                                     <div class="bio-row" id="des-row-1">
                                         <p><span>Name </span><input type="text" name="name" id="name"
@@ -75,6 +79,11 @@
                                         <p><span>Description</span><input type="text" name="description"
                                                 id="description" value="{{company_details.description}}" required
                                                 readonly></p>
+                                    </div>
+                                    <div class="bio-row" id="des-row-2"
+                                        style="flex-direction: row; justify-content: left; align-items: center">
+                                        <p><span>Change Picture</span></p>
+                                        <input type="file" name="pfpi" id="pfpi" accept=".png">
                                     </div>
                                 </form>
                             </div>

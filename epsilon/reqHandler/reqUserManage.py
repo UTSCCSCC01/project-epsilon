@@ -37,7 +37,6 @@ def render_user_profile(mysql: MySQL):
                     message = update_user(mysql, uid, name,
                                         description, contact)
                     if 'pfpi' in request.files:
-                        print(request.files)
                         f = request.files['pfpi']
                         if f.filename != '':
                             file = f.stream.read()

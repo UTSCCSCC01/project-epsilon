@@ -1,34 +1,25 @@
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-{% endblock %}
-{% block title %}Post A Job{% endblock %}
-{% block content %}
-<br><br><br><br><br><br><br><br><br>
-<!DOCTYPE html>
-<html lang="en">
-<div class="pagewrap">
-<head>
-        <style>
-        input[type="text"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
+    <style>
+    input[type="text"] {
+         position: relative;
+         display: block;
+         margin : 0 auto;
+    }
 
-        textarea[type="text"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
+    textarea[type="text"] {
+         position: relative;
+         display: block;
+         margin : 0 auto;
+    }
 
-         button[type="submit"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
-
+     button[type="submit"] {
+         position: relative;
+         display: block;
+         margin : 0 auto;
+    }
+/* 
 <!--.center {-->
 <!--  margin: 0;-->
 <!--  position: relative;-->
@@ -36,20 +27,16 @@
 <!--  left: 45%;-->
 <!--  -ms-transform: translate(-50%, -50%);-->
 <!--  transform: translate(-50%, -50%);-->
-<!--}-->
+<!--}--> */
 
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-}
-    </style>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Fill the details</title>
-</head>
-
-
-<body>
+{% endblock %}
+{% block title %}Fill in Details{% endblock %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<div class="pagewrap">
     <div class="contents">
 
         <form action="" method="post">
@@ -86,9 +73,6 @@
         {% endif %}
     </div>
 
-</body>
-
 </div>
-</html>
 
 {% endblock %}

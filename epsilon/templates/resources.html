@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
+{% block head %}
 {{ super() }}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/bootstrap.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage/font-awesome.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage/templatemo-softy-pinko.css') }}">
 {% block title %}Resources{% endblock %}
-
-{% block head %}
 
 <!-- Site made with Mobirise Website Builder v5.3.10, https://mobirise.com -->
 <meta charset="UTF-8">
@@ -14,8 +13,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="description" content="">
 
-
-<title>Resources</title>
 <link rel="stylesheet" href="../static/assets_resources/tether/tether.min.css">
 <link rel="stylesheet" href="../static/assets_resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="../static/assets_resources/bootstrap/css/bootstrap-grid.min.css">
@@ -30,7 +27,6 @@
 </noscript>
 <link rel="preload" as="style" href="../static/assets_resources/mobirise/css/mbr-additional.css">
 <link rel="stylesheet" href="../static/assets_resources/mobirise/css/mbr-additional.css" type="text/css">
-{{ super() }}
 {% endblock %}
 
 {% block content %}

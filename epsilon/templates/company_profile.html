@@ -23,7 +23,7 @@
                                 {% endif %}
                             </a>
                             <h1>{{company_details.name}}</h1>
-                            {% if user_team[0] == target_tid and (user_team[2] == 1 or user_team[2] == 2) %}
+                            {% if user_team[0] == tid and (user_team[2] == 1 or user_team[2] == 2) %}
                             <button id="discardBtn" style="display: none;" type="reset" onclick="disableEdit()">Discard
                                 Changes</button>
                             <button id="editBtn" type="button" onClick="isEditing()"><i class="fa fa-pencil"

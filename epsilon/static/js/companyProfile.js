@@ -31,12 +31,14 @@
 
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
-document.getElementById('des-row-1').style.display =  "none";
+document.getElementById('des-row-1').style.display =  "block";
 var prevName="";
 var prevDes="";
 
 function isEditing() {
     //toggle edit/save button
+    prevName = document.getElementById('name').value
+    prevDes = document.getElementById('description').value
     const valid = document.getElementById("companyForm").checkValidity();
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";
@@ -78,10 +80,8 @@ function updateEditDisplay() {
 
     if (display_name==="Save"){
         document.getElementById('des-row').style.display =  "block";
-        document.getElementById('des-row-1').style.display =  "block";
     } else{
         document.getElementById('des-row').style.display =  "none";
-        document.getElementById('des-row-1').style.display =  "none";
     }
 }
 

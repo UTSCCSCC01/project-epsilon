@@ -1,6 +1,6 @@
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
-document.getElementById('des-row-1').style.display =  "none";
+document.getElementById('des-row-1').style.display =  "block";
 document.getElementById('des-row-2').style.display = "none";
 var prevName="";
 var prevDes="";
@@ -67,11 +67,9 @@ function updateEditDisplay() {
 
     if (display_name==="Save"){
         document.getElementById('des-row').style.display =  "block";
-        document.getElementById('des-row-1').style.display =  "block";
         document.getElementById('des-row-2').style.display = "flex";
     } else{
         document.getElementById('des-row').style.display =  "none";
-        document.getElementById('des-row-1').style.display =  "none";
         document.getElementById('des-row-2').style.display = "none";
     }
 }

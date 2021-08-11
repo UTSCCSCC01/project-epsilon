@@ -7,6 +7,7 @@ from exceptions.ObjectNotExistsError import ObjectNotExistsError
 from exceptions.InputInvalidError import InputInvalidError
 from exceptions.FormIncompleteError import FormIncompleteError
 from exceptions.ObjectExistsError import ObjectExistsError
+from exceptions.LongNameError import LongNameError
 from flask_mysqldb import MySQL
 import re
 
@@ -45,7 +46,7 @@ def get_user_by_uid(mysql: MySQL, uid: int) -> User:
     user = dao_user.get_user_by_uid(uid)
     if user is None:
         raise ObjectNotExistsError("The user")
-    
+
     return user
 
 
@@ -65,6 +66,9 @@ def user_registration(mysql: MySQL, name: str, email: str,
     # check if any required fields isn't filled
     if (len(email) == 0 or len(pwd) == 0 or len(name) == 0 or u_type is None):
         raise FormIncompleteError()
+    # ensure name is not more than 6 letters
+    elif(len(name) >= 7):
+        raise LongNameError()
     # check if the user email is already in use (username)
     elif (dao_user.get_user_by_contact(email) is not None):
         raise ObjectExistsError("Email", " already in use, "
@@ -76,7 +80,8 @@ def user_registration(mysql: MySQL, name: str, email: str,
     else:
         try:
             # create new user
-            user = User(type_id=u_type, name=name, contact=email, password=pwd)
+            user = User(type_id=u_type,
+                        name=name[0:6], contact=email, password=pwd)
             dao_user.add_user(user)
             # send success prompt
             message = "Account successfully created!"
@@ -104,6 +109,7 @@ def user_login(mysql: MySQL, username: str, password: str) -> User:
     elif user.password != password:
         raise InputInvalidError("Password does not match.")
     return user
+
 
 def get_user_profile(mysql: MySQL, uid: int) -> List:
     """

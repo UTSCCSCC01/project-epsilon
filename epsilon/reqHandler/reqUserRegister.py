@@ -13,7 +13,7 @@ def render_user_registration(mysql: MySQL):
         try:
             email = request.form['username']
             pwd = request.form['password']
-            name = request.form['name'].lower()
+            name = request.form['name']
             u_type = None
             if ('type' in request.form):
                 u_type = request.form['type']

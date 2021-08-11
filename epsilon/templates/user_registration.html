@@ -37,21 +37,21 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Full Name</span>
                                 </div>
-                                <input name="name" type="text" class="auth form-control" placeholder="John Doe" aria-describedby="basic-addon1">
+                                <input name="name" type="text" class="auth form-control" placeholder="John Doe" aria-describedby="basic-addon1" required>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">E-mail</span>
                                 </div>
-                                <input name="username" type="text" class="auth form-control" placeholder="johndoe@example.com" aria-describedby="basic-addon1">
+                                <input name="username" type="text" class="auth form-control" placeholder="johndoe@example.com" aria-describedby="basic-addon1" required>
                             </div>
 
                             <div class="input-group mb-3" id="show_hide_password">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Password</span>
                                 </div>
-                                <input id="password" name="password" type="password" class="auth form-control" placeholder="Password" aria-describedby="basic-addon1">
+                                <input id="password" name="password" type="password" class="auth form-control" placeholder="Password" aria-describedby="basic-addon1" required>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary fa fa-eye-slash" type="button" id="button-addon2" onclick="show_hide_password()"></button>
                                 </div>
@@ -61,8 +61,8 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="inputGroupSelect01">User Type</label>
                                 </div>
-                                <select class="custom-select" id="inputGroupSelect01" name="type">
-                                    <option selected>Choose...</option>
+                                <select class="custom-select" id="inputGroupSelect01" name="type" required>
+                                    <option selected value="">Choose...</option>
                                     <option class="auth" value="1">Startup User</option>
                                     <option class="auth" value="2">Service Provider</option>
                                     <option class="auth" value="3">Admin</option>

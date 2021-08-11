@@ -1,50 +1,36 @@
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
+    <style>
+h1 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}
+
+input[type="text"] {
+     position: relative;
+     display: block;
+     margin : 0 auto;
+}
+
+textarea[type="text"] {
+     position: relative;
+     display: block;
+     margin : 0 auto;
+}
+
+ button[type="submit"] {
+     position: relative;
+     display: block;
+     margin : 0 auto;
+}
+</style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
 {% block title %}Apply To Job{% endblock %}
 {% block content %}
 <br><br><br><br><br><br><br><br><br>
 
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
 <div class="pagewrap">
-<head>
-
-            <style>
-h1 {text-align: center;}
-p {text-align: center;}
-div {text-align: center;}
-
-        input[type="text"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
-
-        textarea[type="text"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
-
-         button[type="submit"] {
-             position: relative;
-             display: block;
-             margin : 0 auto;
-        }
-}
-    </style>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Apply To Job</title>
-</head>
-
-
-<body>
-
     <div class="contents">
                 <h1>Enter your skills</h1>
         <h4>Note: Employers will be able to see your profile after submitting this form</h4>
@@ -67,7 +53,5 @@ div {text-align: center;}
         <p class="message"><strong>Message:</strong> {{ message }}</p>
         {% endif %}
     </div>
-</body>
 </div>
-</html>
 {% endblock %}

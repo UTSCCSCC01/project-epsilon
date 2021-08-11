@@ -15,6 +15,7 @@
                 <div class="profile-nav col-md-3">
                     <div class="panel">
                         <div class="user-heading round">
+                            <button id="byIdBtn" class="float-left submit-button">{{btnName}} </button>
                             <a href="#">
                                 {% if pic %}
                                 <img id="pfp" src="{{ url_for('static', filename='pfp.png') }}" alt="profile picture">
@@ -78,6 +79,11 @@
             {% endif %}
         </div>
     </div>
+    <script type="text/javascript" async defer>
+        document.getElementById("byIdBtn").onclick = function () {
+            location.href = '{{ btnLk}}';
+        };
+    </script>
 </div>
 
 <style type="text/css">

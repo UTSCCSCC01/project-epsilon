@@ -20,7 +20,10 @@
 <body>
     <div id="background">
          {% if error == null%}
-        <button id="byIdBtn" class="float-left submit-button" >Post A Job! </button>
+        <div class="centralButtonContainer">
+
+        <button id="byIdBtn" class="submit">Post A Job! </button>
+        </div>
         <script type="text/javascript">
             document.getElementById("byIdBtn").onclick = function () {
             location.href = "/postJob";

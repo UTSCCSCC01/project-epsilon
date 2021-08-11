@@ -61,22 +61,24 @@
             <h2 style="text-align:center">description</h2>
             <textarea class="auth" rows="10" cols="40" name="description" type="text" required></textarea>
 
-<!--            <input  style="height:200px;font-size:14pt;" class="auth" type="text" name="description" required>-->
             <br>
             <br>
-<!--                      <div class="center">-->
-                          <button  type="submit">Post!</button>
-<!--                    </div>-->
+
+            <div class="centralButtonContainer">
+                <button  class="navitem" id="postBtn" type="submit">Post!</button>
+            </div>
+            <div class="centralButtonContainer">
+                <button class="navitem" id="backBtn">back</button>
+            </div>
+            <script type="text/javascript">
+            document.getElementById("backBtn").onclick = function () {
+            location.href = "/jobPostingsMgmt";
+            };
+
+        </script>
 
 
         </form>
-
-
-
-
-
-<!--                    <input class="btn" type="submit" value="Post!">-->
-
 
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>

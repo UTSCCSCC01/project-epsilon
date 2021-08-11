@@ -256,3 +256,17 @@ def update_jap_to_rstatus(mysql: MySQL, jap_id: int, status: RStatus):
         return "Updated the status of the job application to " + status.name.title() + "!"
     else:
         return "An error occured when updating the status of the job application!"
+
+def get_user_role(mysql: MySQL, tid: int,uid: int) -> int:
+    """
+    Returns the rid from user in team tid
+    :param mysql: mysql db.
+    :param tid: tid of the team.
+    :param uid: uid of the user.
+    :Return a rid int.
+    """
+    dao_team = DAOTeam(mysql)
+    team = dao_team.get_team_by_tid_uid(tid, uid)
+    if not team:
+        raise ObjectNotExistsError("The Team")
+    return team.rid

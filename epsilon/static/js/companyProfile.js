@@ -31,8 +31,9 @@
 
 var is_editing = false
 document.getElementById('des-row').style.display =  "none";
-document.getElementById('des-row-1').style.display =  "none";
 document.getElementById('des-row-2').style.display =  "none";
+document.getElementById('des-row-1').style.display =  "block";
+
 var prevName="";
 var prevDes="";
 var prevPic="";
@@ -43,10 +44,8 @@ function isEditing() {
     //toggle edit/save button
     prevName = document.getElementById('name').value
     prevDes = document.getElementById('description').value
+
     prevPic = document.getElementById('pfp').src
-    console.log(prevName)
-    console.log(prevDes)
-    console.log(prevPic)
     const valid = document.getElementById("companyForm").checkValidity();
     if (!valid) {
         document.getElementById("validationMsg").innerHTML = "A field is not valid, please try again.";

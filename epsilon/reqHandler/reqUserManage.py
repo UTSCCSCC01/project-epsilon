@@ -50,7 +50,7 @@ def render_user_profile(mysql: MySQL):
                 os.remove("./static/pfp.png")
             with open('./static/pfp.png', 'wb') as wf:
                 wf.write(pfp)
-        user_details = get_user_profile(mysql, uid)
+        user_details = get_user_by_uid(mysql, uid)
         services = get_services_by_uid(mysql, uid)
         job_applications = get_job_applications_by_uid(mysql, uid)
         user_type = Type(current_user.type_id).name.replace("_"," ").title()

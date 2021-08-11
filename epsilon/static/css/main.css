@@ -119,4 +119,14 @@ footer {
 .main{
     flex-grow: 1;
   }
+
+
+  /*make button central*/
+.centralButtonContainer{
+    text-align: center;
+     padding: 10px;
+ position: relative;
+ margin: 10px;
+}
+
 /* solution end*/

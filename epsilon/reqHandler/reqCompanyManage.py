@@ -1,9 +1,12 @@
+from os import remove
 from epsilonModules.ModCompany import *
 from epsilonModules.ModTeam import get_user_teams
 from flask import request, render_template
 from flask_login import current_user
 from classes.Role import Role
+from epsilonModules.ModCPic import*
 import traceback
+import os
 
 def render_company_profile(mysql: MySQL, name:str=""):
     """
@@ -37,18 +40,33 @@ def render_company_profile(mysql: MySQL, name:str=""):
                 description = request.form["description"]
                 message = update_company(mysql, tid, name,
                                          description)
+                if 'pfpi' in request.files:
+                    f = request.files['pfpi']
+                    if f.filename != '':
+                        file = f.stream.read()
+                        if get_cpic(mysql,tid) is not None:
+                            edit_cpic(mysql,tid,file)
+                        else:
+                            add_cpic(mysql,tid,file)
+        pfp = get_cpic(mysql,tid)
+        if pfp:
+            if os.path.exists("./static/cpfp.png"):
+                os.remove("./static/cpfp.png")
+            with open('./static/cpfp.png', 'wb') as wf:
+                wf.write(pfp)
         company_details = get_company_profile(mysql, tid)
         company_owner = get_company_owner_by_tid(mysql, tid)
         if rid in [Role.TEAM_ADMIN.value, Role.TEAM_OWNER.value]:
             return render_template('company_profile.html', company_details=company_details,
                                    message=message, user_team=user_team, tid=tid,
                                    btnName="manage job postings", btnLk="/jobPostingsMgmt",
-                                   company_owner=company_owner)
+                                   company_owner=company_owner, pic=pfp)
 
         return render_template('company_profile.html', company_details=company_details,
                                message=message, user_team=user_team, tid=tid,
                                btnName="view job postings", btnLk="/jobPostings/"+str(tid)+"/",
-                               company_owner=company_owner)
+                               company_owner=company_owner, pic=pfp)
     except Exception as e:
         traceback.print_exc()
+        print(e)
         return render_template('company_profile.html', error=e)

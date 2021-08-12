@@ -18,7 +18,7 @@
                             <button id="byIdBtn" class="float-left submit-button">{{btnName}} </button>
                             <a href="#">
                                 {% if pic %}
-                                <img id="pfp" src="{{ url_for('static', filename='pfp.png') }}" alt="profile picture">
+                                <img id="pfp" src="{{ url_for('static', filename='cpfp.png') }}" alt="profile picture">
                                 {% else %}
                                 <img id="pfp" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
                                 {% endif %}
@@ -33,41 +33,67 @@
                         </div>
                     </div>
                 </div>
-            <div class="profile-info col-md-9">
-                <div class="panel">
-                    <div class="bio-graph-heading">
-                        <p>{{company_details.description}}</p>
-                    </div>
+                <div class="profile-info col-md-9">
+                    <div class="panel">
+                        <div class="bio-graph-heading">
+                            <p>{{company_details.description}}</p>
+                        </div>
 
-                    <div class="panel-body bio-graph-info">
-                        <h1>Company Details</h1>
-                        <hr>
-                        <div class="row">
-                            <form action="" method="POST" id="companyForm">
+                        <div class="panel-body bio-graph-info" id="editForm">
+                            <h1>Bio Graph</h1>
+                            <hr>
+                            <div class="row">
+                                <form action="" method="POST" id="companyForm" enctype="multipart/form-data">
 
-                                <div class="bio-row" id="des-row-1">
-                                    <p><span>Name </span><input type="text" name="name" id="name"
-                                            value="{{company_details.name}}" required readonly> </p>
-                                </div>
-                                <div class="bio-row">
-                                    <p><span>Owner Name </span><input type="text" name="owner-name" id="owner-name"
-                                                value="{{company_owner.name}}" required readonly> </p>
-                                </div>
-                                <div class="bio-row">
-                                    <p><span>Owner Contact</span><input type="text" name="owner-contact"
-                                            id="owner-contact" value="{{company_owner.contact}}" required readonly>
-                                    </p>
-                                </div>
-                                <div class="bio-row" style="width: 100%;" id="des-row">
-                                    <p><span>Description</span><textarea  name="description" id="description"
-                                        value="{{company_details.description}}" required readonly>{{company_details.description}}</textarea></p>
-                                </div>
-                            </form>
+                                    <div class="bio-row" id="des-row-1">
+                                        <p><span>Name </span><input type="text" name="name" id="name"
+                                                value="{{company_details.name}}" required readonly> </p>
+                                    </div>
+                                    <div class="bio-row" id="des-row">
+                                        <p><span>Description</span><input type="text" name="description"
+                                                id="description" value="{{company_details.description}}" required
+                                                readonly></p>
+                                    </div>
+                                    <div class="bio-row" id="des-row-2"
+                                        style="flex-direction: row; justify-content: left; align-items: center">
+                                        <p><span>Change Picture</span></p>
+                                        <input type="file" name="pfpi" id="pfpi" accept=".png">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+        {% endif %}
+        {% if company_owner %}
+
+                        <div class="panel-body bio-graph-info">
+                            <h1>Company Details</h1>
+                            <hr>
+                            <div class="row">
+                                <form action="" method="POST" id="companyForm">
+
+                                    <!-- <div class="bio-row" id="des-row-1">
+                                        <p><span>Name </span><input type="text" name="name" id="name"
+                                                value="{{company_details.name}}" required readonly> </p>
+                                    </div> -->
+                                    <div class="bio-row">
+                                        <p><span>Owner Name </span><input type="text" name="owner-name" id="owner-name"
+                                                    value="{{company_owner.name}}" required readonly> </p>
+                                    </div>
+                                    <div class="bio-row">
+                                        <p><span>Owner Contact</span><input type="text" name="owner-contact"
+                                                id="owner-contact" value="{{company_owner.contact}}" required readonly>
+                                        </p>
+                                    </div>
+                                    <!-- <div class="bio-row" style="width: 100%;" id="des-row">
+                                        <p><span>Description</span><textarea  name="description" id="description"
+                                            value="{{company_details.description}}" required readonly>{{company_details.description}}</textarea></p>
+                                    </div> -->
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
         <div class="container">
             <div class="align-items-center h-100" style="margin-bottom: 3%;">
@@ -78,13 +104,16 @@
             <p class="message"><strong>Message:</strong> {{ message }}</p>
             {% endif %}
         </div>
-    </div>
+        </div>
     <script type="text/javascript" async defer>
         document.getElementById("byIdBtn").onclick = function () {
             location.href = '{{ btnLk}}';
         };
     </script>
 </div>
+</div>
+</div>
+
 
 <style type="text/css">
 body {

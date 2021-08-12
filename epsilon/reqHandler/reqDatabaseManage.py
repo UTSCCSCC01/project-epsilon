@@ -14,6 +14,7 @@ from databaseAccess.DAOTeamCode import DAOTeamCode
 from databaseAccess.DAOService import DAOService
 from databaseAccess.DAOServiceType import DAOServiceType
 from databaseAccess.DAOProfilePic import DAOProfilePic
+from databaseAccess.DAOCompanyPic import DAOCompanyPic
 from databaseAccess.DAO import DAO
 from epsilonModules.ModCompany import add_dummy_companies
 from flask_mysqldb import MySQL
@@ -52,6 +53,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_service = DAOService(mysql)
     dao_service_type = DAOServiceType(mysql)
     dao_profile_pic = DAOProfilePic(mysql)
+    dao_company_pic = DAOCompanyPic(mysql)
 
     # table creation
     dao_company.create_company_table()
@@ -70,6 +72,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_service.create_services_table()
     dao_service_type.create_service_types_table()
     dao_profile_pic.create_pic_table()
+    dao_company_pic.create_pic_table()
 
     # foreign keys
     dao_company.add_foreign_key()
@@ -83,6 +86,7 @@ def create_tables(mysql: MySQL) -> str:
     dao_teamCode.add_foreign_key()
     dao_service.add_foreign_keys()
     dao_profile_pic.add_foreign_key()
+    dao_company_pic.add_foreign_key()
 
     # add that does not have foreign key constraint
     dao_role.add_roles()
@@ -115,7 +119,8 @@ def create_tables(mysql: MySQL) -> str:
     t_names = ["Teams", "Users", "Roles",
                "CompanyTags", "Company", "RStatus",
                "Tags", "Industry", "Type", "JobApplication", "JobPosting",
-               "Services", "ServiceTypes", "TeamCode",  "ProfilePics"]
+               "Services", "ServiceTypes", "TeamCode",  "ProfilePics",
+               "CompanyPics"]
 
     output = "The following tables are populated! </br> <ul>"
     for t_name in t_names:
